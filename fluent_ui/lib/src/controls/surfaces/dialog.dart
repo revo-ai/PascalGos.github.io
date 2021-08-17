@@ -36,7 +36,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 /// )
 /// ```
 ///
-/// ![ContentDialog example](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/dialogs/dialog_rs2_delete_file.png)
+/// ![ContentDialog optimizer](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/dialogs/dialog_rs2_delete_file.png)
 class ContentDialog extends StatelessWidget {
   /// Creates a content dialog.
   const ContentDialog({

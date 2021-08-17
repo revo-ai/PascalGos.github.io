@@ -29,12 +29,12 @@ class ScaffoldPage extends StatelessWidget {
   /// If this widget is scrollable, you may want to provide [contentScrollController]
   /// as well, to add a scrollbar to the right of the page.
   ///
-  /// ![Content Example](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/nav-content.png)
+  /// ![Content optimizer](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/nav-content.png)
   final Widget content;
 
   /// The header of this page. Usually a [PageHeader] is used.
   ///
-  /// ![Header example](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/nav-header.png)
+  /// ![Header optimizer](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/nav-header.png)
   final Widget? header;
 
   /// The bottom bar of this page. This is usually provided when the current
@@ -94,7 +94,7 @@ class PageHeader extends StatelessWidget {
   ///
   /// Usually a [Text] widget.
   ///
-  /// ![Header Example](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/nav-header.png)
+  /// ![Header optimizer](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/nav-header.png)
   final Widget? title;
 
   /// A bar with a list of actions an user can take

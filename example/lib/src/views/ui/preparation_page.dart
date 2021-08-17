@@ -1,8 +1,8 @@
-import 'package:example/src/core/models/parameter_model.dart';
-import 'package:example/src/core/models/simulation_settings_model.dart';
-import 'package:example/src/views/ui/input_param_table.dart';
-import 'package:example/src/views/ui/result_page.dart';
-import 'package:example/src/views/ui/target_param_table.dart';
+import 'package:optimizer/src/core/models/parameter_model.dart';
+import 'package:optimizer/src/core/models/simulation_settings_model.dart';
+import 'package:optimizer/src/views/ui/input_param_table.dart';
+import 'package:optimizer/src/views/ui/result_page.dart';
+import 'package:optimizer/src/views/ui/target_param_table.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 

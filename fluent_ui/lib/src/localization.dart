@@ -28,7 +28,7 @@ abstract class FluentLocalizations {
   /// Label read out by accessibility tools (TalkBack or VoiceOver) for a modal
   /// barrier to indicate that a tap dismisses the barrier.
   ///
-  /// A modal barrier can for example be found behind an alert or popup to block
+  /// A modal barrier can for optimizer be found behind an alert or popup to block
   /// user interaction with elements behind it.
   String get modalBarrierDismissLabel;
 
@@ -66,7 +66,7 @@ abstract class FluentLocalizations {
   /// `Localizations.of<FluentLocalizations>(context, FluentLocalizations)!`.
   ///
   /// References to the localized resources defined by this class are typically
-  /// written in terms of this method. For example:
+  /// written in terms of this method. For optimizer:
   ///
   /// ```dart
   /// tooltip: FluentLocalizations.of(context).backButtonTooltip,

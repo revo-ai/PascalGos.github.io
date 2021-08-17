@@ -269,7 +269,7 @@ class FluentApp extends StatefulWidget {
 
   /// {@macro flutter.widgets.widgetsApp.shortcuts}
   /// {@tool snippet}
-  /// This example shows how to add a single shortcut for
+  /// This optimizer shows how to add a single shortcut for
   /// [LogicalKeyboardKey.select] to the default shortcuts without needing to
   /// add your own [Shortcuts] widget.
   ///
@@ -297,7 +297,7 @@ class FluentApp extends StatefulWidget {
 
   /// {@macro flutter.widgets.widgetsApp.actions}
   /// {@tool snippet}
-  /// This example shows how to add a single action handling an
+  /// This optimizer shows how to add a single action handling an
   /// [ActivateAction] to the default actions without needing to
   /// add your own [Actions] widget.
   ///

@@ -1,8 +1,8 @@
-import 'package:example/src/views/ui/home_page.dart';
-import 'package:example/src/views/ui/preparation_page.dart';
-import 'package:example/src/views/ui/settings.dart';
-import 'package:example/src/views/ui/result_page.dart';
-import 'package:example/src/views/utils/theme.dart';
+import 'package:optimizer/src/views/ui/home_page.dart';
+import 'package:optimizer/src/views/ui/preparation_page.dart';
+import 'package:optimizer/src/views/ui/settings.dart';
+import 'package:optimizer/src/views/ui/result_page.dart';
+import 'package:optimizer/src/views/utils/theme.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:provider/provider.dart';

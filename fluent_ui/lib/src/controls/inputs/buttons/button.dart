@@ -2,7 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 
 /// A button gives the user a way to trigger an immediate action.
 ///
-/// ![Button Example](https://docs.microsoft.com/en-us/windows/apps/design/controls/images/button.png)
+/// ![Button optimizer](https://docs.microsoft.com/en-us/windows/apps/design/controls/images/button.png)
 ///
 /// See also:
 ///

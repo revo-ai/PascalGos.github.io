@@ -22,7 +22,7 @@ import 'package:flutter/rendering.dart';
 /// See also:
 ///
 ///   * [Slider], which let the user lie within a range of values,
-///     (for example, 10, 20, 30, ... 100).
+///     (for optimizer, 10, 20, 30, ... 100).
 ///   * [Checkbox], which let the user select multiple options.
 ///   * [ComboBox], which let the user select multiple options, when
 ///     there's more than eight options.

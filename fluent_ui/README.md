@@ -114,7 +114,7 @@ dependencies:
     git: https://github.com/bdlukaa/fluent_ui.git
 ```
 
-Note that this version is not stable. You can see the example app deplyed using the github version [here](https://bdlukaa.github.io/fluent_ui/#/)
+Note that this version is not stable. You can see the optimizer app deplyed using the github version [here](https://bdlukaa.github.io/fluent_ui/#/)
 
 2. You can use the [pub version](https://pub.dev/packages/fluent_ui/install):
 
@@ -260,7 +260,7 @@ Density, in the context of a UI, is the vertical and horizontal "compactness" of
 
 The default for visual densities is zero for both vertical and horizontal densities. It does not affect text sizes, icon sizes, or padding values.
 
-For example, for buttons, it affects the spacing around the child of the button. For lists, it affects the distance between baselines of entries in the list. For chips, it only affects the vertical size, not the horizontal size.
+For optimizer, for buttons, it affects the spacing around the child of the button. For lists, it affects the distance between baselines of entries in the list. For chips, it only affects the vertical size, not the horizontal size.
 
 ```dart
 ThemeData(
@@ -338,7 +338,7 @@ theme: ThemeData(
 ),
 ```
 
-Go to the [example](/example) project to a full example
+Go to the [optimizer](/optimizer) project to a full optimizer
 
 ### Why isn't Reveal Focus on by default?
 
@@ -536,7 +536,7 @@ NavigationBody(
 
 The TabView control is a way to display a set of tabs and their respective content. TabViews are useful for displaying several pages (or documents) of content while giving a user the capability to rearrange, open, or close new tabs. [Learn more](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/tab-view)
 
-Here's an example of how to create a tab view:
+Here's an optimizer of how to create a tab view:
 
 ```dart
 SizedBox(
@@ -580,7 +580,7 @@ The code above produces the following:
 
 The bottom navigation displays icons and optional text at the bottom of the screen for switching between different primary destinations in an app. This is commomly used on small screens. [Learn more](https://developer.microsoft.com/pt-br/fluentui#/controls/android/bottomnavigation)
 
-Here's an example of how to create a bottom navigation:
+Here's an optimizer of how to create a bottom navigation:
 
 ```dart
 int index = 0;
@@ -624,7 +624,7 @@ Inputs are widgets that reacts to user interection. On most of the inputs you ca
 
 A button gives the user a way to trigger an immediate action. [Learn more](https://docs.microsoft.com/en-us/windows/apps/design/controls/buttons)
 
-Here's an example of how to create a basic button:
+Here's an optimizer of how to create a basic button:
 
 ```dart
 Button(
@@ -695,7 +695,7 @@ A Split Button has two parts that can be invoked separately. One part behaves li
 
 You can use a `SplitButtonBar` to create a Split Button. It usually takes `Button`s in the `buttons` property. You can also customize the button spacing by changing the property `interval` in its theme.
 
-Here's an example of how to create a split button:
+Here's an optimizer of how to create a split button:
 
 ```dart
 const double splitButtonHeight = 50.0;
@@ -739,7 +739,7 @@ The code above produces the following button:
 
 A button that can be on or off.
 
-Here's an example of how to create a basic toggle button:
+Here's an optimizer of how to create a basic toggle button:
 
 ```dart
 bool _value = false;
@@ -755,7 +755,7 @@ ToggleButton(
 
 A check box is used to select or deselect action items. It can be used for a single item or for a list of multiple items that a user can choose from. The control has three selection states: unselected, selected, and indeterminate. Use the indeterminate state when a collection of sub-choices have both unselected and selected states. [Learn more](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/checkbox)
 
-Here's an example of how to create a checkbox:
+Here's an optimizer of how to create a checkbox:
 
 ```dart
 bool _checked = true;
@@ -786,7 +786,7 @@ Checkbox(
 
 The toggle switch represents a physical switch that allows users to turn things on or off, like a light switch. Use toggle switch controls to present users with two mutually exclusive options (such as on/off), where choosing an option provides immediate results. [Learn more](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/toggles)
 
-### Example
+### optimizer
 
 ```dart
 bool _checked = false;
@@ -802,7 +802,7 @@ ToggleSwitch(
 | Toggle Switch                                                                                                  | Checkbox                                                                                                                                                                                |
 | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Use a toggle switch for binary settings when changes become effective immediately after the user changes them. | Use check boxes for optional ("nice to have") items.                                                                                                                                    |
-|                                                                                                                | Use a checkbox when the user has to perform extra steps for changes to be effective. For example, if the user must click a "submit" or "next" button to apply changes, use a check box. |
+|                                                                                                                | Use a checkbox when the user has to perform extra steps for changes to be effective. For optimizer, if the user must click a "submit" or "next" button to apply changes, use a check box. |
 |                                                                                                                | Use check boxes when the user can select multiple items that are related to a single setting or feature.                                                                                |
 
 ## Radio Buttons
@@ -815,7 +815,7 @@ The singular behavior of a RadioButtons group distinguishes it from check boxes,
 
 [Learn more](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/radio-button)
 
-Here's an example of how to create a basic set of radio buttons:
+Here's an optimizer of how to create a basic set of radio buttons:
 
 ```dart
 int _currentIndex = -1;
@@ -846,7 +846,7 @@ The code above produces the following:
 
 A slider is a control that lets the user select from a range of values by moving a thumb control along a track. [Learn more](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/slider)
 
-A slider is a good choice when you know that users think of the value as a relative quantity, not a numeric value. For example, users think about setting their audio volume to low or medium—not about setting the value to 2 or 5.
+A slider is a good choice when you know that users think of the value as a relative quantity, not a numeric value. For optimizer, users think about setting their audio volume to low or medium—not about setting the value to 2 or 5.
 
 Don't use a slider for binary settings. Use a [toggle switch](#toggle-switches) instead.
 
@@ -888,7 +888,7 @@ You can set `vertical` to `true` to create a vertical slider
 
 The rating control allows users to view and set ratings that reflect degrees of satisfaction with content and services. [Learn more](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/rating)
 
-### Example
+### optimizer
 
 ```dart
 double rating = 0.0;
@@ -911,7 +911,7 @@ A form is a group of controls that collect and submit data from users. Forms are
 
 The TextBox control lets a user type text into an app. It's typically used to capture a single line of text, but can be configured to capture multiple lines of text. The text displays on the screen in a simple, uniform, plaintext format. [Learn more](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/text-box)
 
-You can use the [forms screen](example/lib/screens/forms.dart) in the example app for reference.
+You can use the [forms screen](optimizer/lib/screens/forms.dart) in the optimizer app for reference.
 
 ### Creating
 
@@ -936,7 +936,7 @@ TextBox(
 
 Use an AutoSuggestBox to provide a list of suggestions for a user to select from as they type. [Learn more](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/auto-suggest-box)
 
-### Example
+### optimizer
 
 ```dart
 final autoSuggestBox = TextEditingController();
@@ -989,18 +989,18 @@ AutoSuggestBox<String>(
 
 The code above produces the following:
 
-![Auto suggest box example](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/controls_autosuggest_expanded01.png)
+![Auto suggest box optimizer](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/controls_autosuggest_expanded01.png)
 
 ### Screenshots
 
-![](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/control-examples/auto-suggest-box-groove.png)
+![](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/control-optimizers/auto-suggest-box-groove.png)
 ![](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/controls_autosuggest_noresults.png)
 
 ## Combo Box
 
 Use a combo box to present a list of items that a user can select from. A combo box starts in a compact state and expands to show a list of selectable items. When the combo box is closed, it either displays the current selection or is empty if there is no selected item. When the user expands the combo box, it displays the list of selectable items. [Learn more](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/combo-box)
 
-### Example
+### optimizer
 
 ```dart
 
@@ -1030,7 +1030,7 @@ SizedBox(
 
 The code above produces the following:
 
-![Combo box example](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/combo-box-expand.gif)
+![Combo box optimizer](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/combo-box-expand.gif)
 
 ### Screenshots
 
@@ -1105,7 +1105,7 @@ showDialog(
 
 A flyout is a light dismiss container that can show arbitrary UI as its content. Flyouts can contain other flyouts or context menus to create a nested experience.
 
-### Example
+### optimizer
 
 ```dart
 final flyoutController = FlyoutController();
@@ -1215,7 +1215,7 @@ The entry point displays the chosen date, and when the user selects the entry po
 
 We use [intl](https://pub.dev/packages/intl) to format the dates. You can [change the current locale](https://pub.dev/packages/intl#current-locale) to change formatting
 
-### Example
+### optimizer
 
 ```dart
 DateTime date = DateTime.now();
@@ -1242,7 +1242,7 @@ Use a time picker to let a user pick a single time value.
 
 ![](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/controls_timepicker_expand.png)
 
-### Example
+### optimizer
 
 ```dart
 DateTime date = DateTime.now();
@@ -1265,7 +1265,7 @@ The code above produces the following:
 
 A progress control provides feedback to the user that a long-running operation is underway. It can mean that the user cannot interact with the app when the progress indicator is visible, and can also indicate how long the wait time might be, depending on the indicator used.
 
-### Example
+### optimizer
 
 Creating a ProgressBar:
 
@@ -1297,9 +1297,9 @@ Both Indeterminate ProgressBar and Indeterminate ProgressRing is a courtesy of [
 
 ### Screenshots
 
-![](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/progress-bar-determinate-example.png)
-![](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/progress-bar-indeterminate-example.png)
-![](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/progress_ring_determinate_example.png)
+![](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/progress-bar-determinate-optimizer.png)
+![](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/progress-bar-indeterminate-optimizer.png)
+![](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/progress_ring_determinate_optimizer.png)
 
 ## Scrollbar
 
@@ -1311,7 +1311,7 @@ Depending on the situation, the scrollbar uses two different visualizations, sho
 
 > When the scrollbar is visible it is overlaid as 16px on top of the content inside your ScrollView. In order to ensure good UX design you will want to ensure that no interactive content is obscured by this overlay. Additionally if you would prefer not to have UX overlap, leave 16px of padding on the edge of the viewport to allow for the scrollbar.
 
-### Example
+### optimizer
 
 ```dart
 final _controller = ScrollController();
@@ -1341,7 +1341,7 @@ You can change the `isAlwaysVisible` property to either enable or disable the fa
 
 You can use a `ListTile` in a `ListView`.
 
-### Example
+### optimizer
 
 ```dart
 final people = {
@@ -1366,7 +1366,7 @@ ListView.builder(
 
 The code above produces the following:
 
-![Double Line Example](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/listitems/doublelineexample.png)
+![Double Line optimizer](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/listitems/doublelineoptimizer.png)
 
 If you want to create a tappable tile, use `TappableListTile` instead.
 
@@ -1400,7 +1400,7 @@ CheckboxListTile(
 
 You can use an `InfoHeader` to tell the user the purpose of something
 
-### Example
+### optimizer
 
 ```dart
 InfoHeader(
@@ -1432,7 +1432,7 @@ Widgets with focus on mobile. Based on the official documentation and source cod
 
 Bottom Sheet is used to display a modal list of menu items. They slide up over the main app content as a result of a user triggered action. [Learn more](https://developer.microsoft.com/pt-br/fluentui#/controls/android/bottomsheet)
 
-Here's an example of how to display a bottom sheet:
+Here's an optimizer of how to display a bottom sheet:
 
 ```dart
 showBottomSheet(
@@ -1458,7 +1458,7 @@ To close it, just call `Navigator.of(context).pop()`
 
 Chips are compact representations of entities (most commonly, people) that can be clicked, deleted, or dragged easily.
 
-Here's an example of how to create a chip:
+Here's an optimizer of how to create a chip:
 
 ```dart
 Chip(
@@ -1479,7 +1479,7 @@ Chip.selected(
 
 A Pill Button Bar is a horizontal scrollable list of pill-shaped text buttons in which only one button can be selected at a given time.
 
-Here's an example of how to create a pill button bar:
+Here's an optimizer of how to create a pill button bar:
 
 ```dart
 int index = 0;
@@ -1504,7 +1504,7 @@ PillButtonBar(
 
 Snackbars provide a brief message about an operation at the bottom of the screen. They can contain a custom action or view or use a style geared towards making special announcements to your users.
 
-Here's an example of how to display a snackbar at the bottom of the screen:
+Here's an optimizer of how to display a snackbar at the bottom of the screen:
 
 ```dart
 showSnackbar(
@@ -1515,7 +1515,7 @@ showSnackbar(
 );
 ```
 
-![Snackbar Example](https://static2.sharepointonline.com/files/fabric/fabric-website/images/controls/android/updated/img_snackbar_01_standard_dark.png?text=DarkMode)
+![Snackbar optimizer](https://static2.sharepointonline.com/files/fabric/fabric-website/images/controls/android/updated/img_snackbar_01_standard_dark.png?text=DarkMode)
 
 ---
 
@@ -1571,5 +1571,5 @@ Irrespective of order, thanks to all the people below for contributing with the 
 
 - [@HrX03](https://github.com/HrX03) for the `Acrylic`, `FluentIcons` generator and `_FluentTextSelectionControls` implementation.
 - [@raitonubero](https://github.com/raitonoberu) for `StickyNavigationIndicator`, `ProgressBar` and `ProgressRing`
-- [@alexmercerind](https://github.com/alexmercerind) for the [flutter_acrylic](https://github.com/alexmercerind/flutter_acrylic) plugin, used on the example app
-- [@bitsdojo](https://github.com/bitsdojo) for the [bitsdojo_window](https://github.com/bitsdojo/bitsdojo_window) plugin, used on the example app.
+- [@alexmercerind](https://github.com/alexmercerind) for the [flutter_acrylic](https://github.com/alexmercerind/flutter_acrylic) plugin, used on the optimizer app
+- [@bitsdojo](https://github.com/bitsdojo) for the [bitsdojo_window](https://github.com/bitsdojo/bitsdojo_window) plugin, used on the optimizer app.

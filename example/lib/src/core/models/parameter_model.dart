@@ -1,5 +1,5 @@
 //TODO: Add "" to incoming String for JSON EXPORT
-import 'package:example/src/core/utils/format_helper.dart';
+import 'package:optimizer/src/core/utils/format_helper.dart';
 
 class Parameter {
   Parameter({

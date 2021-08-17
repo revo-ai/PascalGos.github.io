@@ -17,7 +17,7 @@ const double kDefaultAcrylicAlpha = 0.8;
 /// You can apply acrylic to app surfaces to add depth and help
 /// establish a visual hierarchy.
 ///
-/// ![Acrylic Example](https://docs.microsoft.com/en-us/windows/uwp/design/style/images/acrylic_lighttheme_base.png)
+/// ![Acrylic optimizer](https://docs.microsoft.com/en-us/windows/uwp/design/style/images/acrylic_lighttheme_base.png)
 class Acrylic extends StatefulWidget {
   const Acrylic({
     Key? key,

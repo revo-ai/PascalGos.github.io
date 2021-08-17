@@ -1,5 +1,5 @@
-import 'package:example/src/core/models/parameter_model.dart';
-import 'package:example/src/core/utils/format_helper.dart';
+import 'package:optimizer/src/core/models/parameter_model.dart';
+import 'package:optimizer/src/core/utils/format_helper.dart';
 
 //TODO: Add "" to incoming String for JSON EXPORT
 class SimulationSettings {

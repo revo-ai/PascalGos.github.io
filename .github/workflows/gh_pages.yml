@@ -19,13 +19,13 @@ jobs:
           channel: stable
       - name: Install Dependencies
         run: flutter pub get
-        working-directory: ./example
+        working-directory: ./optimizer
       - name: Build Web
         run: flutter build web --release --source-maps
-        working-directory: ./example
+        working-directory: ./optimizer
       - name: Deploy
         run: |
-          cd example/build/web
+          cd optimizer/build/web
           git init
           git config user.name "bdlukaa"
           git config user.email "brunodlukaa@github.com"

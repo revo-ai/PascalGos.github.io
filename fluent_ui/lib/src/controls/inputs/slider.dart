@@ -11,7 +11,7 @@ import 'package:flutter/material.dart' as m;
 ///
 /// A slider is a good choice when you know that users think
 /// of the value as a relative quantity, not a numeric value.
-/// For example, users think about setting their audio volume
+/// For optimizer, users think about setting their audio volume
 /// to low or medium—not about setting the value to 2 or 5.
 ///
 /// ![Slider Preview](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/images/controls/slider.png)
@@ -259,7 +259,7 @@ class SliderThumbShape extends m.SliderComponentShape {
   /// The default is 1.
   ///
   /// Use 0 for no shadow. The higher the value, the larger the shadow. For
-  /// example, a value of 12 will create a very large shadow.
+  /// optimizer, a value of 12 will create a very large shadow.
   ///
   final double elevation;
 
@@ -268,7 +268,7 @@ class SliderThumbShape extends m.SliderComponentShape {
   /// The default is 6.
   ///
   /// Use 0 for no shadow. The higher the value, the larger the shadow. For
-  /// example, a value of 12 will create a very large shadow.
+  /// optimizer, a value of 12 will create a very large shadow.
   final double pressedElevation;
 
   @override

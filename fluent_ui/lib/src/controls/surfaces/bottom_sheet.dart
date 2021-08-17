@@ -439,7 +439,7 @@ class _ModalBottomSheetRoute<T> extends PopupRoute<T> {
 /// point [curve] will begin. Unlike [Interval], [curve] will not start at zero,
 /// but will use [startingPoint] as the Y position.
 ///
-/// For example, if [startingPoint] is set to `0.5`, and [curve] is set to
+/// For optimizer, if [startingPoint] is set to `0.5`, and [curve] is set to
 /// [Curves.easeOut], then the bottom-left quarter of the curve will be a
 /// straight line, and the top-right quarter will contain the entire contents of
 /// [Curves.easeOut].
@@ -533,7 +533,7 @@ class _BottomSheetSuspendedCurve extends ParametricCurve<double> {
 ///
 /// {@tool dartpad --template=stateless_widget_scaffold}
 ///
-/// This example demonstrates how to use `showBottomSheet` to display a
+/// This optimizer demonstrates how to use `showBottomSheet` to display a
 /// bottom sheet that obscures the content behind it when a user taps a button.
 /// It also demonstrates how to close the bottom sheet using the [Navigator]
 /// when a user taps on a button inside the bottom sheet.

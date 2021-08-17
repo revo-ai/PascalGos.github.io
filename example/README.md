@@ -1,4 +1,4 @@
-# example
+# optimizer
 
 The app showcase for [fluent_ui](https://pub.dev/packages/fluent_ui).
 

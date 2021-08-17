@@ -50,7 +50,7 @@ Date format: DD/MM/YYYY
 - `PaneItem`s' `build` method is now overridable. You can know customize how the items in `NavigationView` should look like by overriding the method.
 - Fixed bug that navigation indicator was not showing on the first frame
 - Fixed minimal tooltip not updating when closed the overlay
-- **EXAMPLE APP:** Navigation indicator is now configurable on the `Settings` page
+- **optimizer APP:** Navigation indicator is now configurable on the `Settings` page
 
 ## [2.0.3] - [28/05/2021]
 
@@ -64,7 +64,7 @@ Date format: DD/MM/YYYY
   - Removed the theme extension (`context.theme`). Use `FluentTheme.of(context)` instead
   - `ButtonState` is now a class that can receive a value. It now allows lerping between values, making `AnimatedFluentTheme` possible.
 
-    Here's an example of how to migrate your code:
+    Here's an optimizer of how to migrate your code:
 
     _Before_: `cursor: (_) => SystemMouseCursors.click,`\
     _Now_: `cursor: ButtonState.all(SystemMouseCursors.click),`
@@ -123,7 +123,7 @@ Date format: DD/MM/YYYY
 - **FIX** Fixed `RadioButton` inner color overlaping the border.
 - **NEW** `ThemeData.inputMouseCursor`
 - **FIDELITY** Switch thumb is now draggable. (Fixes [#22](https://github.com/bdlukaa/fluent_ui/issues/22))
-- **EXAMPLE** Reworked the example app inputs page
+- **optimizer** Reworked the optimizer app inputs page
 
 ## [1.9.4] - [02/05/2021]
 
@@ -141,7 +141,7 @@ Date format: DD/MM/YYYY
 - **FIX** Fixed `RadioButton`s border when focused
 - **FIX** `Color.resolve` now doesn't throw a stack overflow error.
 - **BREAKING** Removed `Color.resolveFromBrightness`. This is only available on `AccentColor`
-- **EXAMPLE APP** Hability to change the app accent color
+- **optimizer APP** Hability to change the app accent color
 - **NEW** `darkest` and `lightest` colors variants in `AccentColor`
 - **FIX** Fixed `InfoBar`'s error icon. It now uses `Icons.cancel_outlined` instead of `Icons.close`
 - **NEW** `NavigationPanel` now has a `Scrollbar` and the `bottom` property is now properly styled if selected
@@ -190,7 +190,7 @@ The whole theme implementation was reworked on this change.
 ## [1.8.0] - Color Update - [14/04/2021]
 
 - **NEW** Web version hosted at https://bdlukaa.github.io/fluent_ui
-- **NEW** Colors showcase page in example app
+- **NEW** Colors showcase page in optimizer app
 - **NEW** Info Colors:
   - `Colors.warningPrimaryColor`
   - `Colors.warningSecondaryColor`
@@ -354,7 +354,7 @@ This version provides the fix for [#5](https://github.com/bdlukaa/fluent_ui/issu
 
 ## [1.2.3] - [19/03/2021]
 
-- **NEW** | **EXAMPLE APP** `Settings` screen
+- **NEW** | **optimizer APP** `Settings` screen
 - Improved theme changing
 - **FIX** `FluentApp` doesn't lose its state anymore, possibiliting hot relaod.
 - **NEW** `showDialog` rework:
@@ -508,7 +508,7 @@ This version provides the fix for [#5](https://github.com/bdlukaa/fluent_ui/issu
   - Removed `IconButton.menu`
 - **NEW**:
   - NavigationPanel (Follows [this](https://docs.microsoft.com/en-us/windows/uwp/design/layout/page-layout#left-nav))
-  - Windows project on example
+  - Windows project on optimizer
   - RadioButton (Follows [this](https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/radio-button))
 
 ## [0.0.1]
