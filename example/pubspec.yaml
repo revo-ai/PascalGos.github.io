@@ -1,0 +1,54 @@
+name: example
+description: Showcase App for Fluent UI package for Flutter
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # fluent_ui:
+  #   git: https://github.com/bdlukaa/fluent_ui.git 
+
+  fluent_ui:
+   path: ../fluent_ui
+  provider: ^5.0.0
+  system_theme: ^1.0.1
+  bitsdojo_window: ^0.1.1+1
+  flutter_acrylic: ^0.0.1
+  pluto_grid: ^2.4.1
+  file_picker: ^3.0.4
+  hovering: ^1.0.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_native_splash: ^1.1.7+1
+  flutter_lints: ^1.0.0
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: SegoeUI
+      fonts:
+        - asset: assets/fonts/segoeui.ttf
+        - asset: assets/fonts/seguisb.ttf
+          weight: 600
+        - asset: assets/fonts/segoeuib.ttf
+          weight: 700
+        - asset: assets/fonts/segoeuisl.ttf
+          weight: 400
+        - asset: assets/fonts/segoeuil.ttf
+          weight: 300
+  assets:
+    - assets/revoAI_logo.png
+
+flutter_native_splash:
+  color: "#25315E"
+  image: web/assets/revoAI_splash.png
+  android: false
+  ios: false
