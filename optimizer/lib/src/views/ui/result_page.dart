@@ -84,8 +84,9 @@ class _ResultPageState extends State<ResultPage> {
                               child: material.LinearProgressIndicator(
                                 value: 100,
                                 minHeight: 20,
+                                color: FluentTheme.of(context).accentColor,
                                 backgroundColor:
-                                    Color.fromARGB(255, 216, 216, 216),
+                                    FluentTheme.of(context).shadowColor,
                               ),
                             ),
                           ),
@@ -146,6 +147,10 @@ class _ResultPageState extends State<ResultPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           FilledButton(
+                              style: ButtonStyle(
+                                shape: ButtonState.all(RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4))),
+                              ),
                               child: Text(
                                 "Start over",
                                 style: FluentTheme.of(context).typography.base,

@@ -51,7 +51,9 @@ class _TargetParamTableState extends State<TargetParamTable> {
         },
         border: TableBorder(
             bottom: BorderSide(
-                width: 1.5, color: Colors.black, style: BorderStyle.solid)),
+                width: 1.5,
+                color: FluentTheme.of(context).inactiveColor,
+                style: BorderStyle.solid)),
         children: [
           TableRow(children: [
             TableCell(child: Container(child: Text(''))),
@@ -102,14 +104,17 @@ class _TargetParamTableState extends State<TargetParamTable> {
                                           .contains(ButtonStates.hovering)) {
                                         return CircleBorder(
                                             side: BorderSide(
-                                                color: Colors.black, width: 1));
+                                                color: FluentTheme.of(context)
+                                                    .inactiveColor,
+                                                width: 1));
                                       }
                                     }),
                                     foregroundColor:
                                         ButtonState.resolveWith((states) {
                                       if (ButtonStates.values
                                           .contains(ButtonStates.hovering)) {
-                                        return Colors.black;
+                                        return FluentTheme.of(context)
+                                            .inactiveColor;
                                       }
                                       if (ButtonStates.values
                                           .contains(ButtonStates.none)) {
@@ -236,8 +241,13 @@ class _TargetParamTableState extends State<TargetParamTable> {
           ),
           Expanded(
             child: FilledButton(
+              style: ButtonStyle(
+                shape: ButtonState.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4))),
+              ),
               child: Row(
                 children: [
+                  //TODO: Change Color for FluentIcons
                   Icon(FluentIcons.add, color: Colors.white),
                   SizedBox(
                     width: 10,

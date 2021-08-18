@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' as material;
 import 'package:optimizer/src/core/models/parameter_model.dart';
 import 'package:optimizer/src/core/models/simulation_settings_model.dart';
 import 'package:optimizer/src/views/ui/input_param_table.dart';
@@ -5,6 +6,8 @@ import 'package:optimizer/src/views/ui/result_page.dart';
 import 'package:optimizer/src/views/ui/target_param_table.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+
+import 'add_cmconfig_dialog.dart';
 
 const Widget spacer = const SizedBox(height: 5.0);
 
@@ -19,17 +22,16 @@ class PreparationPage extends StatefulWidget {
 
 class _PreparationPageState extends State<PreparationPage> {
   bool disabled = false;
-
   bool value = false;
-
   double sliderValue = 5;
   double get max => 9;
 
   static const int numItems = 10;
   List<bool> selected = List<bool>.generate(numItems, (int index) => false);
 
-  final FlyoutController controller = FlyoutController();
   final ScrollController scrollController = ScrollController();
+
+  final FlyoutController flyoutController = FlyoutController();
 
   TextEditingController defaultStartingPoint_txt = TextEditingController();
   TextEditingController previousSettings_txt = TextEditingController();
@@ -39,8 +41,8 @@ class _PreparationPageState extends State<PreparationPage> {
 
   @override
   void dispose() {
-    controller.dispose();
-    scrollController.dispose();
+    // flyoutController.dispose();
+    //scrollController.dispose();
     super.dispose();
   }
 
@@ -49,41 +51,97 @@ class _PreparationPageState extends State<PreparationPage> {
     return ScaffoldPage(
         header: PageHeader(
           title: Text('Preparation'),
-          // commandBar:
-          // Row(
-          //   children: [
-          //     SizedBox(
-          //       height: 50.0,
-          //       child: SplitButtonBar(buttons: [
-          //         Button(
-          //           child: SizedBox(
-          //             height: 50.0,
-          //             child: Container(
-          //               color: disabled
-          //                   ? FluentTheme.of(context).accentColor.darker
-          //                   : FluentTheme.of(context).accentColor,
-          //               height: 24,
-          //               width: 24,
-          //             ),
-          //           ),
-          //           onPressed: () {},
-          //         ),
-          //         Button(
-          //           child: const SizedBox(
-          //             height: 50.0,
-          //             child: const Icon(FluentIcons.chevron_down, size: 14.0),
-          //           ),
-          //           onPressed: disabled ? null : () {},
-          //           style: ButtonStyle(
-          //               padding: ButtonState.all(EdgeInsets.all(6))),
-          //         ),
-          //       ]),
-          //     ),
-          //     SizedBox(
-          //       width: 10,
-          //     )
-          //   ],
-          // ),
+          commandBar: SizedBox(
+            height: 50.0,
+            child: SplitButtonBar(buttons: [
+              FilledButton(
+                style: ButtonStyle(
+                  shape: ButtonState.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4))),
+                ),
+                child: Text("Run"),
+                // child: SizedBox(
+                //   height: 50.0,
+                //   child: Container(
+                //     color: disabled
+                //         ? FluentTheme.of(context).accentColor.darker
+                //         : FluentTheme.of(context).accentColor,
+                //     height: 24,
+                //     width: 24,
+                //   ),
+                // ),
+                onPressed: () {
+                  List<Parameter> parameters = [];
+                  parameters.add(Parameter(
+                    key: "vparam1",
+                    bounds: [
+                      0,
+                      5,
+                    ],
+                    cm_File: "testRun",
+                    val_index: 3,
+                  ));
+                  SimulationSettings sim = new SimulationSettings(
+                      cmConfig: CMConfig(
+                          cmPath: 'test',
+                          cmProj: 'Test',
+                          cmTestrun: 'Test',
+                          tarQuantity: 'Test'),
+                      testParams: parameters,
+                      optConfig: OPTConfig(
+                          algos: Algos(
+                            boGpLibVersion: true,
+                            boRFLibVersion: true,
+                            cmaEs: true,
+                            customBo: true,
+                            deOptimizer: true,
+                            randomOPT: true,
+                          ),
+                          iterations: 5,
+                          time: 5));
+                  print(sim.toJson().toString());
+
+                  Navigator.pushNamed(context, 'generation');
+                },
+              ),
+              material.VerticalDivider(
+                indent: 20.0,
+                endIndent: 20.0,
+              ),
+              OutlinedButton(
+                  child: Text(
+                    "Save Settings",
+                  ),
+                  onPressed: () {}),
+              // Flyout(
+              //   controller: flyoutController,
+              //   contentWidth: 300,
+              //   verticalOffset: 20,
+              //   content: Padding(
+              //     padding: EdgeInsets.only(left: 27),
+              //     child: FlyoutContent(
+              //         padding: EdgeInsets.zero,
+              //         child: ListView(
+              //           shrinkWrap: true,
+              //           children: [
+              //             TappableListTile(
+              //               title: Text("Load previous Settings"),
+              //               onTap: () {},
+              //             ),
+              //             TappableListTile(
+              //               title: Text("Save current Settings"),
+              //               onTap: () {},
+              //             ),
+              //           ],
+              //         )),
+              //   ),
+              //   child: Button(
+              //     child: const Icon(FluentIcons.chevron_down, size: 14.0),
+              //     onPressed: () => flyoutController.open = true,
+              //   ),
+              // ),
+            ]),
+          ),
         ),
         content: ListView(
           padding: EdgeInsets.symmetric(
@@ -95,56 +153,95 @@ class _PreparationPageState extends State<PreparationPage> {
               style: FluentTheme.of(context).typography.subtitle,
             ),
             SizedBox(height: 10),
+            Text(
+                "Choose a default starting point as the basis of the simulation",
+                style: FluentTheme.of(context).typography.body),
+            SizedBox(height: 10),
             Row(
               children: [
                 Expanded(
-                  child: TextBox(
-                    header: 'Select Default Starting Point',
-                    placeholder: 'Select *',
-                    controller: defaultStartingPoint_txt,
-                    readOnly: true,
-                    maxLines: 1,
-                    suffixMode: OverlayVisibilityMode.always,
-                    suffix: IconButton(
-                        icon: Icon(FluentIcons.upload),
-                        onPressed: () async {
-                          print("Button clicked");
-                          var picked = await FilePicker.platform.pickFiles();
-                          if (picked != null) {
-                            defaultStartingPoint_txt.text =
-                                picked.files.first.name;
-                          }
-                        }),
+                  child: FilledButton(
+                    style: ButtonStyle(
+                      shape: ButtonState.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4))),
+                    ),
+                    child: Row(
+                      children: [
+                        //TODO: Change Color for FluentIcons
+                        Icon(FluentIcons.add_medium, color: Colors.white),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text("Select Default Starting Point",
+                            style: TextStyle(
+                              color: Colors.white,
+                            )),
+                      ],
+                    ),
+                    onPressed: () async {
+                      print("Select Default Starting Point pressed");
+                      var result = await showDialog(
+                        context: context,
+                        useRootNavigator: false,
+                        builder: (_) => AddCMConfigDialog(),
+                      ).then((value) {});
+                    },
                   ),
                 ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: TextBox(
-                    header: 'Load previous settings',
-                    placeholder: 'Select *',
-                    controller: previousSettings_txt,
-                    readOnly: true,
-                    maxLines: 1,
-                    suffixMode: OverlayVisibilityMode.always,
-                    suffix: IconButton(
-                        icon: Icon(FluentIcons.upload),
-                        onPressed: () async {
-                          print("Button clicked");
-                          var picked = await FilePicker.platform.pickFiles();
-                          if (picked != null) {
-                            previousSettings_txt.text = picked.files.first.name;
-                          }
-                        }),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Spacer(),
+                Spacer(flex: 2),
               ],
             ),
+            SizedBox(height: 10),
+            // Row(
+            //   children: [
+            // Expanded(
+            //   child: TextBox(
+            //     header: 'Select Default Starting Point',
+            //     placeholder: 'Select *',
+            //     controller: defaultStartingPoint_txt,
+            //     readOnly: true,
+            //     maxLines: 1,
+            //     suffixMode: OverlayVisibilityMode.always,
+            //     suffix: IconButton(
+            //         icon: Icon(FluentIcons.upload),
+            //         onPressed: () async {
+            //           print("Button clicked");
+            //           var picked = await FilePicker.platform.pickFiles();
+            //           if (picked != null) {
+            //             defaultStartingPoint_txt.text =
+            //                 picked.files.first.name;
+            //           }
+            //         }),
+            //   ),
+            //     ),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Expanded(
+            //       child: TextBox(
+            //         header: 'Load previous settings',
+            //         placeholder: 'Select *',
+            //         controller: previousSettings_txt,
+            //         readOnly: true,
+            //         maxLines: 1,
+            //         suffixMode: OverlayVisibilityMode.always,
+            //         suffix: IconButton(
+            //             icon: Icon(FluentIcons.upload),
+            //             onPressed: () async {
+            //               print("Button clicked");
+            //               var picked = await FilePicker.platform.pickFiles();
+            //               if (picked != null) {
+            //                 previousSettings_txt.text = picked.files.first.name;
+            //               }
+            //             }),
+            //       ),
+            //     ),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Spacer(),
+            //   ],
+            // ),
             SizedBox(height: 30),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,65 +350,67 @@ class _PreparationPageState extends State<PreparationPage> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FilledButton(
-                    child: Text(
-                      "Run",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                      //style: FluentTheme.of(context).typography.base,
-                    ),
-                    onPressed: () {
-                      //TODO: Initialize/Print Settings toJSON
-                      List<Parameter> parameters = [];
-                      parameters.add(Parameter(
-                        key: "vparam1",
-                        bounds: [
-                          0,
-                          5,
-                        ],
-                        cm_File: "testRun",
-                        val_index: 3,
-                      ));
-                      SimulationSettings sim = new SimulationSettings(
-                          cmConfig: CMConfig(
-                              cmPath: 'test',
-                              cmProj: 'Test',
-                              cmTestrun: 'Test',
-                              tarQuantity: 'Test'),
-                          testParams: parameters,
-                          optConfig: OPTConfig(
-                              algos: Algos(
-                                boGpLibVersion: true,
-                                boRFLibVersion: true,
-                                cmaEs: true,
-                                customBo: true,
-                                deOptimizer: true,
-                                randomOPT: true,
-                              ),
-                              iterations: 5,
-                              time: 5));
-                      print(sim.toJson().toString());
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     FilledButton(
+            //         style: ButtonStyle(
+            //           shape: ButtonState.all(RoundedRectangleBorder(
+            //               borderRadius: BorderRadius.circular(4))),
+            //         ),
+            //         child: Text(
+            //           "Run",
+            //           style: TextStyle(),
+            //           //style: FluentTheme.of(context).typography.base,
+            //         ),
+            //         onPressed: () {
+            //           //TODO: Initialize/Print Settings toJSON
+            //           List<Parameter> parameters = [];
+            //           parameters.add(Parameter(
+            //             key: "vparam1",
+            //             bounds: [
+            //               0,
+            //               5,
+            //             ],
+            //             cm_File: "testRun",
+            //             val_index: 3,
+            //           ));
+            //           SimulationSettings sim = new SimulationSettings(
+            //               cmConfig: CMConfig(
+            //                   cmPath: 'test',
+            //                   cmProj: 'Test',
+            //                   cmTestrun: 'Test',
+            //                   tarQuantity: 'Test'),
+            //               testParams: parameters,
+            //               optConfig: OPTConfig(
+            //                   algos: Algos(
+            //                     boGpLibVersion: true,
+            //                     boRFLibVersion: true,
+            //                     cmaEs: true,
+            //                     customBo: true,
+            //                     deOptimizer: true,
+            //                     randomOPT: true,
+            //                   ),
+            //                   iterations: 5,
+            //                   time: 5));
+            //           print(sim.toJson().toString());
 
-                      Navigator.pushNamed(context, 'generation');
-                    }),
-                SizedBox(
-                  width: 10,
-                ),
-                OutlinedButton(
-                    child: Text(
-                      "Save Settings",
-                      style: FluentTheme.of(context).typography.caption,
-                    ),
-                    onPressed: () {}),
-                SizedBox(
-                  width: 100,
-                )
-              ],
-            ),
+            //           Navigator.pushNamed(context, 'generation');
+            //         }),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     OutlinedButton(
+            //         child: Text(
+            //           "Save Settings",
+            //           style: FluentTheme.of(context).typography.caption,
+            //         ),
+            //         onPressed: () {}),
+            //     SizedBox(
+            //       width: 100,
+            //     )
+            //   ],
+            // ),
           ],
         ));
   }

@@ -37,7 +37,9 @@ class _InputParamTableState extends State<InputParamTable> {
         },
         border: TableBorder(
             bottom: BorderSide(
-                width: 1.5, color: Colors.black, style: BorderStyle.solid)),
+                width: 1.5,
+                color: FluentTheme.of(context).inactiveColor,
+                style: BorderStyle.solid)),
         children: [
           TableRow(children: [
             TableCell(child: Container(child: Text(''))),
@@ -63,7 +65,7 @@ class _InputParamTableState extends State<InputParamTable> {
                   border: TableBorder(
                       bottom: BorderSide(
                           width: 1,
-                          color: Colors.grey,
+                          color: FluentTheme.of(context).inactiveColor,
                           style: BorderStyle.solid)),
                   defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   children: [
@@ -88,14 +90,17 @@ class _InputParamTableState extends State<InputParamTable> {
                                           .contains(ButtonStates.hovering)) {
                                         return CircleBorder(
                                             side: BorderSide(
-                                                color: Colors.black, width: 1));
+                                                color: FluentTheme.of(context)
+                                                    .inactiveColor,
+                                                width: 1));
                                       }
                                     }),
                                     foregroundColor:
                                         ButtonState.resolveWith((states) {
                                       if (ButtonStates.values
                                           .contains(ButtonStates.hovering)) {
-                                        return Colors.black;
+                                        return FluentTheme.of(context)
+                                            .inactiveColor;
                                       }
                                       if (ButtonStates.values
                                           .contains(ButtonStates.none)) {
@@ -103,7 +108,7 @@ class _InputParamTableState extends State<InputParamTable> {
                                       }
                                       if (ButtonStates.values
                                           .contains(ButtonStates.pressing)) {
-                                        return Colors.red;
+                                        return Colors.warningPrimaryColor;
                                       }
                                     }),
                                     backgroundColor:
@@ -142,7 +147,7 @@ class _InputParamTableState extends State<InputParamTable> {
                   border: TableBorder(
                       bottom: BorderSide(
                           width: 1,
-                          color: Colors.grey,
+                          color: FluentTheme.of(context).inactiveColor,
                           style: BorderStyle.solid)),
                   defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   children: [
@@ -180,7 +185,7 @@ class _InputParamTableState extends State<InputParamTable> {
                                   }
                                   if (ButtonStates.values
                                       .contains(ButtonStates.pressing)) {
-                                    return Colors.red;
+                                    return Colors.warningPrimaryColor;
                                   }
                                 }),
                                 backgroundColor:
@@ -222,8 +227,13 @@ class _InputParamTableState extends State<InputParamTable> {
           ),
           Expanded(
             child: FilledButton(
+              style: ButtonStyle(
+                shape: ButtonState.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4))),
+              ),
               child: Row(
                 children: [
+                  //TODO: Make Color to Theme color
                   Icon(FluentIcons.add, color: Colors.white),
                   SizedBox(
                     width: 10,

@@ -8,16 +8,28 @@ enum NavigationIndicators { sticky, end }
 class AppTheme extends ChangeNotifier {
   String _fontFamily = 'SegoeUI';
   String get fontFamily => _fontFamily;
-  //AccentColor _color = systemAccentColor;
-  //AccentColor _color = Colors.accentColors[2];
-  // AccentColor _color = Color.fromARGB(255, 18, 246, 221);
-  AccentColor _color = Colors.blue;
-  AccentColor get color => _color;
+  AccentColor _accColor = systemAccentColor;
+  AccentColor get accColor => _accColor;
+  Color _actColor = Colors.black;
+  Color get actColor => _actColor;
+  Color _inactColor = Colors.black;
+  Color get inactColor => _inactColor;
+  Color _inactBgColor = Colors.black;
+  Color get inactBgColor => _inactBgColor;
+  Color _disabledColor = Colors.black;
+  Color get disabledColor => _disabledColor;
+  Color _shadowColor = Colors.black;
+  Color get shadowColor => _shadowColor;
+  Color _scaffBgColor = Colors.black;
+  Color get scaffBgColor => _scaffBgColor;
+  Color _acrylicBgColor = Colors.black;
+  Color get acrylicBgColor => _acrylicBgColor;
+
   Color _mica_bg_color = Color.fromARGB(255, 51, 51, 51);
   Color get mica_bg_color => _mica_bg_color;
 
-  set color(AccentColor color) {
-    _color = color;
+  set accColor(AccentColor color) {
+    _accColor = color;
     notifyListeners();
   }
 

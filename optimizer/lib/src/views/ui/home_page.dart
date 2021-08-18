@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
             //   size: 100,
             // ),
             Text(
-              "Optimizer",
+              "Explorer",
               style: TextStyle(
                   //color: Colors.white,
                   fontSize: 24,

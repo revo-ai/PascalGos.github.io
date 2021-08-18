@@ -170,7 +170,7 @@ class SettingsPage extends StatelessWidget {
       padding: const EdgeInsets.all(2.0),
       child: Button(
         onPressed: () {
-          appTheme.color = color;
+          appTheme.accColor = color;
         },
         style: ButtonStyle(padding: ButtonState.all(EdgeInsets.zero)),
         child: Container(
@@ -178,7 +178,7 @@ class SettingsPage extends StatelessWidget {
           width: 40,
           color: color,
           alignment: Alignment.center,
-          child: appTheme.color == color
+          child: appTheme.accColor == color
               ? Icon(
                   FluentIcons.check_mark,
                   color: color.basedOnLuminance(),

@@ -16,14 +16,6 @@ class App extends StatelessWidget {
 
   final navigatorKey = GlobalKey<NavigatorState>();
 
-  // final pagesRouteFactories = {
-  //   "/": () => FluentPageRoute(builder: (context) => HomeView()),
-  //   "preparation": () =>
-  //       FluentPageRoute(builder: (context) => PreparationPage()),
-  //   "generation": () => FluentPageRoute(builder: (context) => SimulationPage()),
-  //   "settings": () => FluentPageRoute(builder: (context) => SettingsPage()),
-  // };
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -46,9 +38,15 @@ class App extends StatelessWidget {
             'settings': (_) => SettingsPage(),
           },
           theme: ThemeData(
-            fontFamily: appTheme.fontFamily,
-            accentColor: appTheme.color,
-            //micaBackgroundColor: appTheme.mica_bg_color,
+            accentColor: appTheme.accColor,
+            // activeColor: appTheme.actColor,
+            // inactiveColor: appTheme.inactColor,
+            // inactiveBackgroundColor: appTheme.inactBgColor,
+            // disabledColor: appTheme.disabledColor,
+            // shadowColor: appTheme.shadowColor,
+            // scaffoldBackgroundColor: appTheme.scaffBgColor,
+            // acrylicBackgroundColor: appTheme.acrylicBgColor,
+            // micaBackgroundColor: appTheme.mica_bg_color,
             brightness: appTheme.mode == ThemeMode.system
                 ? darkMode
                     ? Brightness.dark
@@ -57,6 +55,7 @@ class App extends StatelessWidget {
                     ? Brightness.dark
                     : Brightness.light,
             visualDensity: VisualDensity.standard,
+            fontFamily: appTheme.fontFamily,
             focusTheme: FocusThemeData(
               glowFactor: is10footScreen() ? 2.0 : 0.0,
             ),

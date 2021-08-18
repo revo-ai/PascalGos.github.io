@@ -103,8 +103,9 @@ class _SimulationPageState extends State<SimulationPage> {
                               child: material.LinearProgressIndicator(
                                 value: percent / 100,
                                 minHeight: 20,
+                                color: FluentTheme.of(context).accentColor,
                                 backgroundColor:
-                                    Color.fromARGB(255, 216, 216, 216),
+                                    FluentTheme.of(context).shadowColor,
                               ),
                             ),
                           ),
