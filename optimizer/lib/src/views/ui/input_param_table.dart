@@ -2,229 +2,42 @@ import 'package:optimizer/src/core/models/parameter_model.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:hovering/hovering.dart';
 
+import 'add_inparam_dialog.dart';
+
+typedef void ParameterCallback(List<InputParameter> params);
+
 class InputParamTable extends StatefulWidget {
-  const InputParamTable({Key? key}) : super(key: key);
+  final ParameterCallback callback;
+  final List<InputParameter> parameters;
+  const InputParamTable(
+      {Key? key, required this.parameters, required this.callback})
+      : super(key: key);
 
   @override
   _InputParamTableState createState() => _InputParamTableState();
 }
 
 class _InputParamTableState extends State<InputParamTable> {
-  List<String> litems = [
-    "vParameter",
-    "vParameter2",
-    "vParameter3",
-    "vParameter"
-  ];
-  List<String> lbounds = ["[0,5]", "[2,5]", "[2,5]", "[4,5]"];
-  double parameterRowHeight = 30;
+  late InputParameter _inputParam;
+  set targetParameter(InputParameter value) =>
+      setState(() => _inputParam = value);
 
-  List<Parameter> parameters = [];
+  double parameterRowHeight = 30;
 
   TextEditingController cmFileTextController = TextEditingController();
   TextEditingController parameterKeyController = TextEditingController();
   TextEditingController boundsStartController = TextEditingController();
   TextEditingController boundsEndController = TextEditingController();
 
+  String errorCMFile = "";
+  String errorParameterKey = "";
+  String errorBounds = "";
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Table(
-        columnWidths: {
-          0: FlexColumnWidth(2),
-          1: FlexColumnWidth(6),
-          2: FlexColumnWidth(3),
-        },
-        border: TableBorder(
-            bottom: BorderSide(
-                width: 1.5,
-                color: FluentTheme.of(context).inactiveColor,
-                style: BorderStyle.solid)),
-        children: [
-          TableRow(children: [
-            TableCell(child: Container(child: Text(''))),
-            TableCell(child: Container(child: Text('Key'))),
-            TableCell(child: Container(child: Text('Bounds'))),
-          ]),
-        ],
-      ),
-      Container(
-        constraints: BoxConstraints(
-            minHeight: parameterRowHeight, maxHeight: parameterRowHeight * 6),
-        child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: parameters.length,
-            itemBuilder: (BuildContext ctxt, int index) {
-              return HoverWidget(
-                hoverChild: Table(
-                  columnWidths: {
-                    0: FlexColumnWidth(2),
-                    1: FlexColumnWidth(6),
-                    2: FlexColumnWidth(3),
-                  },
-                  border: TableBorder(
-                      bottom: BorderSide(
-                          width: 1,
-                          color: FluentTheme.of(context).inactiveColor,
-                          style: BorderStyle.solid)),
-                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  children: [
-                    TableRow(
-                        decoration:
-                            BoxDecoration(color: Colors.successSecondaryColor),
-                        children: [
-                          TableCell(
-                            child: Center(
-                              child: Container(
-                                child: IconButton(
-                                  onPressed: () {
-                                    print("IconButton pressed!");
-                                    setState(() {
-                                      parameters.remove(parameters[index]);
-                                    });
-                                  },
-                                  icon: Icon(FluentIcons.delete, size: 14.0),
-                                  style: ButtonStyle(
-                                    shape: ButtonState.resolveWith((states) {
-                                      if (ButtonStates.values
-                                          .contains(ButtonStates.hovering)) {
-                                        return CircleBorder(
-                                            side: BorderSide(
-                                                color: FluentTheme.of(context)
-                                                    .inactiveColor,
-                                                width: 1));
-                                      }
-                                    }),
-                                    foregroundColor:
-                                        ButtonState.resolveWith((states) {
-                                      if (ButtonStates.values
-                                          .contains(ButtonStates.hovering)) {
-                                        return FluentTheme.of(context)
-                                            .inactiveColor;
-                                      }
-                                      if (ButtonStates.values
-                                          .contains(ButtonStates.none)) {
-                                        return Colors.transparent;
-                                      }
-                                      if (ButtonStates.values
-                                          .contains(ButtonStates.pressing)) {
-                                        return Colors.warningPrimaryColor;
-                                      }
-                                    }),
-                                    backgroundColor:
-                                        ButtonState.resolveWith((states) {
-                                      if (ButtonStates.values
-                                          .contains(ButtonStates.hovering)) {
-                                        return Colors.transparent;
-                                      }
-                                    }),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                              child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  height: parameterRowHeight,
-                                  child: Text(parameters[index].key))),
-                          TableCell(
-                              child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  height: parameterRowHeight,
-                                  child: Text(
-                                      parameters[index].bounds.toString()))),
-                        ]),
-                  ],
-                ),
-                onHover: (event) {},
-                child: Table(
-                  columnWidths: {
-                    0: FlexColumnWidth(2),
-                    1: FlexColumnWidth(6),
-                    2: FlexColumnWidth(3),
-                  },
-                  border: TableBorder(
-                      bottom: BorderSide(
-                          width: 1,
-                          color: FluentTheme.of(context).inactiveColor,
-                          style: BorderStyle.solid)),
-                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  children: [
-                    TableRow(children: [
-                      TableCell(
-                        child: Center(
-                          child: Container(
-                            child: IconButton(
-                              onPressed: () {
-                                print("IconButton pressed!");
-                                setState(() {
-                                  parameters.remove(parameters[index]);
-                                });
-                              },
-                              icon: Icon(FluentIcons.delete, size: 14.0),
-                              style: ButtonStyle(
-                                shape: ButtonState.resolveWith((states) {
-                                  if (ButtonStates.values
-                                      .contains(ButtonStates.hovering)) {
-                                    return CircleBorder(
-                                        side: BorderSide(
-                                            color: Colors.transparent,
-                                            width: 1));
-                                  }
-                                }),
-                                foregroundColor:
-                                    ButtonState.resolveWith((states) {
-                                  if (ButtonStates.values
-                                      .contains(ButtonStates.hovering)) {
-                                    return Colors.transparent;
-                                  }
-                                  if (ButtonStates.values
-                                      .contains(ButtonStates.none)) {
-                                    return Colors.transparent;
-                                  }
-                                  if (ButtonStates.values
-                                      .contains(ButtonStates.pressing)) {
-                                    return Colors.warningPrimaryColor;
-                                  }
-                                }),
-                                backgroundColor:
-                                    ButtonState.resolveWith((states) {
-                                  if (ButtonStates.values
-                                      .contains(ButtonStates.hovering)) {
-                                    return Colors.transparent;
-                                  }
-                                }),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                          child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: parameterRowHeight,
-                              child: Text(parameters[index].key))),
-                      TableCell(
-                          child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: parameterRowHeight,
-                              child:
-                                  Text(parameters[index].bounds.toString()))),
-                    ]),
-                  ],
-                ),
-              );
-            }),
-      ),
-      SizedBox(
-        height: 10,
-      ),
       Row(
         children: [
-          Spacer(
-            flex: 1,
-          ),
           Expanded(
             child: FilledButton(
               style: ButtonStyle(
@@ -244,98 +57,321 @@ class _InputParamTableState extends State<InputParamTable> {
                       )),
                 ],
               ),
-              onPressed: () {
-                print("Add parameter pressed");
-                showDialog(
-                  context: context,
-                  useRootNavigator: false,
-                  builder: (_) => ContentDialog(
-                    title: Text('Add new parameter'),
-                    content: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Please enter the relevant information',
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextBox(
-                            header: 'Enter CM-File',
-                            placeholder: 'Type here...',
-                            controller: cmFileTextController,
-                            maxLines: 1,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextBox(
-                            header: 'Enter Parameter Key',
-                            placeholder: 'Type here...',
-                            controller: parameterKeyController,
-                            maxLines: 1,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text("Bounds"),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextBox(
-                                  placeholder: 'Type here...',
-                                  controller: boundsStartController,
-                                  maxLines: 1,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: TextBox(
-                                  placeholder: 'Type here...',
-                                  controller: boundsEndController,
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ],
-                          )
-                        ]),
-                    actions: [
-                      Button(
-                        child: Text('Add'),
-                        onPressed: () {
-                          setState(() {
-                            if (parameters.length < 6) {
-                              parameters.add(Parameter(
-                                key: parameterKeyController.text,
-                                bounds: [
-                                  double.parse(boundsStartController.text),
-                                  double.parse(boundsEndController.text)
-                                ],
-                                cm_File: cmFileTextController.text,
-                                //TODO: iterate index
-                                val_index: 3,
-                              ));
-                              // TODO: Set State, when come back
-                              Navigator.of(context).pop();
-                            }
-                          });
-                        },
-                      ),
-                      Button(
-                        child: Text('Cancel'),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                    ],
-                  ),
-                );
+              onPressed: () async {
+                if (this.widget.parameters.length < 6) {
+                  var result = await showDialog(
+                    context: context,
+                    useRootNavigator: false,
+                    builder: (_) => AddInParamDialog(
+                        callback: (val) => setState(() => _inputParam = val)),
+                  ).then((_) {
+                    if (_inputParam != null && _inputParam is InputParameter) {
+                      setState(() {
+                        this.widget.parameters.add(_inputParam);
+                        widget.callback(this.widget.parameters);
+                      });
+                    }
+                  });
+                }
               },
             ),
           ),
+          Spacer(
+            flex: 1,
+          ),
         ],
       ),
+      SizedBox(
+        height: 10,
+      ),
+      Table(
+        columnWidths: {
+          0: FlexColumnWidth(2),
+          1: FlexColumnWidth(6),
+          2: FlexColumnWidth(3),
+          3: FlexColumnWidth(3),
+        },
+        border: TableBorder(
+            bottom: BorderSide(
+                width: 1.5,
+                color: FluentTheme.of(context).inactiveColor,
+                style: BorderStyle.solid)),
+        children: [
+          TableRow(children: [
+            TableCell(child: Container(child: Text(''))),
+            TableCell(child: Container(child: Text('Key'))),
+            TableCell(child: Container(child: Text('CMFile'))),
+            TableCell(child: Container(child: Text('Bounds'))),
+          ]),
+        ],
+      ),
+      Container(
+        constraints: BoxConstraints(
+            minHeight: parameterRowHeight * 6,
+            maxHeight: parameterRowHeight * 6),
+        child: Column(children: [
+          EmptyParameterListReminder(
+              paramListIsEmpty: this.widget.parameters.isEmpty),
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: this.widget.parameters.length,
+              itemBuilder: (BuildContext ctxt, int index) {
+                return HoverWidget(
+                  hoverChild: Table(
+                    columnWidths: {
+                      0: FlexColumnWidth(2),
+                      1: FlexColumnWidth(6),
+                      2: FlexColumnWidth(3),
+                      3: FlexColumnWidth(3),
+                    },
+                    border: TableBorder(
+                        bottom: BorderSide(
+                            width: 1,
+                            color: FluentTheme.of(context).inactiveColor,
+                            style: BorderStyle.solid)),
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    children: [
+                      TableRow(
+                          decoration: BoxDecoration(
+                              color: Colors.successSecondaryColor),
+                          children: [
+                            TableCell(
+                              child: Center(
+                                child: Container(
+                                  child: IconButton(
+                                    onPressed: () {
+                                      print("IconButton pressed!");
+                                      widget.callback(this.widget.parameters);
+                                      setState(() {
+                                        this.widget.parameters.remove(
+                                            this.widget.parameters[index]);
+                                      });
+                                    },
+                                    icon: Icon(FluentIcons.delete, size: 14.0),
+                                    style: ButtonStyle(
+                                      shape: ButtonState.resolveWith((states) {
+                                        if (ButtonStates.values
+                                            .contains(ButtonStates.hovering)) {
+                                          return CircleBorder(
+                                              side: BorderSide(
+                                                  color: FluentTheme.of(context)
+                                                      .inactiveColor,
+                                                  width: 1));
+                                        }
+                                      }),
+                                      foregroundColor:
+                                          ButtonState.resolveWith((states) {
+                                        if (ButtonStates.values
+                                            .contains(ButtonStates.hovering)) {
+                                          return FluentTheme.of(context)
+                                              .inactiveColor;
+                                        }
+                                        if (ButtonStates.values
+                                            .contains(ButtonStates.none)) {
+                                          return Colors.transparent;
+                                        }
+                                        if (ButtonStates.values
+                                            .contains(ButtonStates.pressing)) {
+                                          return Colors.warningPrimaryColor;
+                                        }
+                                      }),
+                                      backgroundColor:
+                                          ButtonState.resolveWith((states) {
+                                        if (ButtonStates.values
+                                            .contains(ButtonStates.hovering)) {
+                                          return Colors.transparent;
+                                        }
+                                      }),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            TableCell(
+                                child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    height: parameterRowHeight,
+                                    child: Text(
+                                        this.widget.parameters[index].key))),
+                            TableCell(
+                                child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    height: parameterRowHeight,
+                                    child: Text(this
+                                        .widget
+                                        .parameters[index]
+                                        .cm_File))),
+                            TableCell(
+                                child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    height: parameterRowHeight,
+                                    child: Text(this
+                                        .widget
+                                        .parameters[index]
+                                        .bounds
+                                        .toString()))),
+                          ]),
+                    ],
+                  ),
+                  onHover: (event) {},
+                  child: Table(
+                    columnWidths: {
+                      0: FlexColumnWidth(2),
+                      1: FlexColumnWidth(6),
+                      2: FlexColumnWidth(3),
+                      3: FlexColumnWidth(3),
+                    },
+                    border: TableBorder(
+                        bottom: BorderSide(
+                            width: 1,
+                            color: FluentTheme.of(context).inactiveColor,
+                            style: BorderStyle.solid)),
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    children: [
+                      TableRow(children: [
+                        TableCell(
+                          child: Center(
+                            child: Container(
+                              child: IconButton(
+                                onPressed: () {
+                                  widget.callback(this.widget.parameters);
+                                  print("IconButton pressed!");
+                                  setState(() {
+                                    this
+                                        .widget
+                                        .parameters
+                                        .remove(this.widget.parameters[index]);
+                                  });
+                                },
+                                icon: Icon(FluentIcons.delete, size: 14.0),
+                                style: ButtonStyle(
+                                  shape: ButtonState.resolveWith((states) {
+                                    if (ButtonStates.values
+                                        .contains(ButtonStates.hovering)) {
+                                      return CircleBorder(
+                                          side: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 1));
+                                    }
+                                  }),
+                                  foregroundColor:
+                                      ButtonState.resolveWith((states) {
+                                    if (ButtonStates.values
+                                        .contains(ButtonStates.hovering)) {
+                                      return Colors.transparent;
+                                    }
+                                    if (ButtonStates.values
+                                        .contains(ButtonStates.none)) {
+                                      return Colors.transparent;
+                                    }
+                                    if (ButtonStates.values
+                                        .contains(ButtonStates.pressing)) {
+                                      return Colors.warningPrimaryColor;
+                                    }
+                                  }),
+                                  backgroundColor:
+                                      ButtonState.resolveWith((states) {
+                                    if (ButtonStates.values
+                                        .contains(ButtonStates.hovering)) {
+                                      return Colors.transparent;
+                                    }
+                                  }),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                            child: Container(
+                                alignment: Alignment.centerLeft,
+                                height: parameterRowHeight,
+                                child:
+                                    Text(this.widget.parameters[index].key))),
+                        TableCell(
+                            child: Container(
+                                alignment: Alignment.centerLeft,
+                                height: parameterRowHeight,
+                                child: Text(
+                                    this.widget.parameters[index].cm_File))),
+                        TableCell(
+                            child: Container(
+                                alignment: Alignment.centerLeft,
+                                height: parameterRowHeight,
+                                child: Text(this
+                                    .widget
+                                    .parameters[index]
+                                    .bounds
+                                    .toString()))),
+                      ]),
+                    ],
+                  ),
+                );
+              }),
+        ]),
+      ),
     ]);
-  } // build
+  }
 
+  String validateCMFile(String value) {
+    if (value == "") {
+      return "Please provide a filename";
+    } else
+      return "";
+  }
+
+  String validateParameterKey(String value) {
+    if (value == "") {
+      return "Please provide a file";
+    } else
+      return "";
+  }
+
+  String validateBounds(String value1, String value2) {
+    if ((value1 == "") || (value2 == "")) {
+      return "Please provide both bounds";
+    } else if (double.tryParse(value1) != null ||
+        double.tryParse(value2) != null) {
+      return "Please use a numeric value";
+    } else
+      return "";
+  }
+
+  bool validateForm(
+    String value1,
+    String value2,
+    String value3,
+  ) {
+    if (value1 == "" && value2 == "" && value3 == "") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // build
+
+}
+
+class EmptyParameterListReminder extends StatefulWidget {
+  final bool paramListIsEmpty;
+  const EmptyParameterListReminder({Key? key, required this.paramListIsEmpty})
+      : super(key: key);
+
+  @override
+  EmptyParameterListReminderState createState() =>
+      EmptyParameterListReminderState();
+}
+
+class EmptyParameterListReminderState
+    extends State<EmptyParameterListReminder> {
+  @override
+  Widget build(BuildContext context) {
+    if (widget.paramListIsEmpty) {
+      return Center(
+          heightFactor: 6.0,
+          child: Text("- Your parameter list is empty - ",
+              style: FluentTheme.of(context).typography.subtitle));
+    } else
+      return Container();
+  }
 }

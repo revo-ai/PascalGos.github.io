@@ -7,7 +7,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:provider/provider.dart';
 
-const String appTitle = 'Fluent UI Showcase for Flutter';
+const String appTitle = 'RevoAI Explorer';
 
 late bool darkMode;
 

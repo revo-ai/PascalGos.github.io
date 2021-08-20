@@ -122,7 +122,7 @@ class _PreparationPageState extends State<PreparationPage> {
                         style: FluentTheme.of(context).typography.subtitle,
                       ),
                       SizedBox(height: 10),
-                      InputParamTable(),
+                      //InputParamTable(),
                       SizedBox(
                         height: 10,
                       ),
