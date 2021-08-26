@@ -44,6 +44,7 @@ class _PreparationPageState extends State<PreparationPage> {
       setState(() => _targetParameters = value);
 
   final FlyoutController flyoutController = FlyoutController();
+  final ScrollController scrollController = ScrollController();
   TextEditingController simulationParameterController = TextEditingController();
 
   String simulationTextPlaceholder = "Set Run-Time";
@@ -275,355 +276,360 @@ class _PreparationPageState extends State<PreparationPage> {
           ]),
         ),
       ),
-      content: ListView(
-          padding: EdgeInsets.symmetric(
-            horizontal: PageHeader.horizontalPadding(context),
-          ),
-          children: <Widget>[
-            Text(
-              'Starting Point',
-              style: FluentTheme.of(context).typography.subheader,
+      content: Scrollbar(
+        controller: scrollController,
+        child: ListView(
+            padding: EdgeInsets.symmetric(
+              horizontal: PageHeader.horizontalPadding(context),
             ),
-            SizedBox(height: 10),
-            Text(
-                "Choose a default starting point as the basis of the simulation",
-                style: FluentTheme.of(context).typography.body),
-            SizedBox(height: 10),
-            Row(
-              children: [
+            children: <Widget>[
+              Text(
+                'Starting Point',
+                style: FluentTheme.of(context).typography.subheader,
+              ),
+              SizedBox(height: 10),
+              Text(
+                  "Choose a default starting point as the basis of the simulation",
+                  style: FluentTheme.of(context).typography.body),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: swapWidget,
+                  ),
+                  Spacer(flex: 2),
+                ],
+              ),
+              Text(
+                errorCMConfig,
+                style: TextStyle(
+                  color: Colors.errorPrimaryColor,
+                  fontSize:
+                      FluentTheme.of(context).typography.caption!.fontSize,
+                  fontWeight:
+                      FluentTheme.of(context).typography.caption!.fontWeight,
+                ),
+              ),
+              SizedBox(height: 50),
+              Text(
+                'Parameters',
+                style: FluentTheme.of(context).typography.subheader,
+              ),
+              SizedBox(height: 10),
+              Row(children: [
                 Expanded(
-                  flex: 1,
-                  child: swapWidget,
-                ),
-                Spacer(flex: 2),
-              ],
-            ),
-            Text(
-              errorCMConfig,
-              style: TextStyle(
-                color: Colors.errorPrimaryColor,
-                fontSize: FluentTheme.of(context).typography.caption!.fontSize,
-                fontWeight:
-                    FluentTheme.of(context).typography.caption!.fontWeight,
-              ),
-            ),
-            SizedBox(height: 50),
-            Text(
-              'Parameters',
-              style: FluentTheme.of(context).typography.subheader,
-            ),
-            SizedBox(height: 10),
-            Row(children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Input Parameter',
-                      style: FluentTheme.of(context).typography.subtitle,
-                    ),
-                    Text(
-                      errorInputParameters,
-                      style: TextStyle(
-                        color: Colors.errorPrimaryColor,
-                        fontSize: FluentTheme.of(context)
-                            .typography
-                            .caption!
-                            .fontSize,
-                        fontWeight: FluentTheme.of(context)
-                            .typography
-                            .caption!
-                            .fontWeight,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Input Parameter',
+                        style: FluentTheme.of(context).typography.subtitle,
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    InputParamTable(
-                        parameters: _inputParameters,
-                        callback: (val) =>
-                            setState(() => _inputParameters = val)),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Target Parameter',
-                      style: FluentTheme.of(context).typography.subtitle,
-                    ),
-                    Text(
-                      errorTargetParameters,
-                      style: TextStyle(
-                        color: Colors.errorPrimaryColor,
-                        fontSize: FluentTheme.of(context)
-                            .typography
-                            .caption!
-                            .fontSize,
-                        fontWeight: FluentTheme.of(context)
-                            .typography
-                            .caption!
-                            .fontWeight,
+                      Text(
+                        errorInputParameters,
+                        style: TextStyle(
+                          color: Colors.errorPrimaryColor,
+                          fontSize: FluentTheme.of(context)
+                              .typography
+                              .caption!
+                              .fontSize,
+                          fontWeight: FluentTheme.of(context)
+                              .typography
+                              .caption!
+                              .fontWeight,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    TargetParamTable(
-                        parameters: _targetParameters,
-                        callback: (val) =>
-                            setState(() => _targetParameters = val)),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
+                      SizedBox(height: 10),
+                      InputParamTable(
+                          parameters: _inputParameters,
+                          callback: (val) =>
+                              setState(() => _inputParameters = val)),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Target Parameter',
+                        style: FluentTheme.of(context).typography.subtitle,
+                      ),
+                      Text(
+                        errorTargetParameters,
+                        style: TextStyle(
+                          color: Colors.errorPrimaryColor,
+                          fontSize: FluentTheme.of(context)
+                              .typography
+                              .caption!
+                              .fontSize,
+                          fontWeight: FluentTheme.of(context)
+                              .typography
+                              .caption!
+                              .fontWeight,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TargetParamTable(
+                          parameters: _targetParameters,
+                          callback: (val) =>
+                              setState(() => _targetParameters = val)),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Spacer(),
-            ]),
-            // Expanded(
-            //   child: Row(children: [
-            //     Expanded(
-            //       child: Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           SizedBox(height: 50),
-            //           Text('Algorithms',
-            //               style: FluentTheme.of(context).typography.subheader),
-            //           SizedBox(height: 10),
-            //           Text(
-            //             'DEOptimizer',
-            //             style: FluentTheme.of(context).typography.subtitle,
-            //           ),
-            //           Text(
-            //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
-            //             style: FluentTheme.of(context).typography.body,
-            //           ),
-            //           SizedBox(height: 10),
-            //           Row(
-            //             children: [
-            //               ToggleSwitch(
-            //                 checked: _isSimulationRun,
-            //                 onChanged: (value) =>
-            //                     setState(() => _isSimulationRun = value),
-            //               ),
-            //               SizedBox(
-            //                 width: 10,
-            //               ),
-            //               Text(_isSimulationRun.toString()),
-            //             ],
-            //           ),
-            //           SizedBox(height: 20),
-            //           Text(
-            //             'bo_rf_lib_version',
-            //             style: FluentTheme.of(context).typography.subtitle,
-            //           ),
-            //           Text(
-            //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
-            //             style: FluentTheme.of(context).typography.body,
-            //           ),
-            //           SizedBox(height: 10),
-            //           Row(
-            //             children: [
-            //               ToggleSwitch(
-            //                 checked: _isSimulationRun,
-            //                 onChanged: (value) =>
-            //                     setState(() => _isSimulationRun = value),
-            //               ),
-            //               SizedBox(
-            //                 width: 10,
-            //               ),
-            //               Text(_isSimulationRun.toString()),
-            //             ],
-            //           ),
-            //           SizedBox(height: 20),
-            //           Text(
-            //             'random_opt',
-            //             style: FluentTheme.of(context).typography.subtitle,
-            //           ),
-            //           Text(
-            //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
-            //             style: FluentTheme.of(context).typography.body,
-            //           ),
-            //           SizedBox(height: 10),
-            //           Row(
-            //             children: [
-            //               ToggleSwitch(
-            //                 checked: _isSimulationRun,
-            //                 onChanged: (value) =>
-            //                     setState(() => _isSimulationRun = value),
-            //               ),
-            //               SizedBox(
-            //                 width: 10,
-            //               ),
-            //               Text(_isSimulationRun.toString()),
-            //             ],
-            //           ),
-            //           SizedBox(height: 20),
-            //           Text(
-            //             'bo_gp_lib_version',
-            //             style: FluentTheme.of(context).typography.subtitle,
-            //           ),
-            //           Text(
-            //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
-            //             style: FluentTheme.of(context).typography.body,
-            //           ),
-            //           SizedBox(height: 10),
-            //           Row(
-            //             children: [
-            //               ToggleSwitch(
-            //                 checked: _isSimulationRun,
-            //                 onChanged: (value) =>
-            //                     setState(() => _isSimulationRun = value),
-            //               ),
-            //               SizedBox(
-            //                 width: 10,
-            //               ),
-            //               Text(_isSimulationRun.toString()),
-            //             ],
-            //           ),
-            //           SizedBox(height: 20),
-            //           Text(
-            //             'custom_bo',
-            //             style: FluentTheme.of(context).typography.subtitle,
-            //           ),
-            //           Text(
-            //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
-            //             style: FluentTheme.of(context).typography.body,
-            //           ),
-            //           SizedBox(height: 10),
-            //           Row(
-            //             children: [
-            //               ToggleSwitch(
-            //                 checked: _isSimulationRun,
-            //                 onChanged: (value) =>
-            //                     setState(() => _isSimulationRun = value),
-            //               ),
-            //               SizedBox(
-            //                 width: 10,
-            //               ),
-            //               Text(_isSimulationRun.toString()),
-            //             ],
-            //           ),
-            //           SizedBox(height: 20),
-            //           Text(
-            //             'CMA-ES',
-            //             style: FluentTheme.of(context).typography.subtitle,
-            //           ),
-            //           Text(
-            //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
-            //             style: FluentTheme.of(context).typography.body,
-            //           ),
-            //           SizedBox(height: 10),
-            //           Row(
-            //             children: [
-            //               ToggleSwitch(
-            //                 checked: _isSimulationRun,
-            //                 onChanged: (value) =>
-            //                     setState(() => _isSimulationRun = value),
-            //               ),
-            //               SizedBox(
-            //                 width: 10,
-            //               ),
-            //               Text(_isSimulationRun.toString()),
-            //             ],
-            //           ),
-            //           SizedBox(height: 20),
-            //           SizedBox(
-            //             height: 10,
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //     Spacer(),
-            //   ]),
-            // ),
-            Row(children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 50),
-                    Text(
-                      'Simulation Parameters',
-                      style: FluentTheme.of(context).typography.subheader,
-                    ),
-                    SizedBox(height: 10),
-                    Row(children: [
-                      RadioButton(
-                        checked: _isSimulationRun,
-                        onChanged: (value) {
-                          setState(() {
-                            _isSimulationRun ^= true;
-                            if (_isSimulationRun) {
-                              simulationTextPlaceholder = "Set Run-Time";
-                            }
-                          });
-                        },
-                        content: Text(
-                          'Set run-time',
-                          style: TextStyle(
-                            color: FluentTheme.of(context).inactiveColor,
+                Spacer(),
+              ]),
+              // Expanded(
+              //   child: Row(children: [
+              //     Expanded(
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           SizedBox(height: 50),
+              //           Text('Algorithms',
+              //               style: FluentTheme.of(context).typography.subheader),
+              //           SizedBox(height: 10),
+              //           Text(
+              //             'DEOptimizer',
+              //             style: FluentTheme.of(context).typography.subtitle,
+              //           ),
+              //           Text(
+              //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
+              //             style: FluentTheme.of(context).typography.body,
+              //           ),
+              //           SizedBox(height: 10),
+              //           Row(
+              //             children: [
+              //               ToggleSwitch(
+              //                 checked: _isSimulationRun,
+              //                 onChanged: (value) =>
+              //                     setState(() => _isSimulationRun = value),
+              //               ),
+              //               SizedBox(
+              //                 width: 10,
+              //               ),
+              //               Text(_isSimulationRun.toString()),
+              //             ],
+              //           ),
+              //           SizedBox(height: 20),
+              //           Text(
+              //             'bo_rf_lib_version',
+              //             style: FluentTheme.of(context).typography.subtitle,
+              //           ),
+              //           Text(
+              //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
+              //             style: FluentTheme.of(context).typography.body,
+              //           ),
+              //           SizedBox(height: 10),
+              //           Row(
+              //             children: [
+              //               ToggleSwitch(
+              //                 checked: _isSimulationRun,
+              //                 onChanged: (value) =>
+              //                     setState(() => _isSimulationRun = value),
+              //               ),
+              //               SizedBox(
+              //                 width: 10,
+              //               ),
+              //               Text(_isSimulationRun.toString()),
+              //             ],
+              //           ),
+              //           SizedBox(height: 20),
+              //           Text(
+              //             'random_opt',
+              //             style: FluentTheme.of(context).typography.subtitle,
+              //           ),
+              //           Text(
+              //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
+              //             style: FluentTheme.of(context).typography.body,
+              //           ),
+              //           SizedBox(height: 10),
+              //           Row(
+              //             children: [
+              //               ToggleSwitch(
+              //                 checked: _isSimulationRun,
+              //                 onChanged: (value) =>
+              //                     setState(() => _isSimulationRun = value),
+              //               ),
+              //               SizedBox(
+              //                 width: 10,
+              //               ),
+              //               Text(_isSimulationRun.toString()),
+              //             ],
+              //           ),
+              //           SizedBox(height: 20),
+              //           Text(
+              //             'bo_gp_lib_version',
+              //             style: FluentTheme.of(context).typography.subtitle,
+              //           ),
+              //           Text(
+              //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
+              //             style: FluentTheme.of(context).typography.body,
+              //           ),
+              //           SizedBox(height: 10),
+              //           Row(
+              //             children: [
+              //               ToggleSwitch(
+              //                 checked: _isSimulationRun,
+              //                 onChanged: (value) =>
+              //                     setState(() => _isSimulationRun = value),
+              //               ),
+              //               SizedBox(
+              //                 width: 10,
+              //               ),
+              //               Text(_isSimulationRun.toString()),
+              //             ],
+              //           ),
+              //           SizedBox(height: 20),
+              //           Text(
+              //             'custom_bo',
+              //             style: FluentTheme.of(context).typography.subtitle,
+              //           ),
+              //           Text(
+              //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
+              //             style: FluentTheme.of(context).typography.body,
+              //           ),
+              //           SizedBox(height: 10),
+              //           Row(
+              //             children: [
+              //               ToggleSwitch(
+              //                 checked: _isSimulationRun,
+              //                 onChanged: (value) =>
+              //                     setState(() => _isSimulationRun = value),
+              //               ),
+              //               SizedBox(
+              //                 width: 10,
+              //               ),
+              //               Text(_isSimulationRun.toString()),
+              //             ],
+              //           ),
+              //           SizedBox(height: 20),
+              //           Text(
+              //             'CMA-ES',
+              //             style: FluentTheme.of(context).typography.subtitle,
+              //           ),
+              //           Text(
+              //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque finibus lacinia. Fusce leo justo, vestibulum ornare congue at, placerat et libero.',
+              //             style: FluentTheme.of(context).typography.body,
+              //           ),
+              //           SizedBox(height: 10),
+              //           Row(
+              //             children: [
+              //               ToggleSwitch(
+              //                 checked: _isSimulationRun,
+              //                 onChanged: (value) =>
+              //                     setState(() => _isSimulationRun = value),
+              //               ),
+              //               SizedBox(
+              //                 width: 10,
+              //               ),
+              //               Text(_isSimulationRun.toString()),
+              //             ],
+              //           ),
+              //           SizedBox(height: 20),
+              //           SizedBox(
+              //             height: 10,
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //     Spacer(),
+              //   ]),
+              // ),
+              Row(children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 50),
+                      Text(
+                        'Simulation Parameters',
+                        style: FluentTheme.of(context).typography.subheader,
+                      ),
+                      SizedBox(height: 10),
+                      Row(children: [
+                        RadioButton(
+                          checked: _isSimulationRun,
+                          onChanged: (value) {
+                            setState(() {
+                              _isSimulationRun ^= true;
+                              if (_isSimulationRun) {
+                                simulationTextPlaceholder = "Set Run-Time";
+                              }
+                            });
+                          },
+                          content: Text(
+                            'Set run-time',
+                            style: TextStyle(
+                              color: FluentTheme.of(context).inactiveColor,
+                            ),
                           ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        RadioButton(
+                          checked: !_isSimulationRun,
+                          onChanged: (value) {
+                            setState(() {
+                              _isSimulationRun ^= true;
+                              if (!_isSimulationRun) {
+                                simulationTextPlaceholder =
+                                    "Set simulation-runs";
+                              }
+                            });
+                          },
+                          content: Text(
+                            'Set simulation-runs',
+                            style: TextStyle(
+                              color: FluentTheme.of(context).inactiveColor,
+                            ),
+                          ),
+                        ),
+                      ]),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: TextBox(
+                              placeholder: simulationTextPlaceholder,
+                              maxLines: 1,
+                              keyboardType: TextInputType.number,
+                              controller: simulationParameterController,
+                              // suffixMode: OverlayVisibilityMode.always,
+                              // suffix: IconButton(
+                              //     icon: Icon(FluentIcons.search),
+                              //     onPressed: () => print("Button clicked")),
+                            ),
+                          ),
+                          Spacer(),
+                        ],
+                      ),
+                      Text(
+                        errorSimulationParameters,
+                        style: TextStyle(
+                          color: Colors.errorPrimaryColor,
+                          fontSize: FluentTheme.of(context)
+                              .typography
+                              .caption!
+                              .fontSize,
+                          fontWeight: FluentTheme.of(context)
+                              .typography
+                              .caption!
+                              .fontWeight,
                         ),
                       ),
                       SizedBox(
-                        width: 10,
+                        height: 60,
                       ),
-                      RadioButton(
-                        checked: !_isSimulationRun,
-                        onChanged: (value) {
-                          setState(() {
-                            _isSimulationRun ^= true;
-                            if (!_isSimulationRun) {
-                              simulationTextPlaceholder = "Set simulation-runs";
-                            }
-                          });
-                        },
-                        content: Text(
-                          'Set simulation-runs',
-                          style: TextStyle(
-                            color: FluentTheme.of(context).inactiveColor,
-                          ),
-                        ),
-                      ),
-                    ]),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: TextBox(
-                            placeholder: simulationTextPlaceholder,
-                            maxLines: 1,
-                            keyboardType: TextInputType.number,
-                            controller: simulationParameterController,
-                            // suffixMode: OverlayVisibilityMode.always,
-                            // suffix: IconButton(
-                            //     icon: Icon(FluentIcons.search),
-                            //     onPressed: () => print("Button clicked")),
-                          ),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                    Text(
-                      errorSimulationParameters,
-                      style: TextStyle(
-                        color: Colors.errorPrimaryColor,
-                        fontSize: FluentTheme.of(context)
-                            .typography
-                            .caption!
-                            .fontSize,
-                        fontWeight: FluentTheme.of(context)
-                            .typography
-                            .caption!
-                            .fontWeight,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 60,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Spacer(),
+                Spacer(),
+              ]),
             ]),
-          ]),
+      ),
 
       // Row(
       //   children: [
