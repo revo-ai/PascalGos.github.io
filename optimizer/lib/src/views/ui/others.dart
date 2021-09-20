@@ -1,263 +1,150 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
-class Others extends StatefulWidget {
-  const Others({Key? key}) : super(key: key);
+import 'settings.dart';
+
+class TypographyPage extends StatefulWidget {
+  const TypographyPage({Key? key}) : super(key: key);
 
   @override
-  _OthersState createState() => _OthersState();
+  _TypographyPageState createState() => _TypographyPageState();
 }
 
-class _OthersState extends State<Others> {
-  final otherController = ScrollController();
+class _TypographyPageState extends State<TypographyPage> {
+  Color? color;
+  double scale = 1.0;
 
-  int currentIndex = 0;
-
-  final flyoutController = FlyoutController();
-
-  bool checked = false;
-
-  @override
-  void dispose() {
-    flyoutController.dispose();
-    otherController.dispose();
-    super.dispose();
-  }
-
-  DateTime date = DateTime.now();
-
-  late List<Tab> tabs;
-
-  @override
-  void initState() {
-    super.initState();
-    tabs = List.generate(3, (index) {
-      late Tab tab;
-      tab = Tab(
-        text: Text('$index'),
-        onClosed: () {
-          _handleTabClosed(tab);
-        },
-      );
-      return tab;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ScaffoldPage(
-      header: PageHeader(title: Text('Others')),
-      content: ListView(
-        padding: EdgeInsets.only(
-          bottom: kPageDefaultVerticalPadding,
-          left: PageHeader.horizontalPadding(context),
-          right: PageHeader.horizontalPadding(context),
-        ),
-        controller: otherController,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: Acrylic(
-              tintAlpha: 1.0,
-              elevation: 4.0,
-              child: Column(children: [
-                Text('Surfaces',
-                    style: FluentTheme.of(context).typography.subtitle),
-                Wrap(spacing: 10, runSpacing: 10, children: [
-                  Tooltip(
-                    message: 'This is a tooltip',
-                    child: Button(
-                      child: Text('Button with tooltip'),
-                      onPressed: () {
-                        print('pressed button with tooltip');
-                      },
-                    ),
-                  ),
-                  Flyout(
-                    controller: flyoutController,
-                    contentWidth: 450,
-                    content: FlyoutContent(
-                      child: Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'),
-                    ),
-                    child: Button(
-                      child: Text('Open flyout'),
-                      onPressed: () {
-                        flyoutController.open = true;
-                      },
-                    ),
-                  ),
-                ]),
-              ]),
-            ),
-          ),
-          ...List.generate(InfoBarSeverity.values.length, (index) {
-            final severity = InfoBarSeverity.values[index];
-            final titles = [
-              'Long title',
-              'Short title',
-            ];
-            final descs = [
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-              'Short desc',
-            ];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: InfoBar(
-                title: Text(titles[index.isEven ? 0 : 1]),
-                content: Text(descs[index.isEven ? 0 : 1]),
-                isLong: InfoBarSeverity.values.indexOf(severity).isEven,
-                severity: severity,
-                action: Button(
-                  child: Text('This is an action'),
-                  onPressed: () => print('action pressed'),
-                ),
-                onClose: () {
-                  print('closed');
-                },
-              ),
-            );
-          }),
-          Wrap(children: [
-            ListTile(
-              title: Text('ListTile Title'),
-              subtitle: Text('ListTile Subtitle'),
-            ),
-            TappableListTile(
-              leading: CircleAvatar(),
-              title: Text('TappableListTile Title'),
-              subtitle: Text('TappableListTile Subtitle'),
-              onTap: () {
-                print('tapped tappable list tile');
-              },
-            ),
-            CheckboxListTile(
-              checked: checked,
-              onChanged: (v) => setState(() => checked = v!),
-              title: Text('CheckboxListTile title'),
-              subtitle: Text('CheckboxListTile subtitle'),
-            ),
-            SwitchListTile(
-              checked: checked,
-              onChanged: (v) => setState(() => checked = v),
-              title: Text('SwitchListTile title'),
-              subtitle: Text('SwitchListTile subtitle'),
-            ),
-          ]),
-          Row(children: [
-            Container(
-                padding: EdgeInsets.all(6), child: ProgressBar(value: 50)),
-            Container(
-              margin: EdgeInsets.all(10),
-              child: ProgressRing(value: 85),
-            ),
-          ]),
-          // Row(children: [
-          //   CalendarView(
-          //     onDateChanged: _handleDateChanged,
-          //     firstDate: DateTime.now().subtract(Duration(days: 365 * 100)),
-          //     lastDate: DateTime.now().add(Duration(days: 365 * 100)),
-          //     initialDate: date,
-          //     currentDate: date,
-          //     onDisplayedMonthChanged: (date) {
-          //       setState(() => this.date = date);
-          //     },
-          //   ),
-          //   CalendarView(
-          //     onDateChanged: _handleDateChanged,
-          //     firstDate: DateTime.now().subtract(Duration(days: 365 * 100)),
-          //     lastDate: DateTime.now().add(Duration(days: 365 * 100)),
-          //     initialDate: date,
-          //     currentDate: date,
-          //     onDisplayedMonthChanged: (date) {
-          //       setState(() => this.date = date);
-          //     },
-          //     initialCalendarMode: DatePickerMode.year,
-          //   ),
-          // ]),
-          SizedBox(height: 10),
-          Container(
-            height: 400,
-            decoration: BoxDecoration(
-              border: Border.all(
-                  color: FluentTheme.of(context).accentColor, width: 1.0),
-            ),
-            child: TabView(
-              currentIndex: currentIndex,
-              onChanged: _handleTabChanged,
-              onReorder: (oldIndex, newIndex) {
-                setState(() {
-                  if (oldIndex < newIndex) {
-                    newIndex -= 1;
-                  }
-                  final Tab item = tabs.removeAt(oldIndex);
-                  tabs.insert(newIndex, item);
-                  if (currentIndex == newIndex)
-                    currentIndex = oldIndex;
-                  else if (currentIndex == oldIndex) currentIndex = newIndex;
-                });
-              },
-              onNewPressed: () {
-                setState(() {
-                  late Tab tab;
-                  tab = Tab(
-                    text: Text('${tabs.length}'),
-                    onClosed: () {
-                      _handleTabClosed(tab);
-                    },
-                  );
-                  tabs.add(tab);
-                });
-              },
-              tabs: tabs,
-              bodies: List.generate(
-                tabs.length,
-                (index) => Container(
-                  color: Colors.accentColors[index.clamp(
-                    0,
-                    Colors.accentColors.length - 1,
-                  )],
-                  child: Stack(children: [
-                    Positioned.fill(child: FlutterLogo()),
-                    Align(
-                      alignment: Alignment.center,
-                      child: SizedBox(
-                        width: 250.0,
-                        height: 200.0,
-                        child: Acrylic(
-                          child: Center(
-                            child: Text(
-                              'A C R Y L I C',
-                              style:
-                                  FluentTheme.of(context).typography.subheader,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
-            ),
-          ),
-        ],
+  Widget buildColorBox(Color color) {
+    const double boxSize = 25.0;
+    return Container(
+      height: boxSize,
+      width: boxSize,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(4.0),
       ),
     );
   }
 
-  void _handleTabChanged(int index) {
-    setState(() => currentIndex = index);
+  @override
+  Widget build(BuildContext context) {
+    assert(debugCheckHasFluentTheme(context));
+    Typography typography = FluentTheme.of(context).typography;
+    color ??= typography.display!.color;
+    typography = typography.apply(displayColor: color!);
+    const Widget spacer = SizedBox(height: 4.0);
+    return ScaffoldPage(
+      header: PageHeader(
+        title: const Text('Typography showcase'),
+        commandBar: SizedBox(
+          width: 180.0,
+          child: Tooltip(
+            message: 'Pick a text color',
+            child: Combobox<Color>(
+              placeholder: const Text('Text Color'),
+              onChanged: (c) => setState(() => color = c),
+              value: color,
+              items: [
+                ComboboxItem(
+                  child: Row(children: [
+                    buildColorBox(Colors.white),
+                    const SizedBox(width: 10.0),
+                    const Text('White'),
+                  ]),
+                  value: Colors.white,
+                ),
+                ComboboxItem(
+                  child: Row(children: [
+                    buildColorBox(Colors.black),
+                    const SizedBox(width: 10.0),
+                    const Text('Black'),
+                  ]),
+                  value: Colors.black,
+                ),
+                ...List.generate(Colors.accentColors.length, (index) {
+                  final color = Colors.accentColors[index];
+                  return ComboboxItem(
+                    child: Row(children: [
+                      buildColorBox(color),
+                      const SizedBox(width: 10.0),
+                      Text(accentColorNames[index + 1]),
+                    ]),
+                    value: color,
+                  );
+                }),
+              ],
+            ),
+          ),
+        ),
+      ),
+      content: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: PageHeader.horizontalPadding(context),
+        ),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Divider(
+                  style: DividerThemeData(horizontalMargin: EdgeInsets.zero),
+                ),
+                Expanded(
+                  child: ListView(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    // mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Display',
+                          style:
+                              typography.display?.apply(fontSizeFactor: scale)),
+                      spacer,
+                      Text('Title Large',
+                          style: typography.titleLarge
+                              ?.apply(fontSizeFactor: scale)),
+                      spacer,
+                      Text('Title',
+                          style:
+                              typography.title?.apply(fontSizeFactor: scale)),
+                      spacer,
+                      Text('Subtitle',
+                          style: typography.subtitle
+                              ?.apply(fontSizeFactor: scale)),
+                      spacer,
+                      Text('Body Large',
+                          style: typography.bodyLarge
+                              ?.apply(fontSizeFactor: scale)),
+                      spacer,
+                      Text('Body Strong',
+                          style: typography.bodyStrong
+                              ?.apply(fontSizeFactor: scale)),
+                      spacer,
+                      Text('Body',
+                          style: typography.body?.apply(fontSizeFactor: scale)),
+                      spacer,
+                      Text('Caption',
+                          style:
+                              typography.caption?.apply(fontSizeFactor: scale)),
+                      spacer,
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Semantics(
+            label: 'Scale',
+            child: Slider(
+              vertical: true,
+              value: scale,
+              onChanged: (v) => setState(() => scale = v),
+              label: scale.toStringAsFixed(2),
+              max: 2,
+              min: 0.5,
+              // style: SliderThemeData(useThumbBall: false),
+            ),
+          ),
+        ]),
+      ),
+    );
   }
-
-  void _handleTabClosed(Tab tab) {
-    setState(() {
-      tabs.remove(tab);
-      if (currentIndex > tabs.length - 1) currentIndex--;
-    });
-  }
-
-  // void _handleDateChanged(DateTime date) {
-
-  // }
-
 }

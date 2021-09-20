@@ -153,7 +153,7 @@ class _ResultPageState extends State<ResultPage> {
                               ),
                               child: Text(
                                 "Start over",
-                                style: FluentTheme.of(context).typography.base,
+                                style: FluentTheme.of(context).typography.body,
                               ),
                               onPressed: () {}),
                           SizedBox(

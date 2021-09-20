@@ -8,7 +8,7 @@ import 'package:optimizer/src/views/ui/target_param_table.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
-import 'add_cmconfig_dialog.dart';
+import 'dialogs/add_cmconfig_dialog.dart';
 
 const Widget spacer = const SizedBox(height: 5.0);
 
@@ -151,7 +151,7 @@ class _PreparationPageState extends State<PreparationPage> {
       header: PageHeader(
         title: Text(
           'Preparation',
-          style: FluentTheme.of(context).typography.header,
+          style: FluentTheme.of(context).typography.title,
         ),
         commandBar: SizedBox(
           height: 50.0,
@@ -285,7 +285,7 @@ class _PreparationPageState extends State<PreparationPage> {
             children: <Widget>[
               Text(
                 'Starting Point',
-                style: FluentTheme.of(context).typography.subheader,
+                style: FluentTheme.of(context).typography.subtitle,
               ),
               SizedBox(height: 10),
               Text(
@@ -314,7 +314,7 @@ class _PreparationPageState extends State<PreparationPage> {
               SizedBox(height: 50),
               Text(
                 'Parameters',
-                style: FluentTheme.of(context).typography.subheader,
+                style: FluentTheme.of(context).typography.subtitle,
               ),
               SizedBox(height: 10),
               Row(children: [
@@ -544,7 +544,7 @@ class _PreparationPageState extends State<PreparationPage> {
                       SizedBox(height: 50),
                       Text(
                         'Simulation Parameters',
-                        style: FluentTheme.of(context).typography.subheader,
+                        style: FluentTheme.of(context).typography.subtitle,
                       ),
                       SizedBox(height: 10),
                       Row(children: [

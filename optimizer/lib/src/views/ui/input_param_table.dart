@@ -2,7 +2,7 @@ import 'package:optimizer/src/core/models/parameter_model.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:hovering/hovering.dart';
 
-import 'add_inparam_dialog.dart';
+import 'dialogs/add_inparam_dialog.dart';
 
 typedef void ParameterCallback(List<InputParameter> params);
 

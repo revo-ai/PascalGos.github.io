@@ -1,4 +1,5 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:optimizer/src/views/ui/configuration_selection_page.dart';
 import 'package:optimizer/src/views/ui/result_page.dart';
 import 'package:optimizer/src/views/ui/colors.dart';
 import 'package:optimizer/src/views/ui/forms.dart';
@@ -8,6 +9,7 @@ import 'package:optimizer/src/views/ui/preparation_page.dart';
 import 'package:optimizer/src/views/ui/settings.dart';
 import 'package:optimizer/src/views/ui/simulation_page.dart';
 import 'package:optimizer/src/views/ui/typography.dart';
+import 'package:optimizer/src/views/ui/welcome_page.dart';
 import 'package:optimizer/src/views/utils/theme.dart';
 import 'package:optimizer/src/views/utils/window_buttons.dart';
 import 'package:optimizer/src/views/ui/inputs.dart';
@@ -146,6 +148,16 @@ class _HomePageState extends State<HomePage> {
           ),
           PaneItem(
             icon: Icon(
+              FluentIcons.home,
+              //color: Colors.white,
+            ),
+            title: Text(
+              'Home',
+              //style: TextStyle(color: Colors.white),
+            ),
+          ),
+          PaneItem(
+            icon: Icon(
               FluentIcons.edit_note,
               //color: Colors.white,
             ),
@@ -173,7 +185,15 @@ class _HomePageState extends State<HomePage> {
       content: NavigationBody(index: index, children: [
         Navigator(
           onGenerateRoute: (settings) {
-            Widget page = PreparationPage();
+            // Widget page = WelcomePage();
+            Widget page = ConfigurationSelection();
+            return FluentPageRoute(builder: (_) => page);
+          },
+        ),
+        Navigator(
+          onGenerateRoute: (settings) {
+            // Widget page = PreparationPage();
+            Widget page = ConfigurationSelection();
             if (settings.name == 'generation') page = SimulationPage();
             if (settings.name == 'results') page = ResultPage();
             return FluentPageRoute(builder: (_) => page);
