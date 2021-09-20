@@ -34,7 +34,7 @@ class App extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (_) => HomePage(),
-            'preparation': (_) => PreparationPage(),
+            // 'preparation': (_) => PreparationPage(),
             'settings': (_) => SettingsPage(),
           },
           theme: ThemeData(

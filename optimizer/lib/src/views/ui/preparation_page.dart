@@ -8,14 +8,15 @@ import 'package:optimizer/src/views/ui/target_param_table.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
-import 'dialogs/add_cmconfig_dialog.dart';
+import 'dialogs/add_config_dialog.dart';
 
 const Widget spacer = const SizedBox(height: 5.0);
 
 const double iconSize = 40;
 
 class PreparationPage extends StatefulWidget {
-  const PreparationPage({Key? key}) : super(key: key);
+  final CMConfig cmConfig;
+  const PreparationPage({Key? key, required this.cmConfig}) : super(key: key);
 
   @override
   _PreparationPageState createState() => _PreparationPageState();
@@ -24,18 +25,19 @@ class PreparationPage extends StatefulWidget {
 class _PreparationPageState extends State<PreparationPage> {
   // CMConfig _cmConfig =
   //     CMConfig(cmPath: "", cmProj: "", cmTestrun: "", tarQuantity: "");
-  CMConfig _cmConfig = CMConfig(
-    cmPath: "C:/IPG/.../bin/CM.exe",
-    cmProj: "C:/CM_Projects/CM10",
-    cmTestrun: "Braking",
-  );
-  bool _cmConfigIsSelected = false;
+  // CMConfig _cmConfig = CMConfig(
+  //   cmPath: "C:/IPG/.../bin/CM.exe",
+  //   cmProj: "C:/CM_Projects/CM10",
+  //   cmTestrun: "Braking",
+  // );
+  bool _cmConfigIsSelected = true;
   List<InputParameter> _inputParameters = [];
   List<TargetParameter> _targetParameters = [];
   int _iterations = 0;
   int _time = 0;
   bool _isSimulationRun = true;
-  set cmConfig(CMConfig value) => setState(() => _cmConfig = value);
+
+  // set cmConfig(CMConfig value) => setState(() => _cmConfig = value);
   set cmConfigIsSelected(bool value) =>
       setState(() => _cmConfigIsSelected = value);
   set inputParameters(List<InputParameter> value) =>
@@ -81,17 +83,18 @@ class _PreparationPageState extends State<PreparationPage> {
               )),
         ],
       ),
-      onPressed: () async {
-        print("Select Default Starting Point pressed");
-        var result = await showDialog(
-          context: context,
-          useRootNavigator: false,
-          builder: (_) => AddCMConfigDialog(
-            callback: (val) => setState(() => _cmConfig = val),
-            isChecked: (val) => setState(() => _cmConfigIsSelected = val),
-          ),
-        );
-      },
+      onPressed: () {},
+      // onPressed: () async {
+      //   print("Select Default Starting Point pressed");
+      //   var result = await showDialog(
+      //     context: context,
+      //     useRootNavigator: false,
+      //     builder: (_) => AddCMConfigDialog(
+      // callback: (val) => setState(() => _cmConfig = val),
+      // isChecked: (val) => setState(() => _cmConfigIsSelected = val),
+      //     ),
+      //   );
+      // },
     );
 
     if (_cmConfigIsSelected) {
@@ -117,11 +120,11 @@ class _PreparationPageState extends State<PreparationPage> {
               flex: 3,
               child: Text(
                   "CM-File: " +
-                      _cmConfig.cmPath +
+                      this.widget.cmConfig.cmPath +
                       "\nProject: " +
-                      _cmConfig.cmProj +
+                      this.widget.cmConfig.cmProj +
                       "\nTestrun: " +
-                      _cmConfig.cmTestrun,
+                      this.widget.cmConfig.cmTestrun,
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     color: Colors.white,
@@ -132,15 +135,15 @@ class _PreparationPageState extends State<PreparationPage> {
               child: IconButton(
                   icon: Icon(FluentIcons.delete, color: Colors.white),
                   onPressed: () {
-                    _cmConfig = CMConfig(
-                      cmPath: "",
-                      cmProj: "",
-                      cmTestrun: "",
-                    );
+                    // _cmConfig = CMConfig(
+                    //   cmPath: "",
+                    //   cmProj: "",
+                    //   cmTestrun: "",
+                    // );
 
-                    setState(() {
-                      _cmConfigIsSelected = false;
-                    });
+                    // setState(() {
+                    //   _cmConfigIsSelected = false;
+                    // });
                   }),
             )
           ],
@@ -153,128 +156,128 @@ class _PreparationPageState extends State<PreparationPage> {
           'Preparation',
           style: FluentTheme.of(context).typography.title,
         ),
-        commandBar: SizedBox(
-          height: 50.0,
-          child: SplitButtonBar(buttons: [
-            FilledButton(
-              style: ButtonStyle(
-                shape: ButtonState.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4))),
-              ),
-              child: Text("Run"),
-              onPressed: () {
-                setState(() {
-                  errorCMConfig = validateCMConfig(_cmConfigIsSelected);
-                  errorInputParameters =
-                      validateInputParameter(_inputParameters);
-                  errorTargetParameters =
-                      validateTargetParameter(_targetParameters);
-                  errorSimulationParameters = validateSimulationParameters(
-                      simulationParameterController.text);
-                });
+        // commandBar: SizedBox(
+        //   height: 50.0,
+        //   child: SplitButtonBar(buttons: [
+        //     FilledButton(
+        //       style: ButtonStyle(
+        //         shape: ButtonState.all(RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(4))),
+        //       ),
+        //       child: Text("Run"),
+        //       onPressed: () {
+        //         setState(() {
+        //           errorCMConfig = validateCMConfig(_cmConfigIsSelected);
+        //           errorInputParameters =
+        //               validateInputParameter(_inputParameters);
+        //           errorTargetParameters =
+        //               validateTargetParameter(_targetParameters);
+        //           errorSimulationParameters = validateSimulationParameters(
+        //               simulationParameterController.text);
+        //         });
 
-                if (validateForm(errorCMConfig, errorInputParameters,
-                    errorTargetParameters, errorSimulationParameters)) {
-                  if (_isSimulationRun) {
-                    _time = int.parse(simulationParameterController.text);
-                  } else {
-                    _iterations = int.parse(simulationParameterController.text);
-                  }
-                  SimulationSettings sim = new SimulationSettings(
-                      cmConfig: _cmConfig,
-                      inputParams: _inputParameters,
-                      targetParams: _targetParameters,
-                      optConfig: OPTConfig(
-                          algos: Algos(
-                            boGpLibVersion: true,
-                            boRFLibVersion: false,
-                            cmaEs: false,
-                            customBo: false,
-                            deOptimizer: false,
-                            randomOPT: false,
-                          ),
-                          iterations: _iterations,
-                          time: _time));
-                  print(sim.toJson().toString());
-                  Navigator.pushNamed(context, 'generation');
-                }
-              },
-            ),
-            material.VerticalDivider(
-              indent: 20.0,
-              endIndent: 20.0,
-            ),
-            OutlinedButton(
-                child: Text(
-                  "Save Settings",
-                ),
-                onPressed: () {
-                  setState(() {
-                    errorCMConfig = validateCMConfig(_cmConfigIsSelected);
-                    errorInputParameters =
-                        validateInputParameter(_inputParameters);
-                    errorTargetParameters =
-                        validateTargetParameter(_targetParameters);
-                    errorSimulationParameters = validateSimulationParameters(
-                        simulationParameterController.text);
-                  });
+        //         if (validateForm(errorCMConfig, errorInputParameters,
+        //             errorTargetParameters, errorSimulationParameters)) {
+        //           if (_isSimulationRun) {
+        //             _time = int.parse(simulationParameterController.text);
+        //           } else {
+        //             _iterations = int.parse(simulationParameterController.text);
+        //           }
+        //           SimulationSettings sim = new SimulationSettings(
+        //               cmConfig: _cmConfig,
+        //               inputParams: _inputParameters,
+        //               targetParams: _targetParameters,
+        //               optConfig: OPTConfig(
+        //                   algos: Algos(
+        //                     boGpLibVersion: true,
+        //                     boRFLibVersion: false,
+        //                     cmaEs: false,
+        //                     customBo: false,
+        //                     deOptimizer: false,
+        //                     randomOPT: false,
+        //                   ),
+        //                   iterations: _iterations,
+        //                   time: _time));
+        //           print(sim.toJson().toString());
+        //           Navigator.pushNamed(context, 'generation');
+        //         }
+        //       },
+        //     ),
+        //     material.VerticalDivider(
+        //       indent: 20.0,
+        //       endIndent: 20.0,
+        //     ),
+        //     OutlinedButton(
+        //         child: Text(
+        //           "Save Settings",
+        //         ),
+        //         onPressed: () {
+        //           setState(() {
+        //             errorCMConfig = validateCMConfig(_cmConfigIsSelected);
+        //             errorInputParameters =
+        //                 validateInputParameter(_inputParameters);
+        //             errorTargetParameters =
+        //                 validateTargetParameter(_targetParameters);
+        //             errorSimulationParameters = validateSimulationParameters(
+        //                 simulationParameterController.text);
+        //           });
 
-                  if (validateForm(errorCMConfig, errorInputParameters,
-                      errorTargetParameters, errorSimulationParameters)) {
-                    if (_isSimulationRun) {
-                      _time = int.parse(simulationParameterController.text);
-                    } else {
-                      _iterations =
-                          int.parse(simulationParameterController.text);
-                    }
-                    SimulationSettings sim = new SimulationSettings(
-                        cmConfig: _cmConfig,
-                        inputParams: _inputParameters,
-                        targetParams: _targetParameters,
-                        optConfig: OPTConfig(
-                            algos: Algos(
-                              boGpLibVersion: true,
-                              boRFLibVersion: false,
-                              cmaEs: false,
-                              customBo: false,
-                              deOptimizer: false,
-                              randomOPT: false,
-                            ),
-                            iterations: _iterations,
-                            time: _time));
+        //           if (validateForm(errorCMConfig, errorInputParameters,
+        //               errorTargetParameters, errorSimulationParameters)) {
+        //             if (_isSimulationRun) {
+        //               _time = int.parse(simulationParameterController.text);
+        //             } else {
+        //               _iterations =
+        //                   int.parse(simulationParameterController.text);
+        //             }
+        //             SimulationSettings sim = new SimulationSettings(
+        //                 cmConfig: _cmConfig,
+        //                 inputParams: _inputParameters,
+        //                 targetParams: _targetParameters,
+        //                 optConfig: OPTConfig(
+        //                     algos: Algos(
+        //                       boGpLibVersion: true,
+        //                       boRFLibVersion: false,
+        //                       cmaEs: false,
+        //                       customBo: false,
+        //                       deOptimizer: false,
+        //                       randomOPT: false,
+        //                     ),
+        //                     iterations: _iterations,
+        //                     time: _time));
 
-                    DownloadService.saveStringAsJson(sim.toJson().toString());
-                  }
-                }),
-            // Flyout(
-            //   controller: flyoutController,
-            //   contentWidth: 300,
-            //   verticalOffset: 20,
-            //   content: Padding(
-            //     padding: EdgeInsets.only(left: 27),
-            //     child: FlyoutContent(
-            //         padding: EdgeInsets.zero,
-            //         child: ListView(
-            //           shrinkWrap: true,
-            //           children: [
-            //             TappableListTile(
-            //               title: Text("Load previous Settings"),
-            //               onTap: () {},
-            //             ),
-            //             TappableListTile(
-            //               title: Text("Save current Settings"),
-            //               onTap: () {},
-            //             ),
-            //           ],
-            //         )),
-            //   ),
-            //   child: Button(
-            //     child: const Icon(FluentIcons.chevron_down, size: 14.0),
-            //     onPressed: () => flyoutController.open = true,
-            //   ),
-            // ),
-          ]),
-        ),
+        //             DownloadService.saveStringAsJson(sim.toJson().toString());
+        //           }
+        //         }),
+        //     // Flyout(
+        //     //   controller: flyoutController,
+        //     //   contentWidth: 300,
+        //     //   verticalOffset: 20,
+        //     //   content: Padding(
+        //     //     padding: EdgeInsets.only(left: 27),
+        //     //     child: FlyoutContent(
+        //     //         padding: EdgeInsets.zero,
+        //     //         child: ListView(
+        //     //           shrinkWrap: true,
+        //     //           children: [
+        //     //             TappableListTile(
+        //     //               title: Text("Load previous Settings"),
+        //     //               onTap: () {},
+        //     //             ),
+        //     //             TappableListTile(
+        //     //               title: Text("Save current Settings"),
+        //     //               onTap: () {},
+        //     //             ),
+        //     //           ],
+        //     //         )),
+        //     //   ),
+        //     //   child: Button(
+        //     //     child: const Icon(FluentIcons.chevron_down, size: 14.0),
+        //     //     onPressed: () => flyoutController.open = true,
+        //     //   ),
+        //     // ),
+        //   ]),
+        // ),
       ),
       content: Scrollbar(
         controller: scrollController,

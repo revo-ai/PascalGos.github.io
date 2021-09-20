@@ -186,13 +186,12 @@ class _HomePageState extends State<HomePage> {
         Navigator(
           onGenerateRoute: (settings) {
             // Widget page = WelcomePage();
-            Widget page = ConfigurationSelection();
+            Widget page = WelcomePage();
             return FluentPageRoute(builder: (_) => page);
           },
         ),
         Navigator(
           onGenerateRoute: (settings) {
-            // Widget page = PreparationPage();
             Widget page = ConfigurationSelection();
             if (settings.name == 'generation') page = SimulationPage();
             if (settings.name == 'results') page = ResultPage();

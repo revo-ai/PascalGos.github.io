@@ -1,10 +1,12 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:hovering/hovering.dart';
+import 'package:optimizer/src/views/ui/dialogs/add_config_dialog.dart';
 
 typedef void SelectedTileCallback(int selectedTileIndex);
 
 class ConfigurationTile extends StatefulWidget {
   final SelectedTileCallback callback;
+  final Function openConfigDialog;
   final String configurationName;
   final int index;
   int selectedTileIndex;
@@ -13,6 +15,7 @@ class ConfigurationTile extends StatefulWidget {
   ConfigurationTile({
     Key? key,
     required this.callback,
+    required this.openConfigDialog,
     required this.configurationName,
     required this.index,
     required this.selectedTileIndex,
@@ -62,6 +65,16 @@ class _ConfigurationTileState extends State<ConfigurationTile> {
               print(this.widget.selectedTileIndex);
               this.widget.selectedTileIndex = this.widget.index;
               this.widget.callback(this.widget.selectedTileIndex);
+            }
+          });
+        },
+        onDoubleTap: () {
+          setState(() {
+            if (!this.widget.disabled) {
+              print(this.widget.selectedTileIndex);
+              this.widget.selectedTileIndex = this.widget.index;
+              this.widget.callback(this.widget.selectedTileIndex);
+              this.widget.openConfigDialog();
             }
           });
         },

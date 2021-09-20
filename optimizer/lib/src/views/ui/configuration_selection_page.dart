@@ -1,8 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
+import 'package:optimizer/src/core/models/simulation_settings_model.dart';
+import 'package:optimizer/src/views/ui/preparation_page.dart';
 import 'package:optimizer/src/views/ui/widgets/configuration_tile.dart';
 
-import 'dialogs/add_cmconfig_dialog.dart';
+import 'dialogs/add_config_dialog.dart';
 
 class ConfigurationSelection extends StatefulWidget {
   const ConfigurationSelection({Key? key}) : super(key: key);
@@ -14,8 +16,15 @@ class ConfigurationSelection extends StatefulWidget {
 class _ConfigurationSelectionState extends State<ConfigurationSelection> {
   final FlyoutController controller = FlyoutController();
   final ScrollController scrollController = ScrollController();
-
   bool disabled = false;
+
+  CMConfig _cmConfig = CMConfig(
+    cmPath: "",
+    cmProj: "",
+    cmTestrun: "",
+  );
+  CMConfig get cmConfig => _cmConfig;
+  bool _configIsSelected = false;
 
   @override
   void dispose() {
@@ -46,11 +55,13 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
             children: [
               ConfigurationTile(
                   callback: (val) => setState(() => _selectedTileIndex = val),
+                  openConfigDialog: openConfigDialog,
                   index: 0,
                   selectedTileIndex: _selectedTileIndex,
                   configurationName: 'CARMAKER'),
               ConfigurationTile(
                 callback: (val) => setState(() => _selectedTileIndex = val),
+                openConfigDialog: openConfigDialog,
                 index: 1,
                 selectedTileIndex: _selectedTileIndex,
                 configurationName: 'SIMCAR',
@@ -58,6 +69,7 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
               ),
               ConfigurationTile(
                 callback: (val) => setState(() => _selectedTileIndex = val),
+                openConfigDialog: openConfigDialog,
                 index: 2,
                 selectedTileIndex: _selectedTileIndex,
                 configurationName: 'PLOTMAKER',
@@ -74,20 +86,12 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               FilledButton(
-                style: ButtonStyle(
-                  shape: ButtonState.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4))),
-                ),
-                child: Text("Create"),
-                onPressed: disabled
-                    ? null
-                    : () {
-                        showDialog(
-                            context: context,
-                            builder: (_) => _startConfigurationInput(
-                                context, _selectedTileIndex));
-                      },
-              ),
+                  style: ButtonStyle(
+                    shape: ButtonState.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4))),
+                  ),
+                  child: Text("Create"),
+                  onPressed: () => openConfigDialog()),
               SizedBox(
                 width: 10,
               ),
@@ -98,49 +102,21 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
     );
   }
 
-  Widget _startConfigurationInput(BuildContext context, int index) {
-    switch (index) {
-      case 0:
-        return Container();
-      case 1:
-        return ContentDialog(
-          title: Text('Configuration is not available'),
-          content: Text(
-            'The configuration you have chosen is not yet available.',
-          ),
-          actions: [
-            Button(
-              child: Text('OK'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
+  openConfigDialog() async {
+    var result = await showDialog(
+        context: context,
+        builder: (_) => AddConfigDialog(
+              index: _selectedTileIndex,
+              configCallback: (val) => _cmConfig = val,
+              configSelectedCallBack: (val) => _configIsSelected = val,
+            )).then((value) {});
+
+    if (_configIsSelected) {
+      Navigator.push(context, FluentPageRoute(builder: (context) {
+        return PreparationPage(
+          cmConfig: cmConfig,
         );
-      case 2:
-        return ContentDialog(
-          title: Text('Configuration is not available'),
-          content: Text(
-            'The configuration you have chosen is not yet available.',
-          ),
-          actions: [
-            Button(
-              child: Text('OK'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      default:
-        return ContentDialog(
-          title: Text('Something went wrong'),
-          content: Text(
-            'Please choose a configuration.',
-          ),
-          actions: [
-            Button(
-              child: Text('OK'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
+      }));
     }
   }
 }
