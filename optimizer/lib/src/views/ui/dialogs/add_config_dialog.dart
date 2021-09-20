@@ -74,7 +74,7 @@ class _AddConfigDialogState extends State<AddConfigDialog> {
     }
 
     Widget cmDialog = ContentDialog(
-      title: Text('Default Starting Point'),
+      title: Text('Start Configuration - CARLA'),
       content: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,8 +86,8 @@ class _AddConfigDialogState extends State<AddConfigDialog> {
               height: 10,
             ),
             TextBox(
-                header: 'Select Car Maker File',
-                placeholder: 'Select *',
+                header: 'Select CARLA-Application File',
+                placeholder: 'Select *.exe',
                 controller: cmPathTextController,
                 readOnly: true,
                 maxLines: 1,
@@ -113,7 +113,7 @@ class _AddConfigDialogState extends State<AddConfigDialog> {
               height: 10,
             ),
             TextBox(
-              header: 'Select Car Maker Project File',
+              header: 'Select CARLA Project Directory',
               placeholder: 'Select *',
               controller: cmProjPathTextController,
               readOnly: true,
@@ -141,7 +141,7 @@ class _AddConfigDialogState extends State<AddConfigDialog> {
               height: 10,
             ),
             TextBox(
-              header: 'Select CM-Testrun-File',
+              header: 'Select CARLA-Testrun-File',
               placeholder: '...',
               controller: cmTestrunTextController,
               maxLines: 1,

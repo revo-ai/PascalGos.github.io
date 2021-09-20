@@ -58,7 +58,7 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
                   openConfigDialog: openConfigDialog,
                   index: 0,
                   selectedTileIndex: _selectedTileIndex,
-                  configurationName: 'CARMAKER'),
+                  configurationName: 'CARLA'),
               ConfigurationTile(
                 callback: (val) => setState(() => _selectedTileIndex = val),
                 openConfigDialog: openConfigDialog,
