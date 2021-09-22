@@ -47,7 +47,7 @@ class AppTheme extends ChangeNotifier {
     notifyListeners();
   }
 
-  NavigationIndicators _indicator = NavigationIndicators.sticky;
+  NavigationIndicators _indicator = NavigationIndicators.end;
   NavigationIndicators get indicator => _indicator;
   set indicator(NavigationIndicators indicator) {
     _indicator = indicator;

@@ -6,11 +6,9 @@ import 'package:optimizer/src/core/services/download_service.dart';
 import 'package:optimizer/src/views/ui/simulation_settings/widgets/input_param_table.dart';
 import 'package:optimizer/src/views/ui/result_page.dart';
 import 'package:optimizer/src/views/ui/simulation_settings/widgets/simulation_param_commandbar.dart';
-import 'package:optimizer/src/views/ui/simulation_settings/widgets/simulation_param_container.dart';
 import 'package:optimizer/src/views/ui/simulation_settings/widgets/start_configuration_container.dart';
 import 'package:optimizer/src/views/ui/simulation_settings/widgets/target_param_table.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:optimizer/src/views/ui/widgets/side_sheet.dart';
 
 const Widget spacer = const SizedBox(height: 5.0);
 
@@ -140,15 +138,19 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
                           constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width * 0.6,
                           ),
-                          child:
-                              StartConfigurationContainer(cmConfig: _cmConfig),
+                          child: StartConfigurationContainer(
+                            cmConfig: _cmConfig,
+                            callback: (val) => _cmConfig = val,
+                          ),
                         )
                       : ConstrainedBox(
                           constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width * 0.35,
                           ),
-                          child:
-                              StartConfigurationContainer(cmConfig: _cmConfig),
+                          child: StartConfigurationContainer(
+                            cmConfig: _cmConfig,
+                            callback: (val) => _cmConfig = val,
+                          ),
                         ),
                 ],
               ),

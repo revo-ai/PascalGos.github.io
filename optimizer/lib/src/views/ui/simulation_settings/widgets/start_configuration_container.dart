@@ -5,9 +5,13 @@ import 'package:optimizer/src/views/ui/widgets/side_sheet.dart';
 
 import 'edit_config_sidesheet.dart';
 
+typedef void ConfigCallback(CMConfig cmConfig);
+
 class StartConfigurationContainer extends StatefulWidget {
-  final CMConfig cmConfig;
-  const StartConfigurationContainer({Key? key, required this.cmConfig})
+  CMConfig cmConfig;
+  final ConfigCallback callback;
+  StartConfigurationContainer(
+      {Key? key, required this.cmConfig, required this.callback})
       : super(key: key);
 
   @override
@@ -19,7 +23,7 @@ class _StartConfigurationContainerState
     extends State<StartConfigurationContainer> {
   @override
   Widget build(BuildContext context) {
-    CMConfig _cmConfig = this.widget.cmConfig;
+    print(this.widget.cmConfig.toJson().toString());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,7 +42,17 @@ class _StartConfigurationContainerState
           ),
           child: GestureDetector(
             onDoubleTap: () {
-              SideSheet.right(body: EditConfigSideSheet(), context: context);
+              SideSheet.right(
+                      body: EditConfigSideSheet(
+                        cmconfig: this.widget.cmConfig,
+                        callback: (val) => this.widget.cmConfig = val,
+                      ),
+                      context: context)
+                  .then((value) {
+                setState(() {
+                  this.widget.callback(this.widget.cmConfig);
+                });
+              });
             },
             child: FilledButton(
                 onPressed: () {},
@@ -55,11 +69,11 @@ class _StartConfigurationContainerState
                     ),
                     Text(
                       "CARLA.EXE: " +
-                          _cmConfig.cmPath +
+                          this.widget.cmConfig.cmPath +
                           "\nProject: " +
-                          _cmConfig.cmProj +
+                          this.widget.cmConfig.cmProj +
                           "\nTestrun: " +
-                          _cmConfig.cmTestrun,
+                          this.widget.cmConfig.cmTestrun,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Colors.white,

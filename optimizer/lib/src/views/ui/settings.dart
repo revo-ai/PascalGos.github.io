@@ -66,8 +66,7 @@ class SettingsPage extends StatelessWidget {
         ),
         controller: controller,
         children: [
-          Text('Theme mode',
-              style: FluentTheme.of(context).typography.subtitle),
+          Text('Theme mode', style: FluentTheme.of(context).typography.title),
           ...List.generate(ThemeMode.values.length, (index) {
             final mode = ThemeMode.values[index];
             return Padding(
@@ -83,42 +82,43 @@ class SettingsPage extends StatelessWidget {
               ),
             );
           }),
-          Text(
-            'Navigation Pane Display Mode',
-            style: FluentTheme.of(context).typography.subtitle,
-          ),
-          ...List.generate(PaneDisplayMode.values.length, (index) {
-            final mode = PaneDisplayMode.values[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: RadioButton(
-                checked: appTheme.displayMode == mode,
-                onChanged: (value) {
-                  if (value) appTheme.displayMode = mode;
-                },
-                content: Text(
-                  mode.toString().replaceAll('PaneDisplayMode.', ''),
-                ),
-              ),
-            );
-          }),
-          Text('Navigation Indicator',
-              style: FluentTheme.of(context).typography.subtitle),
-          ...List.generate(NavigationIndicators.values.length, (index) {
-            final mode = NavigationIndicators.values[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: RadioButton(
-                checked: appTheme.indicator == mode,
-                onChanged: (value) {
-                  if (value) appTheme.indicator = mode;
-                },
-                content: Text(
-                  mode.toString().replaceAll('NavigationIndicators.', ''),
-                ),
-              ),
-            );
-          }),
+
+          // Text(
+          //   'Navigation Pane Display Mode',
+          //   style: FluentTheme.of(context).typography.subtitle,
+          // ),
+          // ...List.generate(PaneDisplayMode.values.length, (index) {
+          //   final mode = PaneDisplayMode.values[index];
+          //   return Padding(
+          //     padding: const EdgeInsets.only(bottom: 8.0),
+          //     child: RadioButton(
+          //       checked: appTheme.displayMode == mode,
+          //       onChanged: (value) {
+          //         if (value) appTheme.displayMode = mode;
+          //       },
+          //       content: Text(
+          //         mode.toString().replaceAll('PaneDisplayMode.', ''),
+          //       ),
+          //     ),
+          //   );
+          // }),
+          // Text('Navigation Indicator',
+          //     style: FluentTheme.of(context).typography.subtitle),
+          // ...List.generate(NavigationIndicators.values.length, (index) {
+          //   final mode = NavigationIndicators.values[index];
+          //   return Padding(
+          //     padding: const EdgeInsets.only(bottom: 8.0),
+          //     child: RadioButton(
+          //       checked: appTheme.indicator == mode,
+          //       onChanged: (value) {
+          //         if (value) appTheme.indicator = mode;
+          //       },
+          //       content: Text(
+          //         mode.toString().replaceAll('NavigationIndicators.', ''),
+          //       ),
+          //     ),
+          //   );
+          // }),
           // Text('Accent Color',
           //     style: FluentTheme.of(context).typography.subtitle),
           // Wrap(children: [
@@ -136,9 +136,18 @@ class SettingsPage extends StatelessWidget {
           //     );
           //   }),
           // ]),
+          SizedBox(height: 10),
+          Text('Info', style: FluentTheme.of(context).typography.title),
+          Text(
+            'App-Version Early Alpha  \n© ' +
+                DateTime.now().year.toString() +
+                ' RevoAI',
+            style: FluentTheme.of(context).typography.caption,
+          ),
+
           if (!kIsWeb && defaultTargetPlatform == TargetPlatform.windows) ...[
             Text('Window Transparency',
-                style: FluentTheme.of(context).typography.subtitle),
+                style: FluentTheme.of(context).typography.title),
             ...List.generate(FlutterAcrylic.AcrylicEffect.values.length,
                 (index) {
               final mode = FlutterAcrylic.AcrylicEffect.values[index];

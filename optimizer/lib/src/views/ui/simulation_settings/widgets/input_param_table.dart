@@ -66,7 +66,6 @@ class _InputParamTableState extends State<InputParamTable> {
                 ),
                 child: Row(
                   children: [
-                    //TODO: Make Color to Theme color
                     Icon(FluentIcons.add, color: Colors.white),
                     SizedBox(
                       width: 10,
