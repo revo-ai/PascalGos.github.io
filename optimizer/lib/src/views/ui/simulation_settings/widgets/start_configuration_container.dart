@@ -34,7 +34,7 @@ class _StartConfigurationContainerState
         SizedBox(height: 10),
         ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.3,
+            maxWidth: 400,
           ),
           child: GestureDetector(
             onDoubleTap: () {
