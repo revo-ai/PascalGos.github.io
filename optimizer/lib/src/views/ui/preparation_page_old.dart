@@ -1,5 +1,5 @@
 import 'package:optimizer/src/core/models/parameter_model.dart';
-import 'package:optimizer/src/views/ui/input_param_table.dart';
+import 'package:optimizer/src/views/ui/simulation_settings/widgets/input_param_table.dart';
 import 'package:optimizer/src/views/ui/result_page.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';

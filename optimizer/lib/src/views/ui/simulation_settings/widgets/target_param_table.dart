@@ -1,8 +1,10 @@
 import 'package:optimizer/src/core/models/parameter_model.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:hovering/hovering.dart';
+import 'package:optimizer/src/views/ui/widgets/side_sheet.dart';
 
-import 'dialogs/add_tarparam_dialog.dart';
+import 'add_tarparam_dialog.dart';
+import 'edit_tarparam_sidesheet.dart';
 import 'input_param_table.dart';
 
 typedef void ParameterCallback(List<TargetParameter> params);
@@ -41,46 +43,65 @@ class _TargetParamTableState extends State<TargetParamTable> {
   TextEditingController boundsStartController = TextEditingController();
   TextEditingController boundsEndController = TextEditingController();
 
+  String errorTargetParameters = "";
+
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(
+        'Target Parameter',
+        style: FluentTheme.of(context).typography.title,
+      ),
+      Text(
+        errorTargetParameters,
+        style: TextStyle(
+          color: Colors.errorPrimaryColor,
+          fontSize: FluentTheme.of(context).typography.caption!.fontSize,
+          fontWeight: FluentTheme.of(context).typography.caption!.fontWeight,
+        ),
+      ),
+      SizedBox(height: 10),
       Row(
         children: [
-          Expanded(
-            child: FilledButton(
-              style: ButtonStyle(
-                shape: ButtonState.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4))),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 200,
+            ),
+            child: Expanded(
+              child: FilledButton(
+                style: ButtonStyle(
+                  shape: ButtonState.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4))),
+                ),
+                child: Row(
+                  children: [
+                    Icon(FluentIcons.add, color: Colors.white),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Add parameter",
+                        style: TextStyle(
+                          color: Colors.white,
+                        )),
+                  ],
+                ),
+                onPressed: () async {
+                  print("Add parameter pressed");
+                  var result = await showDialog(
+                    context: context,
+                    useRootNavigator: false,
+                    builder: (_) => AddTarParamDialog(
+                        callback: (val) => setState(() => _tarparam = val)),
+                  ).then((_) {
+                    if (_tarparam != null && _tarparam is TargetParameter) {
+                      setState(() {
+                        this.widget.parameters.add(_tarparam);
+                        widget.callback(this.widget.parameters);
+                      });
+                    }
+                  });
+                },
               ),
-              child: Row(
-                children: [
-                  //TODO: Change Color for FluentIcons
-                  Icon(FluentIcons.add, color: Colors.white),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text("Add parameter",
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                ],
-              ),
-              onPressed: () async {
-                print("Add parameter pressed");
-                var result = await showDialog(
-                  context: context,
-                  useRootNavigator: false,
-                  builder: (_) => AddTarParamDialog(
-                      callback: (val) => setState(() => _tarparam = val)),
-                ).then((_) {
-                  if (_tarparam != null && _tarparam is TargetParameter) {
-                    setState(() {
-                      this.widget.parameters.add(_tarparam);
-                      widget.callback(this.widget.parameters);
-                    });
-                  }
-                });
-              },
             ),
           ),
           Spacer(),
@@ -191,28 +212,42 @@ class _TargetParamTableState extends State<TargetParamTable> {
                                 ),
                               ),
                             ),
-                            TableCell(
-                                child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    height: parameterRowHeight,
-                                    child: Text(
-                                        this.widget.parameters[index].key))),
-                            TableCell(
-                                child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    height: parameterRowHeight,
-                                    child: Text(this
-                                            .widget
-                                            .parameters[index]
-                                            .operation
-                                            .key +
-                                        " " +
-                                        this
-                                            .widget
-                                            .parameters[index]
-                                            .operation
-                                            .bounds[0]
-                                            .toString()))),
+                            GestureDetector(
+                              onDoubleTap: () {
+                                SideSheet.right(
+                                    body: EditTargetParamSideSheet(),
+                                    context: context);
+                              },
+                              child: TableCell(
+                                  child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      height: parameterRowHeight,
+                                      child: Text(
+                                          this.widget.parameters[index].key))),
+                            ),
+                            GestureDetector(
+                              onDoubleTap: () {
+                                SideSheet.right(
+                                    body: EditTargetParamSideSheet(),
+                                    context: context);
+                              },
+                              child: TableCell(
+                                  child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      height: parameterRowHeight,
+                                      child: Text(this
+                                              .widget
+                                              .parameters[index]
+                                              .operation
+                                              .key +
+                                          " " +
+                                          this
+                                              .widget
+                                              .parameters[index]
+                                              .operation
+                                              .bounds[0]
+                                              .toString()))),
+                            ),
                           ]),
                     ],
                   ),
@@ -284,28 +319,42 @@ class _TargetParamTableState extends State<TargetParamTable> {
                             ),
                           ),
                         ),
-                        TableCell(
-                            child: Container(
-                                alignment: Alignment.centerLeft,
-                                height: parameterRowHeight,
-                                child:
-                                    Text(this.widget.parameters[index].key))),
-                        TableCell(
-                            child: Container(
-                                alignment: Alignment.centerLeft,
-                                height: parameterRowHeight,
-                                child: Text(this
-                                        .widget
-                                        .parameters[index]
-                                        .operation
-                                        .key +
-                                    " " +
-                                    this
-                                        .widget
-                                        .parameters[index]
-                                        .operation
-                                        .bounds[0]
-                                        .toString()))),
+                        GestureDetector(
+                          onDoubleTap: () {
+                            SideSheet.right(
+                                body: EditTargetParamSideSheet(),
+                                context: context);
+                          },
+                          child: TableCell(
+                              child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  height: parameterRowHeight,
+                                  child:
+                                      Text(this.widget.parameters[index].key))),
+                        ),
+                        GestureDetector(
+                          onDoubleTap: () {
+                            SideSheet.right(
+                                body: EditTargetParamSideSheet(),
+                                context: context);
+                          },
+                          child: TableCell(
+                              child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  height: parameterRowHeight,
+                                  child: Text(this
+                                          .widget
+                                          .parameters[index]
+                                          .operation
+                                          .key +
+                                      " " +
+                                      this
+                                          .widget
+                                          .parameters[index]
+                                          .operation
+                                          .bounds[0]
+                                          .toString()))),
+                        ),
                       ]),
                     ],
                   ),

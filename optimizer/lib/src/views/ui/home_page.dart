@@ -1,11 +1,12 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:optimizer/src/views/ui/configuration_selection_page.dart';
+import 'package:optimizer/src/core/models/simulation_settings_model.dart';
+import 'package:optimizer/src/views/ui/configuration_Selection/configuration_selection_page.dart';
 import 'package:optimizer/src/views/ui/result_page.dart';
 import 'package:optimizer/src/views/ui/colors.dart';
 import 'package:optimizer/src/views/ui/forms.dart';
 import 'package:optimizer/src/views/ui/mobile.dart';
 import 'package:optimizer/src/views/ui/others.dart';
-import 'package:optimizer/src/views/ui/preparation_page.dart';
+import 'package:optimizer/src/views/ui/simulation_settings/simulation_settings_page.dart';
 import 'package:optimizer/src/views/ui/settings.dart';
 import 'package:optimizer/src/views/ui/simulation_page.dart';
 import 'package:optimizer/src/views/ui/typography.dart';
@@ -185,8 +186,13 @@ class _HomePageState extends State<HomePage> {
       content: NavigationBody(index: index, children: [
         Navigator(
           onGenerateRoute: (settings) {
-            // Widget page = WelcomePage();
-            Widget page = WelcomePage();
+            //Widget page = WelcomePage();
+            CMConfig _cmConfig = CMConfig(
+              cmPath: "C:/IPG/.../bin/CM.exe",
+              cmProj: "C:/CM_Projects/CM10",
+              cmTestrun: "Braking",
+            );
+            Widget page = SimulationsSettingsPage(cmConfig: _cmConfig);
             return FluentPageRoute(builder: (_) => page);
           },
         ),

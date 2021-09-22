@@ -1,5 +1,5 @@
 import 'package:optimizer/src/views/ui/home_page.dart';
-import 'package:optimizer/src/views/ui/preparation_page.dart';
+import 'package:optimizer/src/views/ui/simulation_settings/simulation_settings_page.dart';
 import 'package:optimizer/src/views/ui/settings.dart';
 import 'package:optimizer/src/views/ui/result_page.dart';
 import 'package:optimizer/src/views/utils/theme.dart';

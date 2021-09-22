@@ -1,10 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:optimizer/src/core/models/simulation_settings_model.dart';
-import 'package:optimizer/src/views/ui/preparation_page.dart';
-import 'package:optimizer/src/views/ui/widgets/configuration_tile.dart';
+import 'package:optimizer/src/views/ui/simulation_settings/simulation_settings_page.dart';
+import 'package:optimizer/src/views/ui/configuration_Selection/widgets/configuration_tile.dart';
 
-import 'dialogs/add_config_dialog.dart';
+import 'widgets/add_config_dialog.dart';
 
 class ConfigurationSelection extends StatefulWidget {
   const ConfigurationSelection({Key? key}) : super(key: key);
@@ -42,7 +42,10 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
   Widget build(BuildContext context) {
     return ScaffoldPage(
       header: PageHeader(
-        title: Text('Select Configuration'),
+        title: Text(
+          'Select Configuration',
+          style: FluentTheme.of(context).typography.titleLarge,
+        ),
       ),
       content: Column(children: [
         Expanded(
@@ -113,7 +116,7 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
 
     if (_configIsSelected) {
       Navigator.push(context, FluentPageRoute(builder: (context) {
-        return PreparationPage(
+        return SimulationsSettingsPage(
           cmConfig: cmConfig,
         );
       }));

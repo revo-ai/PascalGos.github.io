@@ -1,8 +1,10 @@
 import 'package:optimizer/src/core/models/parameter_model.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:hovering/hovering.dart';
+import 'package:optimizer/src/views/ui/simulation_settings/widgets/edit_inparam_sidesheet.dart';
+import 'package:optimizer/src/views/ui/widgets/side_sheet.dart';
 
-import 'dialogs/add_inparam_dialog.dart';
+import 'add_inparam_dialog.dart';
 
 typedef void ParameterCallback(List<InputParameter> params);
 
@@ -32,48 +34,68 @@ class _InputParamTableState extends State<InputParamTable> {
   String errorCMFile = "";
   String errorParameterKey = "";
   String errorBounds = "";
+  String errorInputParameters = "";
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(
+        'Variation Parameter',
+        style: FluentTheme.of(context).typography.title,
+      ),
+      Text(
+        errorInputParameters,
+        style: TextStyle(
+          color: Colors.errorPrimaryColor,
+          fontSize: FluentTheme.of(context).typography.caption!.fontSize,
+          fontWeight: FluentTheme.of(context).typography.caption!.fontWeight,
+        ),
+      ),
+      SizedBox(height: 10),
       Row(
         children: [
-          Expanded(
-            child: FilledButton(
-              style: ButtonStyle(
-                shape: ButtonState.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4))),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 200,
+            ),
+            child: Expanded(
+              child: FilledButton(
+                style: ButtonStyle(
+                  shape: ButtonState.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4))),
+                ),
+                child: Row(
+                  children: [
+                    //TODO: Make Color to Theme color
+                    Icon(FluentIcons.add, color: Colors.white),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Add parameter",
+                        style: TextStyle(
+                          color: Colors.white,
+                        )),
+                  ],
+                ),
+                onPressed: () async {
+                  if (this.widget.parameters.length < 6) {
+                    var result = await showDialog(
+                      context: context,
+                      useRootNavigator: false,
+                      builder: (_) => AddInParamDialog(
+                          callback: (val) => setState(() => _inputParam = val)),
+                    ).then((_) {
+                      if (_inputParam != null &&
+                          _inputParam is InputParameter) {
+                        setState(() {
+                          this.widget.parameters.add(_inputParam);
+                          widget.callback(this.widget.parameters);
+                        });
+                      }
+                    });
+                  }
+                },
               ),
-              child: Row(
-                children: [
-                  //TODO: Make Color to Theme color
-                  Icon(FluentIcons.add, color: Colors.white),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text("Add parameter",
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
-                ],
-              ),
-              onPressed: () async {
-                if (this.widget.parameters.length < 6) {
-                  var result = await showDialog(
-                    context: context,
-                    useRootNavigator: false,
-                    builder: (_) => AddInParamDialog(
-                        callback: (val) => setState(() => _inputParam = val)),
-                  ).then((_) {
-                    if (_inputParam != null && _inputParam is InputParameter) {
-                      setState(() {
-                        this.widget.parameters.add(_inputParam);
-                        widget.callback(this.widget.parameters);
-                      });
-                    }
-                  });
-                }
-              },
             ),
           ),
           Spacer(
@@ -107,8 +129,7 @@ class _InputParamTableState extends State<InputParamTable> {
       ),
       Container(
         constraints: BoxConstraints(
-            minHeight: parameterRowHeight * 6,
-            maxHeight: parameterRowHeight * 6),
+            minHeight: parameterRowHeight, maxHeight: parameterRowHeight * 6),
         child: Column(children: [
           EmptyParameterListReminder(
               paramListIsEmpty: this.widget.parameters.isEmpty),
@@ -187,29 +208,50 @@ class _InputParamTableState extends State<InputParamTable> {
                                 ),
                               ),
                             ),
-                            TableCell(
-                                child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    height: parameterRowHeight,
-                                    child: Text(
-                                        this.widget.parameters[index].key))),
-                            TableCell(
-                                child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    height: parameterRowHeight,
-                                    child: Text(this
-                                        .widget
-                                        .parameters[index]
-                                        .cm_File))),
-                            TableCell(
-                                child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    height: parameterRowHeight,
-                                    child: Text(this
-                                        .widget
-                                        .parameters[index]
-                                        .bounds
-                                        .toString()))),
+                            GestureDetector(
+                              onDoubleTap: () {
+                                SideSheet.right(
+                                    body: EditInputParamSideSheet(),
+                                    context: context);
+                              },
+                              child: TableCell(
+                                  child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      height: parameterRowHeight,
+                                      child: Text(
+                                          this.widget.parameters[index].key))),
+                            ),
+                            GestureDetector(
+                              onDoubleTap: () {
+                                SideSheet.right(
+                                    body: EditInputParamSideSheet(),
+                                    context: context);
+                              },
+                              child: TableCell(
+                                  child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      height: parameterRowHeight,
+                                      child: Text(this
+                                          .widget
+                                          .parameters[index]
+                                          .cm_File))),
+                            ),
+                            GestureDetector(
+                              onDoubleTap: () {
+                                SideSheet.right(
+                                    body: EditInputParamSideSheet(),
+                                    context: context);
+                              },
+                              child: TableCell(
+                                  child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      height: parameterRowHeight,
+                                      child: Text(this
+                                          .widget
+                                          .parameters[index]
+                                          .bounds
+                                          .toString()))),
+                            ),
                           ]),
                     ],
                   ),
@@ -281,27 +323,48 @@ class _InputParamTableState extends State<InputParamTable> {
                             ),
                           ),
                         ),
-                        TableCell(
-                            child: Container(
-                                alignment: Alignment.centerLeft,
-                                height: parameterRowHeight,
-                                child:
-                                    Text(this.widget.parameters[index].key))),
-                        TableCell(
-                            child: Container(
-                                alignment: Alignment.centerLeft,
-                                height: parameterRowHeight,
-                                child: Text(
-                                    this.widget.parameters[index].cm_File))),
-                        TableCell(
-                            child: Container(
-                                alignment: Alignment.centerLeft,
-                                height: parameterRowHeight,
-                                child: Text(this
-                                    .widget
-                                    .parameters[index]
-                                    .bounds
-                                    .toString()))),
+                        GestureDetector(
+                          onDoubleTap: () {
+                            SideSheet.right(
+                                body: EditInputParamSideSheet(),
+                                context: context);
+                          },
+                          child: TableCell(
+                              child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  height: parameterRowHeight,
+                                  child:
+                                      Text(this.widget.parameters[index].key))),
+                        ),
+                        GestureDetector(
+                          onDoubleTap: () {
+                            SideSheet.right(
+                                body: EditInputParamSideSheet(),
+                                context: context);
+                          },
+                          child: TableCell(
+                              child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  height: parameterRowHeight,
+                                  child: Text(
+                                      this.widget.parameters[index].cm_File))),
+                        ),
+                        GestureDetector(
+                          onDoubleTap: () {
+                            SideSheet.right(
+                                body: EditInputParamSideSheet(),
+                                context: context);
+                          },
+                          child: TableCell(
+                              child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  height: parameterRowHeight,
+                                  child: Text(this
+                                      .widget
+                                      .parameters[index]
+                                      .bounds
+                                      .toString()))),
+                        ),
                       ]),
                     ],
                   ),
@@ -367,10 +430,12 @@ class EmptyParameterListReminderState
   @override
   Widget build(BuildContext context) {
     if (widget.paramListIsEmpty) {
-      return Center(
-          heightFactor: 6.0,
-          child: Text("- Your parameter list is empty - ",
-              style: FluentTheme.of(context).typography.subtitle));
+      return Expanded(
+        child: Center(
+            heightFactor: 6.0,
+            child: Text("- Your parameter list is empty - ",
+                style: FluentTheme.of(context).typography.subtitle)),
+      );
     } else
       return Container();
   }

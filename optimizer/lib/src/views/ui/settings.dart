@@ -53,7 +53,11 @@ class SettingsPage extends StatelessWidget {
       }
     }());
     return ScaffoldPage(
-      header: PageHeader(title: Text('Settings')),
+      header: PageHeader(
+          title: Text(
+        'Settings',
+        style: FluentTheme.of(context).typography.titleLarge,
+      )),
       content: ListView(
         padding: EdgeInsets.only(
           bottom: kPageDefaultVerticalPadding,
