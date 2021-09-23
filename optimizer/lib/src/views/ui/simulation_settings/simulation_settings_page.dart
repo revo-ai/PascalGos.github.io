@@ -1,4 +1,3 @@
-//import 'package:flutter/material.dart' as material;
 import 'package:file_picker/file_picker.dart';
 import 'package:optimizer/src/core/models/parameter_model.dart';
 import 'package:optimizer/src/core/models/simulation_settings_model.dart';
@@ -36,8 +35,8 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
   String errorInputParameters = "";
   String errorTargetParameters = "";
 
-  bool _isDuration = true;
-  int _time = 3;
+  bool _hasDuration = true;
+  int _duration = 3;
   int _iterations = 100;
 
   @override
@@ -60,11 +59,11 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
         commandBar: Row(
           children: [
             SimulationParamCommandBar(
-              callback: (val, bool) {
+              callback: (bool, val) {
                 setState(() {
-                  _isDuration = bool;
-                  if (_isDuration) {
-                    _time = val;
+                  _hasDuration = bool;
+                  if (_hasDuration) {
+                    _duration = val;
                   } else {
                     _iterations = val;
                   }
@@ -89,18 +88,17 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
                     });
 
                     if (validateForm(
-                      errorCMConfig,
                       errorInputParameters,
                       errorTargetParameters,
                     )) {
-                      if (_isDuration) {
+                      if (_hasDuration) {
                         _iterations = 0;
                       } else {
-                        _time = 0;
+                        _duration = 0;
                       }
                       this.widget.simulationSettings.optConfig.iterations =
                           _iterations;
-                      this.widget.simulationSettings.optConfig.time = _time;
+                      this.widget.simulationSettings.optConfig.time = _duration;
                       print(this.widget.simulationSettings.toJson().toString());
                       Navigator.push(
                         context,
@@ -110,6 +108,37 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
                           );
                         }),
                       );
+                    } else {
+                      showSnackbar(
+                          context,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Container(
+                                height: kOneLineTileHeight,
+                                child: InfoBar(
+                                  title: Text("Error"),
+                                  content: Text("Please provide " +
+                                      errorInputParameters +
+                                      ((errorInputParameters != "" &&
+                                              errorTargetParameters != "")
+                                          ? " and "
+                                          : "") +
+                                      errorTargetParameters),
+                                  severity: InfoBarSeverity.error,
+                                  // action: IconButton(
+                                  //   icon: Icon(FluentIcons.close),
+                                  //   onPressed: () {
+
+                                  //   },
+                                  //),
+                                ),
+                              ),
+                            ],
+                          ),
+                          duration: Duration(seconds: 6),
+                          alignment: Alignment.bottomCenter);
                     }
                   },
                 ),
@@ -123,19 +152,49 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
                       errorTargetParameters = validateTargetParameter(
                           this.widget.simulationSettings.targetParams);
                     });
-
-                    if (validateForm(errorCMConfig, errorInputParameters,
-                        errorTargetParameters)) {
-                      if (_isDuration) {
+                    if (validateForm(
+                        errorInputParameters, errorTargetParameters)) {
+                      if (_hasDuration) {
                         _iterations = 0;
                       } else {
-                        _time = 0;
+                        _duration = 0;
                       }
                       this.widget.simulationSettings.optConfig.iterations =
                           _iterations;
-                      this.widget.simulationSettings.optConfig.time = _time;
+                      this.widget.simulationSettings.optConfig.time = _duration;
                       DownloadService.saveStringAsJson(
                           this.widget.simulationSettings.toJson().toString());
+                    } else {
+                      showSnackbar(
+                          context,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Container(
+                                height: kOneLineTileHeight,
+                                child: InfoBar(
+                                  title: Text("Error"),
+                                  content: Text("Please provide " +
+                                      errorInputParameters +
+                                      ((errorInputParameters != "" &&
+                                              errorTargetParameters != "")
+                                          ? " and "
+                                          : "") +
+                                      errorTargetParameters),
+                                  severity: InfoBarSeverity.error,
+                                  // action: IconButton(
+                                  //   icon: Icon(FluentIcons.close),
+                                  //   onPressed: () {
+
+                                  //   },
+                                  //),
+                                ),
+                              ),
+                            ],
+                          ),
+                          duration: Duration(seconds: 6),
+                          alignment: Alignment.bottomCenter);
                     }
                   },
                 ),
@@ -239,23 +298,16 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
     );
   }
 
-  String validateCMConfig(bool isSelected) {
-    if (!isSelected) {
-      return "Please provide the CarMaker Configuration";
-    } else
-      return "";
-  }
-
   String validateInputParameter(List<InputParameter> params) {
     if (params.length == 0) {
-      return "Please provide at least 1 Input Parameter";
+      return "at least 1 Variation Parameter";
     } else
       return "";
   }
 
   String validateTargetParameter(List<TargetParameter> params) {
     if (params.length == 0) {
-      return "Please provide at least 1 Target Parameter";
+      return "at least 1 Target Parameter";
     } else
       return "";
   }
@@ -272,9 +324,8 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
   bool validateForm(
     String value1,
     String value2,
-    String value3,
   ) {
-    if (value1 == "" && value2 == "" && value3 == "") {
+    if (value1 == "" && value2 == "") {
       return true;
     } else {
       return false;
