@@ -18,12 +18,12 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
   final ScrollController scrollController = ScrollController();
   bool disabled = false;
 
-  CMConfig _cmConfig = CMConfig(
-    cmPath: "",
-    cmProj: "",
-    cmTestrun: "",
-  );
-  CMConfig get cmConfig => _cmConfig;
+  SimulationSettings _simulationSettings = SimulationSettings(
+      cmConfig: CMConfig(),
+      inputParams: [],
+      targetParams: [],
+      optConfig: OPTConfig());
+
   bool _configIsSelected = false;
 
   @override
@@ -32,9 +32,6 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
     scrollController.dispose();
     super.dispose();
   }
-
-  static const int numItems = 10;
-  List<bool> selected = List<bool>.generate(numItems, (int index) => false);
 
   int _selectedTileIndex = -1;
 
@@ -110,7 +107,7 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
         context: context,
         builder: (_) => AddConfigDialog(
               index: _selectedTileIndex,
-              configCallback: (val) => _cmConfig = val,
+              configCallback: (val) => _simulationSettings.cmConfig = val,
               configSelectedCallBack: (val) => _configIsSelected = val,
             )).then((value) {});
 
@@ -119,7 +116,7 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
         context,
         FluentPageRoute(builder: (context) {
           return SimulationsSettingsPage(
-            cmConfig: cmConfig,
+            simulationSettings: _simulationSettings,
           );
         }),
       );
