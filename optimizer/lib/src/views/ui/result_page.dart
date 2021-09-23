@@ -1,8 +1,13 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
+import 'package:optimizer/src/core/models/simulation_settings_model.dart';
 
 class ResultPage extends StatefulWidget {
-  const ResultPage({Key? key}) : super(key: key);
+  final SimulationSettings simulationSettings;
+  const ResultPage({
+    Key? key,
+    required this.simulationSettings,
+  }) : super(key: key);
 
   @override
   _ResultPageState createState() => _ResultPageState();
