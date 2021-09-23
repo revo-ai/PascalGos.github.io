@@ -27,12 +27,10 @@ class _SimulationPageState extends State<SimulationPage> {
   double sliderValue = 5;
   double get max => 9;
   double percent = 0.0;
+  int index = 0;
 
   final FlyoutController controller = FlyoutController();
   final ScrollController scrollController = ScrollController();
-
-  static const int numItems = 10;
-  List<bool> selected = List<bool>.generate(numItems, (int index) => false);
 
   @override
   void dispose() {
@@ -41,15 +39,86 @@ class _SimulationPageState extends State<SimulationPage> {
     super.dispose();
   }
 
+  List messages = [
+    "Initialise Simulation.",
+    "Initialise Simulation..",
+    "Initialise Simulation...",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+    "Running Test Cases.",
+    "Running Test Cases..",
+    "Running Test Cases...",
+    "Changing Variables",
+  ];
+
   @override
   void initState() {
     timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
       print("Percentage Update");
       setState(() {
         percent += 1;
+        if (percent % 2 == 0) index++;
         if (percent >= 100) {
           timer.cancel();
-          Navigator.pop(
+          Navigator.push(
             context,
             FluentPageRoute(builder: (context) {
               return ResultPage(
@@ -65,6 +134,7 @@ class _SimulationPageState extends State<SimulationPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(messages.length);
     return ScaffoldPage(
         header: PageHeader(
           title: Text('Generation'),
@@ -76,7 +146,7 @@ class _SimulationPageState extends State<SimulationPage> {
             children: [
               Center(
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
@@ -129,7 +199,7 @@ class _SimulationPageState extends State<SimulationPage> {
                       ),
                       SizedBox(height: 30),
                       Text(
-                        'Simulation is running...',
+                        (index < messages.length) ? messages[index] : "",
                         style: FluentTheme.of(context).typography.body,
                       ),
                       SizedBox(
