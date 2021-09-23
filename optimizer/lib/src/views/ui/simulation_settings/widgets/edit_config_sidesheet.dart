@@ -60,10 +60,15 @@ class _EditConfigSideSheetState extends State<EditConfigSideSheet> {
   }
 
   @override
-  build(BuildContext context) {
+  void initState() {
     cmPathTextController.text = this.widget.cmconfig.cmPath;
     cmProjPathTextController.text = this.widget.cmconfig.cmProj;
     cmTestrunTextController.text = this.widget.cmconfig.cmTestrun;
+    super.initState();
+  }
+
+  @override
+  build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
