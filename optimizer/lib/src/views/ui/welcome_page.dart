@@ -132,7 +132,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                           Text('Load Scenario Settings'),
                                         ],
                                       ),
-                                      onPressed: disabled
+                                      onPressed: false
                                           ? null
                                           : () {
                                               print('pressed text button');
@@ -229,7 +229,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                           Text(' Load Scenario Settings'),
                                         ],
                                       ),
-                                      onPressed: disabled
+                                      onPressed: false
                                           ? null
                                           : () {
                                               print('pressed text button');
