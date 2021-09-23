@@ -50,9 +50,9 @@ class CMConfig {
   final String cmTestrun;
 
   CMConfig({
-    required this.cmPath,
-    required this.cmProj,
-    required this.cmTestrun,
+    this.cmPath = "",
+    this.cmProj = "",
+    this.cmTestrun = "",
   });
 
   static CMConfig fromJson(Map<String, dynamic> json) => CMConfig(
@@ -70,13 +70,13 @@ class CMConfig {
 
 class OPTConfig {
   Algos algos;
-  final int iterations;
-  final int time;
+  int iterations;
+  int time;
 
   OPTConfig({
-    required this.algos,
-    required this.iterations,
-    required this.time,
+    this.algos = const Algos(),
+    this.iterations = 0,
+    this.time = 0,
   });
 
   static OPTConfig fromJson(Map<String, dynamic> json) => OPTConfig(
@@ -93,20 +93,20 @@ class OPTConfig {
 }
 
 class Algos {
-  bool deOptimizer;
-  bool boRFLibVersion;
-  bool randomOPT;
-  bool boGpLibVersion;
-  bool customBo;
-  bool cmaEs;
+  final bool deOptimizer;
+  final bool boRFLibVersion;
+  final bool randomOPT;
+  final bool boGpLibVersion;
+  final bool customBo;
+  final bool cmaEs;
 
-  Algos({
-    required this.deOptimizer,
-    required this.boRFLibVersion,
-    required this.randomOPT,
-    required this.boGpLibVersion,
-    required this.customBo,
-    required this.cmaEs,
+  const Algos({
+    this.deOptimizer = true,
+    this.boRFLibVersion = false,
+    this.randomOPT = false,
+    this.boGpLibVersion = false,
+    this.customBo = false,
+    this.cmaEs = false,
   });
 
   static Algos fromJson(Map<String, dynamic> json) => Algos(
