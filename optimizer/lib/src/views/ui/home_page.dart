@@ -1,4 +1,5 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:optimizer/src/core/models/parameter_model.dart';
 import 'package:optimizer/src/core/models/simulation_settings_model.dart';
 import 'package:optimizer/src/views/ui/configuration_Selection/configuration_selection_page.dart';
 import 'package:optimizer/src/views/ui/result_page.dart';
@@ -173,22 +174,17 @@ class _HomePageState extends State<HomePage> {
             ),
             title: Text(
               'New Scenario',
-              //style: TextStyle(color: Colors.white),
             ),
           ),
         ],
         footerItems: [
-          PaneItemSeparator(
-              //color: Colors.white
-              ),
+          PaneItemSeparator(),
           PaneItem(
               icon: Icon(
                 FluentIcons.settings,
-                //color: Colors.white,
               ),
               title: Text(
                 'Settings',
-                //style: TextStyle(color: Colors.white),
               )),
         ],
       ),
@@ -200,20 +196,12 @@ class _HomePageState extends State<HomePage> {
                 index = val;
               });
             });
-            // CMConfig _cmConfig = CMConfig(
-            //   cmPath: "C:/IPG/.../bin/CM.exe",
-            //   cmProj: "C:/CM_Projects/CM10",
-            //   cmTestrun: "Braking",
-            // );
-            // Widget page = SimulationsSettingsPage(cmConfig: _cmConfig);
             return FluentPageRoute(builder: (_) => page);
           },
         ),
         Navigator(
           onGenerateRoute: (settings) {
             Widget page = ConfigurationSelection();
-            if (settings.name == 'generation') page = SimulationPage();
-            if (settings.name == 'results') page = ResultPage();
             return FluentPageRoute(builder: (_) => page);
           },
         ),
