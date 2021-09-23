@@ -82,60 +82,6 @@ class SettingsPage extends StatelessWidget {
               ),
             );
           }),
-
-          // Text(
-          //   'Navigation Pane Display Mode',
-          //   style: FluentTheme.of(context).typography.subtitle,
-          // ),
-          // ...List.generate(PaneDisplayMode.values.length, (index) {
-          //   final mode = PaneDisplayMode.values[index];
-          //   return Padding(
-          //     padding: const EdgeInsets.only(bottom: 8.0),
-          //     child: RadioButton(
-          //       checked: appTheme.displayMode == mode,
-          //       onChanged: (value) {
-          //         if (value) appTheme.displayMode = mode;
-          //       },
-          //       content: Text(
-          //         mode.toString().replaceAll('PaneDisplayMode.', ''),
-          //       ),
-          //     ),
-          //   );
-          // }),
-          // Text('Navigation Indicator',
-          //     style: FluentTheme.of(context).typography.subtitle),
-          // ...List.generate(NavigationIndicators.values.length, (index) {
-          //   final mode = NavigationIndicators.values[index];
-          //   return Padding(
-          //     padding: const EdgeInsets.only(bottom: 8.0),
-          //     child: RadioButton(
-          //       checked: appTheme.indicator == mode,
-          //       onChanged: (value) {
-          //         if (value) appTheme.indicator = mode;
-          //       },
-          //       content: Text(
-          //         mode.toString().replaceAll('NavigationIndicators.', ''),
-          //       ),
-          //     ),
-          //   );
-          // }),
-          // Text('Accent Color',
-          //     style: FluentTheme.of(context).typography.subtitle),
-          // Wrap(children: [
-          //   Tooltip(
-          //     style: tooltipThemeData,
-          //     child: _buildColorBlock(appTheme, systemAccentColor),
-          //     message: accentColorNames[0],
-          //   ),
-          //   ...List.generate(Colors.accentColors.length, (index) {
-          //     final color = Colors.accentColors[index];
-          //     return Tooltip(
-          //       style: tooltipThemeData,
-          //       message: accentColorNames[index + 1],
-          //       child: _buildColorBlock(appTheme, color),
-          //     );
-          //   }),
-          // ]),
           SizedBox(height: 10),
           Text('Info', style: FluentTheme.of(context).typography.title),
           Text(
@@ -144,7 +90,6 @@ class SettingsPage extends StatelessWidget {
                 ' RevoAI',
             style: FluentTheme.of(context).typography.caption,
           ),
-
           if (!kIsWeb && defaultTargetPlatform == TargetPlatform.windows) ...[
             Text('Window Transparency',
                 style: FluentTheme.of(context).typography.title),
@@ -174,31 +119,6 @@ class SettingsPage extends StatelessWidget {
             }),
           ],
         ],
-      ),
-    );
-  }
-
-  Widget _buildColorBlock(AppTheme appTheme, AccentColor color) {
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: Button(
-        onPressed: () {
-          appTheme.accColor = color;
-        },
-        style: ButtonStyle(padding: ButtonState.all(EdgeInsets.zero)),
-        child: Container(
-          height: 40,
-          width: 40,
-          color: color,
-          alignment: Alignment.center,
-          child: appTheme.accColor == color
-              ? Icon(
-                  FluentIcons.check_mark,
-                  color: color.basedOnLuminance(),
-                  size: 22.0,
-                )
-              : null,
-        ),
       ),
     );
   }

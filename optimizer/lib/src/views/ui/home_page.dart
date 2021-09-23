@@ -22,7 +22,11 @@ import 'package:flutter/foundation.dart';
 const String appTitle = 'Revo.AI Flutter Showcase ';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final int index;
+  const HomePage({
+    Key? key,
+    this.index = 0,
+  }) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -75,24 +79,29 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Row(children: [
             Container(
-                child: Image.asset(
-              'assets/revoAI_logo.png',
-              color: Color.fromARGB(255, 36, 47, 94),
-              height: 100,
-              width: 100,
-              //colorBlendMode: BlendMode.srcOver,
-              fit: BoxFit.fitWidth,
+                child: Padding(
+              padding: const EdgeInsets.only(top: 1.5),
+              child: FluentTheme.of(context).brightness.isLight
+                  ? Image.asset(
+                      'assets/revoAI_logo_white.png',
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      height: 120,
+                      width: 120,
+                      //colorBlendMode: BlendMode.srcOver,
+                      fit: BoxFit.fitWidth,
+                    )
+                  : Image.asset(
+                      'assets/revoAI_logo_white.png',
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      //color: Color.fromARGB(255, 36, 47, 94),
+                      height: 120,
+                      width: 120,
+                      fit: BoxFit.fitWidth,
+                    ),
             )),
-            // FlutterLogo(
-            //   style: FlutterLogoStyle.horizontal,
-            //   size: 100,
-            // ),
             Text(
               "Explorer",
-              style: TextStyle(
-                  //color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
             )
           ]),
         ),
@@ -186,13 +195,17 @@ class _HomePageState extends State<HomePage> {
       content: NavigationBody(index: index, children: [
         Navigator(
           onGenerateRoute: (settings) {
-            //Widget page = WelcomePage();
-            CMConfig _cmConfig = CMConfig(
-              cmPath: "C:/IPG/.../bin/CM.exe",
-              cmProj: "C:/CM_Projects/CM10",
-              cmTestrun: "Braking",
-            );
-            Widget page = SimulationsSettingsPage(cmConfig: _cmConfig);
+            Widget page = WelcomePage(indexCallback: (val) {
+              setState(() {
+                index = val;
+              });
+            });
+            // CMConfig _cmConfig = CMConfig(
+            //   cmPath: "C:/IPG/.../bin/CM.exe",
+            //   cmProj: "C:/CM_Projects/CM10",
+            //   cmTestrun: "Braking",
+            // );
+            // Widget page = SimulationsSettingsPage(cmConfig: _cmConfig);
             return FluentPageRoute(builder: (_) => page);
           },
         ),

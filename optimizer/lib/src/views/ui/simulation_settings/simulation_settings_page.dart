@@ -40,6 +40,10 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
   String errorInputParameters = "";
   String errorTargetParameters = "";
 
+  bool _isDuration = true;
+  String _time = '3';
+  String _iterations = '100';
+
   @override
   void dispose() {
     // flyoutController.dispose();
@@ -59,64 +63,103 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
         ),
         commandBar: Row(
           children: [
-            SimulationParamCommandBar(),
+            SimulationParamCommandBar(
+              callback: (val, bool) {
+                setState(() {
+                  _isDuration = bool;
+                  if (_isDuration) {
+                    _time = val;
+                  } else {
+                    _iterations = val;
+                  }
+                });
+              },
+            ),
             SplitButtonBar(
               style: SplitButtonThemeData(
-                  primaryButtonStyle: ButtonStyle(),
-                  interval: 2, // the default value is one
-                  // primaryButtonStyle: ButtonStyle(
-                  //   backgroundColor: ButtonState.resolveWith((states) {
-                  //     if (states.isDisabled) {
-                  //       switch (FluentTheme.of(context).brightness) {
-                  //         case Brightness.light:
-                  //           return Color(0xFFf1f1f1);
-                  //         case Brightness.dark:
-                  //           return FluentTheme.of(context).accentColor.darkest;
-                  //       }
-                  //     } else if (states.isPressing)
-                  //       return FluentTheme.of(context)
-                  //           .accentColor
-                  //           .resolveFromBrightness(
-                  //               FluentTheme.of(context).brightness);
-                  //     else if (states.isHovering)
-                  //       return FluentTheme.of(context)
-                  //           .accentColor
-                  //           .resolveFromBrightness(
-                  //               FluentTheme.of(context).brightness,
-                  //               level: 1);
-                  //     else
-                  //       return FluentTheme.of(context).accentColor;
-                  //   }),
-                  // ),
-                  // actionButtonStyle:  ,
-                  borderRadius: BorderRadius.circular(4)),
+                primaryButtonStyle: ButtonStyle(),
+                interval: 2,
+                borderRadius: BorderRadius.circular(4),
+              ),
               buttons: [
                 FilledButton(
                   child: Text("Run"),
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      errorInputParameters =
+                          validateInputParameter(_inputParameters);
+                      errorTargetParameters =
+                          validateTargetParameter(_targetParameters);
+                    });
+
+                    if (validateForm(
+                      errorCMConfig,
+                      errorInputParameters,
+                      errorTargetParameters,
+                    )) {
+                      if (_isDuration) {
+                        _iterations = '0';
+                      } else {
+                        _time = '0';
+                      }
+                      SimulationSettings sim = new SimulationSettings(
+                          cmConfig: this.widget.cmConfig,
+                          inputParams: _inputParameters,
+                          targetParams: _targetParameters,
+                          optConfig: OPTConfig(
+                              algos: Algos(
+                                boGpLibVersion: true,
+                                boRFLibVersion: false,
+                                cmaEs: false,
+                                customBo: false,
+                                deOptimizer: false,
+                                randomOPT: false,
+                              ),
+                              iterations: int.parse(_iterations),
+                              time: int.parse(_time)));
+                      print(sim.toJson().toString());
+                      Navigator.pushNamed(context, 'generation');
+                    }
+                  },
                 ),
-                // SizedBox(
-                //   height: 25.0,
-                //   child: FilledButton(
-                //     style: ButtonStyle(
-                //       shape: ButtonState.all(RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.circular(4))),
-                //     ),
-                //     child: Text("Run"),
-                //     onPressed: () {},
-                //   ),
-                // ),
                 Button(
                   child: Text("Save Settings"),
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      // errorCMConfig = validateCMConfig(_cmConfigIsSelected);
+                      errorInputParameters =
+                          validateInputParameter(_inputParameters);
+                      errorTargetParameters =
+                          validateTargetParameter(_targetParameters);
+                    });
+
+                    if (validateForm(errorCMConfig, errorInputParameters,
+                        errorTargetParameters)) {
+                      if (_isDuration) {
+                        _iterations = '0';
+                      } else {
+                        _time = '0';
+                      }
+                      SimulationSettings sim = new SimulationSettings(
+                          cmConfig: this.widget.cmConfig,
+                          inputParams: _inputParameters,
+                          targetParams: _targetParameters,
+                          optConfig: OPTConfig(
+                              algos: Algos(
+                                boGpLibVersion: true,
+                                boRFLibVersion: false,
+                                cmaEs: false,
+                                customBo: false,
+                                deOptimizer: false,
+                                randomOPT: false,
+                              ),
+                              iterations: int.parse(_iterations),
+                              time: int.parse(_time)));
+
+                      DownloadService.saveStringAsJson(sim.toJson().toString());
+                    }
+                  },
                 ),
-                // IconButton(
-                //   icon: const SizedBox(
-                //     height: 25.0,
-                //     child: const Icon(FluentIcons.chevron_down, size: 10.0),
-                //   ),
-                //   onPressed: () {},
-                // ),
               ],
             ),
           ],
@@ -239,7 +282,6 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
     String value1,
     String value2,
     String value3,
-    String value4,
   ) {
     if (value1 == "" && value2 == "" && value3 == "") {
       return true;

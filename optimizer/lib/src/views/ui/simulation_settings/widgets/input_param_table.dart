@@ -24,6 +24,8 @@ class _InputParamTableState extends State<InputParamTable> {
   set targetParameter(InputParameter value) =>
       setState(() => _inputParam = value);
 
+  bool disabled = false;
+
   double parameterRowHeight = 30;
 
   TextEditingController cmFileTextController = TextEditingController();
@@ -56,44 +58,44 @@ class _InputParamTableState extends State<InputParamTable> {
         children: [
           ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: 200,
+              maxWidth: 150,
             ),
             child: Expanded(
-              child: FilledButton(
+              child: OutlinedButton(
                 style: ButtonStyle(
                   shape: ButtonState.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4))),
                 ),
                 child: Row(
                   children: [
-                    Icon(FluentIcons.add, color: Colors.white),
+                    Icon(
+                      FluentIcons.add,
+                    ),
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Add parameter",
-                        style: TextStyle(
-                          color: Colors.white,
-                        )),
+                    Text(
+                      "Add parameter",
+                    ),
                   ],
                 ),
-                onPressed: () async {
-                  if (this.widget.parameters.length < 6) {
-                    var result = await showDialog(
-                      context: context,
-                      useRootNavigator: false,
-                      builder: (_) => AddInParamDialog(
-                          callback: (val) => setState(() => _inputParam = val)),
-                    ).then((_) {
-                      if (_inputParam != null &&
-                          _inputParam is InputParameter) {
-                        setState(() {
-                          this.widget.parameters.add(_inputParam);
-                          widget.callback(this.widget.parameters);
-                        });
-                      }
-                    });
-                  }
-                },
+                onPressed: disabled
+                    ? null
+                    : () async {
+                        var result = await showDialog(
+                          context: context,
+                          useRootNavigator: false,
+                          builder: (_) => AddInParamDialog(
+                              callback: (val) => setState(() {
+                                    _inputParam = val;
+                                    this.widget.parameters.add(_inputParam);
+                                    if (this.widget.parameters.length == 6) {
+                                      disabled = true;
+                                    }
+                                    widget.callback(this.widget.parameters);
+                                  })),
+                        );
+                      },
               ),
             ),
           ),
@@ -128,7 +130,7 @@ class _InputParamTableState extends State<InputParamTable> {
       ),
       Container(
         constraints: BoxConstraints(
-            minHeight: parameterRowHeight, maxHeight: parameterRowHeight * 6),
+            minHeight: parameterRowHeight, maxHeight: parameterRowHeight * 8),
         child: Column(children: [
           EmptyParameterListReminder(
               paramListIsEmpty: this.widget.parameters.isEmpty),
@@ -153,18 +155,21 @@ class _InputParamTableState extends State<InputParamTable> {
                     children: [
                       TableRow(
                           decoration: BoxDecoration(
-                              color: Colors.successSecondaryColor),
+                              color: FluentTheme.of(context).accentColor),
                           children: [
                             TableCell(
                               child: Center(
                                 child: Container(
                                   child: IconButton(
                                     onPressed: () {
-                                      print("IconButton pressed!");
-                                      widget.callback(this.widget.parameters);
                                       setState(() {
                                         this.widget.parameters.remove(
                                             this.widget.parameters[index]);
+                                        if (this.widget.parameters.length < 6) {
+                                          disabled = false;
+                                        }
+
+                                        widget.callback(this.widget.parameters);
                                       });
                                     },
                                     icon: Icon(FluentIcons.delete, size: 14.0),
@@ -210,7 +215,26 @@ class _InputParamTableState extends State<InputParamTable> {
                             GestureDetector(
                               onDoubleTap: () {
                                 SideSheet.right(
-                                    body: EditInputParamSideSheet(),
+                                    backgroundColor: FluentTheme.of(context)
+                                        .micaBackgroundColor,
+                                    body: EditInputParamSideSheet(
+                                      param: this.widget.parameters[index],
+                                      callback: (val) => setState(() {
+                                        _inputParam = val;
+                                        this.widget.parameters[index].cm_File =
+                                            _inputParam.cm_File;
+                                        this.widget.parameters[index].key =
+                                            _inputParam.key;
+                                        this
+                                            .widget
+                                            .parameters[index]
+                                            .bounds[0] = _inputParam.bounds[0];
+                                        this
+                                            .widget
+                                            .parameters[index]
+                                            .bounds[1] = _inputParam.bounds[1];
+                                      }),
+                                    ),
                                     context: context);
                               },
                               child: TableCell(
@@ -223,7 +247,26 @@ class _InputParamTableState extends State<InputParamTable> {
                             GestureDetector(
                               onDoubleTap: () {
                                 SideSheet.right(
-                                    body: EditInputParamSideSheet(),
+                                    backgroundColor: FluentTheme.of(context)
+                                        .micaBackgroundColor,
+                                    body: EditInputParamSideSheet(
+                                      param: this.widget.parameters[index],
+                                      callback: (val) => setState(() {
+                                        _inputParam = val;
+                                        this.widget.parameters[index].cm_File =
+                                            _inputParam.cm_File;
+                                        this.widget.parameters[index].key =
+                                            _inputParam.key;
+                                        this
+                                            .widget
+                                            .parameters[index]
+                                            .bounds[0] = _inputParam.bounds[0];
+                                        this
+                                            .widget
+                                            .parameters[index]
+                                            .bounds[1] = _inputParam.bounds[1];
+                                      }),
+                                    ),
                                     context: context);
                               },
                               child: TableCell(
@@ -238,7 +281,26 @@ class _InputParamTableState extends State<InputParamTable> {
                             GestureDetector(
                               onDoubleTap: () {
                                 SideSheet.right(
-                                    body: EditInputParamSideSheet(),
+                                    backgroundColor: FluentTheme.of(context)
+                                        .micaBackgroundColor,
+                                    body: EditInputParamSideSheet(
+                                      param: this.widget.parameters[index],
+                                      callback: (val) => setState(() {
+                                        _inputParam = val;
+                                        this.widget.parameters[index].cm_File =
+                                            _inputParam.cm_File;
+                                        this.widget.parameters[index].key =
+                                            _inputParam.key;
+                                        this
+                                            .widget
+                                            .parameters[index]
+                                            .bounds[0] = _inputParam.bounds[0];
+                                        this
+                                            .widget
+                                            .parameters[index]
+                                            .bounds[1] = _inputParam.bounds[1];
+                                      }),
+                                    ),
                                     context: context);
                               },
                               child: TableCell(
@@ -275,13 +337,15 @@ class _InputParamTableState extends State<InputParamTable> {
                             child: Container(
                               child: IconButton(
                                 onPressed: () {
-                                  widget.callback(this.widget.parameters);
-                                  print("IconButton pressed!");
                                   setState(() {
                                     this
                                         .widget
                                         .parameters
                                         .remove(this.widget.parameters[index]);
+                                    if (this.widget.parameters.length < 6) {
+                                      disabled = false;
+                                    }
+                                    widget.callback(this.widget.parameters);
                                   });
                                 },
                                 icon: Icon(FluentIcons.delete, size: 14.0),
@@ -325,7 +389,22 @@ class _InputParamTableState extends State<InputParamTable> {
                         GestureDetector(
                           onDoubleTap: () {
                             SideSheet.right(
-                                body: EditInputParamSideSheet(),
+                                backgroundColor:
+                                    FluentTheme.of(context).micaBackgroundColor,
+                                body: EditInputParamSideSheet(
+                                  param: this.widget.parameters[index],
+                                  callback: (val) => setState(() {
+                                    _inputParam = val;
+                                    this.widget.parameters[index].cm_File =
+                                        _inputParam.cm_File;
+                                    this.widget.parameters[index].key =
+                                        _inputParam.key;
+                                    this.widget.parameters[index].bounds[0] =
+                                        _inputParam.bounds[0];
+                                    this.widget.parameters[index].bounds[1] =
+                                        _inputParam.bounds[1];
+                                  }),
+                                ),
                                 context: context);
                           },
                           child: TableCell(
@@ -338,7 +417,22 @@ class _InputParamTableState extends State<InputParamTable> {
                         GestureDetector(
                           onDoubleTap: () {
                             SideSheet.right(
-                                body: EditInputParamSideSheet(),
+                                backgroundColor:
+                                    FluentTheme.of(context).micaBackgroundColor,
+                                body: EditInputParamSideSheet(
+                                  param: this.widget.parameters[index],
+                                  callback: (val) => setState(() {
+                                    _inputParam = val;
+                                    this.widget.parameters[index].cm_File =
+                                        _inputParam.cm_File;
+                                    this.widget.parameters[index].key =
+                                        _inputParam.key;
+                                    this.widget.parameters[index].bounds[0] =
+                                        _inputParam.bounds[0];
+                                    this.widget.parameters[index].bounds[1] =
+                                        _inputParam.bounds[1];
+                                  }),
+                                ),
                                 context: context);
                           },
                           child: TableCell(
@@ -351,7 +445,22 @@ class _InputParamTableState extends State<InputParamTable> {
                         GestureDetector(
                           onDoubleTap: () {
                             SideSheet.right(
-                                body: EditInputParamSideSheet(),
+                                backgroundColor:
+                                    FluentTheme.of(context).micaBackgroundColor,
+                                body: EditInputParamSideSheet(
+                                  param: this.widget.parameters[index],
+                                  callback: (val) => setState(() {
+                                    _inputParam = val;
+                                    this.widget.parameters[index].cm_File =
+                                        _inputParam.cm_File;
+                                    this.widget.parameters[index].key =
+                                        _inputParam.key;
+                                    this.widget.parameters[index].bounds[0] =
+                                        _inputParam.bounds[0];
+                                    this.widget.parameters[index].bounds[1] =
+                                        _inputParam.bounds[1];
+                                  }),
+                                ),
                                 context: context);
                           },
                           child: TableCell(

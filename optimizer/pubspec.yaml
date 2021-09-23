@@ -45,7 +45,7 @@ flutter:
         - asset: assets/fonts/segoeuil.ttf
           weight: 300
   assets:
-    - assets/revoAI_logo.png
+    - assets/revoAI_logo_white.png
 
 flutter_native_splash:
   color: "#25315E"

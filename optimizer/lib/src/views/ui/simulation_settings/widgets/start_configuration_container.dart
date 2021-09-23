@@ -23,7 +23,6 @@ class _StartConfigurationContainerState
     extends State<StartConfigurationContainer> {
   @override
   Widget build(BuildContext context) {
-    print(this.widget.cmConfig.toJson().toString());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -43,6 +42,8 @@ class _StartConfigurationContainerState
           child: GestureDetector(
             onDoubleTap: () {
               SideSheet.right(
+                      backgroundColor:
+                          FluentTheme.of(context).micaBackgroundColor,
                       body: EditConfigSideSheet(
                         cmconfig: this.widget.cmConfig,
                         callback: (val) => this.widget.cmConfig = val,
@@ -54,16 +55,19 @@ class _StartConfigurationContainerState
                 });
               });
             },
-            child: FilledButton(
+            child: OutlinedButton(
                 onPressed: () {},
-                style: ButtonStyle(
-                    shape: ButtonState.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4))),
-                    backgroundColor: ButtonState.all(Colors.black)),
+                // style: ButtonStyle(
+                //     shape: ButtonState.all(RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(4))),
+                //     backgroundColor: ButtonState.all(Colors.black)),
                 child: Row(
                   children: [
-                    Icon(FluentIcons.text_document_settings,
-                        size: 30, color: Colors.white),
+                    Icon(
+                      FluentIcons.text_document_settings,
+                      size: 30,
+                      //  color: Colors.white
+                    ),
                     SizedBox(
                       width: 10,
                     ),
@@ -75,9 +79,9 @@ class _StartConfigurationContainerState
                           "\nTestrun: " +
                           this.widget.cmConfig.cmTestrun,
                       textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      // style: TextStyle(
+                      //   color: Colors.white,
+                      // ),
                     ),
                   ],
                 )),

@@ -170,6 +170,7 @@ class _AddConfigDialogState extends State<AddConfigDialog> {
               errorCarMakerFile = validateCarMakerFile(
                 cmPathTextController.text,
               );
+
               errorCarMakerProjectFile =
                   validateCarMakerTestRunFile(cmProjPathTextController.text);
               errorCarMakerTestRunFile =

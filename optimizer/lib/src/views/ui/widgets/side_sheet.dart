@@ -7,6 +7,7 @@ class SideSheet {
       String barrierLabel: "Side Sheet",
       bool barrierDismissible: true,
       Color barrierColor = const Color(0xFF66000000),
+      Color backgroundColor = Colors.white,
       double width: 3.0,
       Duration transitionDuration = const Duration(milliseconds: 300)}) async {
     dynamic data = await _showSheetSide(
@@ -17,6 +18,7 @@ class SideSheet {
         barrierLabel: barrierLabel,
         barrierDismissible: barrierDismissible,
         barrierColor: barrierColor,
+        backgroundColor: backgroundColor,
         transitionDuration: transitionDuration);
     if (data == null) return '';
 
@@ -29,6 +31,7 @@ class SideSheet {
       String barrierLabel: "Side Sheet",
       bool barrierDismissible: true,
       Color barrierColor = const Color(0xFF66000000),
+      Color backgroundColor = Colors.white,
       double width: 3.0,
       Duration transitionDuration = const Duration(milliseconds: 300)}) async {
     dynamic data = await _showSheetSide(
@@ -39,6 +42,7 @@ class SideSheet {
         barrierLabel: barrierLabel,
         barrierDismissible: barrierDismissible,
         barrierColor: barrierColor,
+        backgroundColor: backgroundColor,
         transitionDuration: transitionDuration);
     if (data == null) return '';
 
@@ -52,6 +56,7 @@ class SideSheet {
     required String barrierLabel,
     required bool barrierDismissible,
     required Color barrierColor,
+    required Color backgroundColor,
     required Duration transitionDuration,
     required width,
   }) {
@@ -71,7 +76,7 @@ class SideSheet {
               elevation: 15,
               color: Colors.transparent,
               child: Container(
-                  color: Colors.white,
+                  color: backgroundColor,
                   height: double.infinity,
                   width: MediaQuery.of(context).size.width / width,
                   child: body),

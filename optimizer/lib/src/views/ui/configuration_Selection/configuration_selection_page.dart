@@ -68,7 +68,7 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
                 index: 1,
                 selectedTileIndex: _selectedTileIndex,
                 configurationName: 'SIMCAR',
-                //disabled: true,
+                // disabled: true,
               ),
               ConfigurationTile(
                 callback: (val) => setState(() => _selectedTileIndex = val),
@@ -115,11 +115,14 @@ class _ConfigurationSelectionState extends State<ConfigurationSelection> {
             )).then((value) {});
 
     if (_configIsSelected) {
-      Navigator.push(context, FluentPageRoute(builder: (context) {
-        return SimulationsSettingsPage(
-          cmConfig: cmConfig,
-        );
-      }));
+      Navigator.push(
+        context,
+        FluentPageRoute(builder: (context) {
+          return SimulationsSettingsPage(
+            cmConfig: cmConfig,
+          );
+        }),
+      );
     }
   }
 }

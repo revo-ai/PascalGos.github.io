@@ -1,10 +1,17 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:optimizer/src/core/models/parameter_model.dart';
 import 'package:optimizer/src/views/ui/widgets/side_sheet.dart';
 
+typedef void ParameterCallback(InputParameter inputParam);
+
 class EditInputParamSideSheet extends StatefulWidget {
-  const EditInputParamSideSheet({
+  final ParameterCallback callback;
+  InputParameter param;
+  EditInputParamSideSheet({
     Key? key,
+    required this.param,
+    required this.callback,
   }) : super(key: key);
 
   @override
@@ -23,6 +30,11 @@ class _EditInputParamSideSheetState extends State<EditInputParamSideSheet> {
   String errorBounds = "";
   @override
   build(BuildContext context) {
+    cmFileTextController.text = this.widget.param.cm_File;
+    parameterKeyController.text = this.widget.param.key;
+    boundsStartController.text = this.widget.param.bounds[0].toString();
+    boundsEndController.text = this.widget.param.bounds[1].toString();
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -50,6 +62,7 @@ class _EditInputParamSideSheetState extends State<EditInputParamSideSheet> {
                 ),
                 Text(
                   'Please enter the relevant information',
+                  style: FluentTheme.of(context).typography.body,
                 ),
                 SizedBox(
                   height: 10,
@@ -92,7 +105,10 @@ class _EditInputParamSideSheetState extends State<EditInputParamSideSheet> {
                 SizedBox(
                   height: 10,
                 ),
-                Text("Bounds"),
+                Text(
+                  "Bounds",
+                  style: FluentTheme.of(context).typography.body,
+                ),
                 Row(
                   children: [
                     Expanded(
@@ -130,28 +146,88 @@ class _EditInputParamSideSheetState extends State<EditInputParamSideSheet> {
                   ),
                 ),
                 FilledButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          FluentIcons.save,
-                          size: 15,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Save',
-                          style: FluentTheme.of(context).typography.bodyStrong,
-                        )
-                      ],
-                    ),
-                    onPressed: () {})
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        FluentIcons.save,
+                        size: 15,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Save',
+                        style: FluentTheme.of(context).typography.bodyStrong,
+                      )
+                    ],
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      errorCMFile = validateCMFile(cmFileTextController.text);
+                      errorParameterKey =
+                          validateParameterKey(parameterKeyController.text);
+                      errorBounds = validateBounds(
+                          boundsStartController.text, boundsEndController.text);
+
+                      if (validateForm(
+                          errorCMFile, errorParameterKey, errorBounds)) {
+                        InputParameter _inputParam = InputParameter(
+                          key: parameterKeyController.text,
+                          bounds: [
+                            double.tryParse(boundsStartController.text),
+                            double.tryParse(boundsEndController.text)
+                          ],
+                          cm_File: cmFileTextController.text,
+                        );
+
+                        widget.callback(_inputParam);
+                        Navigator.of(context).pop();
+                      }
+                    });
+                  },
+                )
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  String validateCMFile(String value) {
+    if (value == "") {
+      return "Please provide a filename";
+    } else
+      return "";
+  }
+
+  String validateParameterKey(String value) {
+    if (value == "") {
+      return "Please provide a file";
+    } else
+      return "";
+  }
+
+  String validateBounds(String value1, String value2) {
+    if ((value1 == "") || (value2 == "")) {
+      return "Please provide both bounds";
+    } else if (double.tryParse(value1) == null ||
+        double.tryParse(value2) == null) {
+      return "Please use a numeric value";
+    } else
+      return "";
+  }
+
+  bool validateForm(
+    String value1,
+    String value2,
+    String value3,
+  ) {
+    if (value1 == "" && value2 == "" && value3 == "") {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

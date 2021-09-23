@@ -1,11 +1,16 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:optimizer/src/core/models/parameter_model.dart';
 import 'package:optimizer/src/views/ui/widgets/side_sheet.dart';
 
+typedef void ParameterCallback(TargetParameter tarParam);
+
 class EditTargetParamSideSheet extends StatefulWidget {
-  const EditTargetParamSideSheet({
-    Key? key,
-  }) : super(key: key);
+  final ParameterCallback callback;
+  TargetParameter param;
+  EditTargetParamSideSheet(
+      {Key? key, required this.callback, required this.param})
+      : super(key: key);
 
   @override
   _EditTargetParamSideSheetState createState() =>
@@ -44,8 +49,30 @@ class _EditTargetParamSideSheetState extends State<EditTargetParamSideSheet> {
   TextEditingController parameterKeyController = TextEditingController();
   TextEditingController boundsStartController = TextEditingController();
   TextEditingController boundsEndController = TextEditingController();
+
+  @override
+  void initState() {
+    comboBoxValue = this.widget.param.operation.key;
+    switchSwapWidget(comboBoxValue!);
+    super.initState();
+  }
+
   @override
   build(BuildContext context) {
+    parameterKeyController.text = this.widget.param.key;
+    try {
+      boundsStartController.text =
+          this.widget.param.operation.bounds[0].toString();
+    } catch (e) {
+      print("Error with boundsStartController: " + e.toString());
+    }
+    try {
+      boundsEndController.text =
+          this.widget.param.operation.bounds[1].toString();
+    } catch (e) {
+      print("Error with boundsEndController: " + e.toString());
+    }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -71,9 +98,8 @@ class _EditTargetParamSideSheetState extends State<EditTargetParamSideSheet> {
                   'Edit Target Parameter',
                   style: FluentTheme.of(context).typography.title,
                 ),
-                Text(
-                  'Please enter the relevant information',
-                ),
+                Text('Please enter the relevant information',
+                    style: FluentTheme.of(context).typography.body),
                 SizedBox(
                   height: 10,
                 ),
@@ -102,171 +128,9 @@ class _EditTargetParamSideSheetState extends State<EditTargetParamSideSheet> {
                                   ))
                               .toList(),
                           value: comboBoxValue,
-                          //TODO: Fix setState, Screen doesn't update
                           onChanged: (value) {
-                            switch (value) {
-                              case 'min':
-                                swapWidget = Expanded(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Spacer(
-                                        flex: 1,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Spacer(
-                                        flex: 1,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                break;
-
-                              case 'max':
-                                swapWidget = Expanded(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Spacer(
-                                        flex: 1,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Spacer(
-                                        flex: 1,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                break;
-
-                              case 'equals':
-                                swapWidget = Expanded(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextBox(
-                                          header: "Value",
-                                          placeholder: '...',
-                                          controller: boundsStartController,
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Spacer(
-                                        flex: 1,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                break;
-
-                              case 'less than':
-                                swapWidget = Expanded(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextBox(
-                                          header: "Value",
-                                          placeholder: '...',
-                                          controller: boundsStartController,
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Spacer(
-                                        flex: 1,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                break;
-
-                              case 'less than or equal to':
-                                swapWidget = Expanded(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextBox(
-                                          header: "Value",
-                                          placeholder: '...',
-                                          controller: boundsStartController,
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Spacer(
-                                        flex: 1,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                break;
-
-                              case 'greater than':
-                                swapWidget = Expanded(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextBox(
-                                          header: "Value",
-                                          placeholder: '...',
-                                          controller: boundsStartController,
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Spacer(
-                                        flex: 1,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                break;
-
-                              case 'greater than or equal to':
-                                swapWidget = Expanded(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextBox(
-                                          header: "Value",
-                                          placeholder: '...',
-                                          controller: boundsStartController,
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Spacer(
-                                        flex: 1,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                break;
-                            }
-
-                            print(value);
-                            if (value != null)
-                              setState(() => comboBoxValue = value);
+                            switchSwapWidget(value!);
+                            setState(() => comboBoxValue = value);
                           },
                         ),
                       ),
@@ -295,12 +159,218 @@ class _EditTargetParamSideSheetState extends State<EditTargetParamSideSheet> {
                         )
                       ],
                     ),
-                    onPressed: () {})
+                    onPressed: () {
+                      List bounds = [];
+                      switch (comboBoxValue!) {
+                        case 'min':
+                          break;
+                        case 'max':
+                          break;
+                        case 'equals':
+                          bounds.add(double.parse(boundsStartController.text));
+                          break;
+                        case 'less than':
+                          bounds.add(double.parse(boundsStartController.text));
+                          break;
+                        case 'less than or equal to':
+                          bounds.add(double.parse(boundsStartController.text));
+                          break;
+                        case 'greater than':
+                          bounds.add(double.parse(boundsStartController.text));
+                          break;
+                        case 'greater than or equal to':
+                          bounds.add(double.parse(boundsStartController.text));
+                          break;
+                      }
+                      Operation operation = Operation(key: "");
+
+                      if (bounds.isEmpty) {
+                        operation = Operation(key: comboBoxValue!);
+                      } else {
+                        operation =
+                            Operation(key: comboBoxValue!, bounds: bounds);
+                      }
+
+                      setState(() {
+                        TargetParameter _tarParam = TargetParameter(
+                          key: parameterKeyController.text,
+                          operation: operation,
+                        );
+                        print(_tarParam.toJson().toString());
+                        widget.callback(_tarParam);
+                        Navigator.pop(context);
+                        //TODO: Verify parameters maxlength
+                        // if (parameters.length < 6) {
+                        // }
+                      });
+                    })
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  void switchSwapWidget(String value) {
+    switch (value) {
+      case 'min':
+        swapWidget = Expanded(
+          flex: 2,
+          child: Row(
+            children: [
+              Spacer(
+                flex: 1,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Spacer(
+                flex: 1,
+              ),
+            ],
+          ),
+        );
+        break;
+
+      case 'max':
+        swapWidget = Expanded(
+          flex: 2,
+          child: Row(
+            children: [
+              Spacer(
+                flex: 1,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Spacer(
+                flex: 1,
+              ),
+            ],
+          ),
+        );
+        break;
+
+      case 'equals':
+        swapWidget = Expanded(
+          flex: 2,
+          child: Row(
+            children: [
+              Expanded(
+                child: TextBox(
+                  header: "Value",
+                  placeholder: '...',
+                  controller: boundsStartController,
+                  maxLines: 1,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Spacer(
+                flex: 1,
+              ),
+            ],
+          ),
+        );
+        break;
+
+      case 'less than':
+        swapWidget = Expanded(
+          flex: 2,
+          child: Row(
+            children: [
+              Expanded(
+                child: TextBox(
+                  header: "Value",
+                  placeholder: '...',
+                  controller: boundsStartController,
+                  maxLines: 1,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Spacer(
+                flex: 1,
+              ),
+            ],
+          ),
+        );
+        break;
+
+      case 'less than or equal to':
+        swapWidget = Expanded(
+          flex: 2,
+          child: Row(
+            children: [
+              Expanded(
+                child: TextBox(
+                  header: "Value",
+                  placeholder: '...',
+                  controller: boundsStartController,
+                  maxLines: 1,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Spacer(
+                flex: 1,
+              ),
+            ],
+          ),
+        );
+        break;
+
+      case 'greater than':
+        swapWidget = Expanded(
+          flex: 2,
+          child: Row(
+            children: [
+              Expanded(
+                child: TextBox(
+                  header: "Value",
+                  placeholder: '...',
+                  controller: boundsStartController,
+                  maxLines: 1,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Spacer(
+                flex: 1,
+              ),
+            ],
+          ),
+        );
+        break;
+
+      case 'greater than or equal to':
+        swapWidget = Expanded(
+          flex: 2,
+          child: Row(
+            children: [
+              Expanded(
+                child: TextBox(
+                  header: "Value",
+                  placeholder: '...',
+                  controller: boundsStartController,
+                  maxLines: 1,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Spacer(
+                flex: 1,
+              ),
+            ],
+          ),
+        );
+        break;
+    }
   }
 }

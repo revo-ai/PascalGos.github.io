@@ -25,6 +25,8 @@ class _TargetParamTableState extends State<TargetParamTable> {
   set targetParameter(TargetParameter value) =>
       setState(() => _tarparam = value);
 
+  bool disabled = false;
+
   double parameterRowHeight = 30;
 
   final values = [
@@ -65,42 +67,44 @@ class _TargetParamTableState extends State<TargetParamTable> {
         children: [
           ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: 200,
+              maxWidth: 150,
             ),
             child: Expanded(
-              child: FilledButton(
+              child: OutlinedButton(
                 style: ButtonStyle(
                   shape: ButtonState.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4))),
                 ),
                 child: Row(
                   children: [
-                    Icon(FluentIcons.add, color: Colors.white),
+                    Icon(
+                      FluentIcons.add,
+                    ),
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Add parameter",
-                        style: TextStyle(
-                          color: Colors.white,
-                        )),
+                    Text(
+                      "Add parameter",
+                    ),
                   ],
                 ),
-                onPressed: () async {
-                  print("Add parameter pressed");
-                  var result = await showDialog(
-                    context: context,
-                    useRootNavigator: false,
-                    builder: (_) => AddTarParamDialog(
-                        callback: (val) => setState(() => _tarparam = val)),
-                  ).then((_) {
-                    if (_tarparam != null && _tarparam is TargetParameter) {
-                      setState(() {
-                        this.widget.parameters.add(_tarparam);
-                        widget.callback(this.widget.parameters);
-                      });
-                    }
-                  });
-                },
+                onPressed: disabled
+                    ? null
+                    : () async {
+                        var result = await showDialog(
+                          context: context,
+                          useRootNavigator: false,
+                          builder: (_) => AddTarParamDialog(
+                              callback: (val) => setState(() {
+                                    _tarparam = val;
+                                    this.widget.parameters.add(_tarparam);
+                                    if (this.widget.parameters.length == 1) {
+                                      disabled = true;
+                                    }
+                                    widget.callback(this.widget.parameters);
+                                  })),
+                        );
+                      },
               ),
             ),
           ),
@@ -132,7 +136,7 @@ class _TargetParamTableState extends State<TargetParamTable> {
       ),
       Container(
         constraints: BoxConstraints(
-            minHeight: parameterRowHeight, maxHeight: parameterRowHeight * 6),
+            minHeight: parameterRowHeight, maxHeight: parameterRowHeight * 8),
         child: Column(children: [
           EmptyParameterListReminder(
             paramListIsEmpty: this.widget.parameters.isEmpty,
@@ -158,17 +162,19 @@ class _TargetParamTableState extends State<TargetParamTable> {
                     children: [
                       TableRow(
                           decoration: BoxDecoration(
-                              color: Colors.successSecondaryColor),
+                              color: FluentTheme.of(context).accentColor),
                           children: [
                             TableCell(
                               child: Center(
                                 child: Container(
                                   child: IconButton(
                                     onPressed: () {
-                                      print("IconButton pressed!");
                                       setState(() {
                                         this.widget.parameters.remove(
                                             this.widget.parameters[index]);
+                                        if (this.widget.parameters.length < 1) {
+                                          disabled = false;
+                                        }
                                         widget.callback(this.widget.parameters);
                                       });
                                     },
@@ -215,7 +221,34 @@ class _TargetParamTableState extends State<TargetParamTable> {
                             GestureDetector(
                               onDoubleTap: () {
                                 SideSheet.right(
-                                    body: EditTargetParamSideSheet(),
+                                    backgroundColor: FluentTheme.of(context)
+                                        .micaBackgroundColor,
+                                    body: EditTargetParamSideSheet(
+                                        param: this.widget.parameters[index],
+                                        callback: (val) {
+                                          setState(() {
+                                            _tarparam = val;
+                                            this.widget.parameters[index].key =
+                                                _tarparam.key;
+                                            this
+                                                .widget
+                                                .parameters[index]
+                                                .operation
+                                                .key = _tarparam.operation.key;
+                                            this
+                                                    .widget
+                                                    .parameters[index]
+                                                    .operation
+                                                    .bounds[0] =
+                                                _tarparam.operation.bounds[0];
+                                            this
+                                                    .widget
+                                                    .parameters[index]
+                                                    .operation
+                                                    .bounds[1] =
+                                                _tarparam.operation.bounds[1];
+                                          });
+                                        }),
                                     context: context);
                               },
                               child: TableCell(
@@ -228,25 +261,70 @@ class _TargetParamTableState extends State<TargetParamTable> {
                             GestureDetector(
                               onDoubleTap: () {
                                 SideSheet.right(
-                                    body: EditTargetParamSideSheet(),
+                                    backgroundColor: FluentTheme.of(context)
+                                        .micaBackgroundColor,
+                                    body: EditTargetParamSideSheet(
+                                        param: this.widget.parameters[index],
+                                        callback: (val) {
+                                          setState(() {
+                                            _tarparam = val;
+                                            this.widget.parameters[index].key =
+                                                _tarparam.key;
+                                            this
+                                                .widget
+                                                .parameters[index]
+                                                .operation
+                                                .key = _tarparam.operation.key;
+                                            this
+                                                    .widget
+                                                    .parameters[index]
+                                                    .operation
+                                                    .bounds[0] =
+                                                _tarparam.operation.bounds[0];
+                                            this
+                                                    .widget
+                                                    .parameters[index]
+                                                    .operation
+                                                    .bounds[1] =
+                                                _tarparam.operation.bounds[1];
+                                          });
+                                        }),
                                     context: context);
                               },
                               child: TableCell(
                                   child: Container(
-                                      alignment: Alignment.centerLeft,
-                                      height: parameterRowHeight,
-                                      child: Text(this
-                                              .widget
-                                              .parameters[index]
-                                              .operation
-                                              .key +
-                                          " " +
-                                          this
-                                              .widget
-                                              .parameters[index]
-                                              .operation
-                                              .bounds[0]
-                                              .toString()))),
+                                alignment: Alignment.centerLeft,
+                                height: parameterRowHeight,
+                                child: ((this
+                                                .widget
+                                                .parameters[index]
+                                                .operation
+                                                .key ==
+                                            'max') ||
+                                        (this
+                                                .widget
+                                                .parameters[index]
+                                                .operation
+                                                .key ==
+                                            'min'))
+                                    ? Text(this
+                                        .widget
+                                        .parameters[index]
+                                        .operation
+                                        .key)
+                                    : Text(this
+                                            .widget
+                                            .parameters[index]
+                                            .operation
+                                            .key +
+                                        " " +
+                                        this
+                                            .widget
+                                            .parameters[index]
+                                            .operation
+                                            .bounds[0]
+                                            .toString()),
+                              )),
                             ),
                           ]),
                     ],
@@ -272,12 +350,14 @@ class _TargetParamTableState extends State<TargetParamTable> {
                             child: Container(
                               child: IconButton(
                                 onPressed: () {
-                                  print("IconButton pressed!");
                                   setState(() {
                                     this
                                         .widget
                                         .parameters
                                         .remove(this.widget.parameters[index]);
+                                    if (this.widget.parameters.length < 1) {
+                                      disabled = false;
+                                    }
                                     widget.callback(this.widget.parameters);
                                   });
                                 },
@@ -322,7 +402,34 @@ class _TargetParamTableState extends State<TargetParamTable> {
                         GestureDetector(
                           onDoubleTap: () {
                             SideSheet.right(
-                                body: EditTargetParamSideSheet(),
+                                backgroundColor:
+                                    FluentTheme.of(context).micaBackgroundColor,
+                                body: EditTargetParamSideSheet(
+                                    param: this.widget.parameters[index],
+                                    callback: (val) {
+                                      setState(() {
+                                        _tarparam = val;
+                                        this.widget.parameters[index].key =
+                                            _tarparam.key;
+                                        this
+                                            .widget
+                                            .parameters[index]
+                                            .operation
+                                            .key = _tarparam.operation.key;
+                                        this
+                                                .widget
+                                                .parameters[index]
+                                                .operation
+                                                .bounds[0] =
+                                            _tarparam.operation.bounds[0];
+                                        this
+                                                .widget
+                                                .parameters[index]
+                                                .operation
+                                                .bounds[1] =
+                                            _tarparam.operation.bounds[1];
+                                      });
+                                    }),
                                 context: context);
                           },
                           child: TableCell(
@@ -335,25 +442,67 @@ class _TargetParamTableState extends State<TargetParamTable> {
                         GestureDetector(
                           onDoubleTap: () {
                             SideSheet.right(
-                                body: EditTargetParamSideSheet(),
+                                backgroundColor:
+                                    FluentTheme.of(context).micaBackgroundColor,
+                                body: EditTargetParamSideSheet(
+                                    param: this.widget.parameters[index],
+                                    callback: (val) {
+                                      setState(() {
+                                        _tarparam = val;
+                                        this.widget.parameters[index].key =
+                                            _tarparam.key;
+                                        this
+                                            .widget
+                                            .parameters[index]
+                                            .operation
+                                            .key = _tarparam.operation.key;
+                                        this
+                                                .widget
+                                                .parameters[index]
+                                                .operation
+                                                .bounds[0] =
+                                            _tarparam.operation.bounds[0];
+                                        this
+                                                .widget
+                                                .parameters[index]
+                                                .operation
+                                                .bounds[1] =
+                                            _tarparam.operation.bounds[1];
+                                      });
+                                    }),
                                 context: context);
                           },
                           child: TableCell(
                               child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  height: parameterRowHeight,
-                                  child: Text(this
-                                          .widget
-                                          .parameters[index]
-                                          .operation
-                                          .key +
-                                      " " +
-                                      this
-                                          .widget
-                                          .parameters[index]
-                                          .operation
-                                          .bounds[0]
-                                          .toString()))),
+                            alignment: Alignment.centerLeft,
+                            height: parameterRowHeight,
+                            child: ((this
+                                            .widget
+                                            .parameters[index]
+                                            .operation
+                                            .key ==
+                                        'max') ||
+                                    (this
+                                            .widget
+                                            .parameters[index]
+                                            .operation
+                                            .key ==
+                                        'min'))
+                                ? Text(
+                                    this.widget.parameters[index].operation.key)
+                                : Text(this
+                                        .widget
+                                        .parameters[index]
+                                        .operation
+                                        .key +
+                                    " " +
+                                    this
+                                        .widget
+                                        .parameters[index]
+                                        .operation
+                                        .bounds[0]
+                                        .toString()),
+                          )),
                         ),
                       ]),
                     ],

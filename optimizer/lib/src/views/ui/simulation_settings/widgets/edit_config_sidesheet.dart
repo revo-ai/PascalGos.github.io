@@ -91,6 +91,7 @@ class _EditConfigSideSheetState extends State<EditConfigSideSheet> {
                 ),
                 Text(
                   'Please enter the relevant information',
+                  style: FluentTheme.of(context).typography.body,
                 ),
                 SizedBox(
                   height: 10,

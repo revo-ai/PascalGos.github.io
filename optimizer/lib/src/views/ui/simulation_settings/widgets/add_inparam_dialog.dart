@@ -152,7 +152,7 @@ class _AddInParamDialogState extends State<AddInParamDialog> {
 
   String validateParameterKey(String value) {
     if (value == "") {
-      return "Please provide a file";
+      return "Please provide a parameter key";
     } else
       return "";
   }

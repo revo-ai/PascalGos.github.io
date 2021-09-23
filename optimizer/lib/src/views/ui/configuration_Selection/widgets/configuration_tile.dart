@@ -35,10 +35,10 @@ class _ConfigurationTileState extends State<ConfigurationTile> {
     setState(() {
       if (!this.widget.disabled) {
         _tileColor = this.widget.selectedTileIndex == this.widget.index
-            ? Colors.blue
-            : Colors.teal;
+            ? FluentTheme.of(context).accentColor
+            : FluentTheme.of(context).disabledColor;
       } else {
-        _tileColor = Colors.grey;
+        _tileColor = FluentTheme.of(context).inactiveBackgroundColor;
       }
     });
     return MouseRegion(
@@ -46,7 +46,7 @@ class _ConfigurationTileState extends State<ConfigurationTile> {
         setState(() {
           if (this.widget.selectedTileIndex == this.widget.index &&
               !this.widget.disabled) {
-            _tileColor = Colors.blue;
+            _tileColor = FluentTheme.of(context).accentColor;
           }
         });
       },
@@ -54,7 +54,7 @@ class _ConfigurationTileState extends State<ConfigurationTile> {
         setState(() {
           if (this.widget.selectedTileIndex == this.widget.index &&
               !this.widget.disabled) {
-            _tileColor = Colors.teal;
+            _tileColor = FluentTheme.of(context).disabledColor;
           }
         });
       },
@@ -83,10 +83,17 @@ class _ConfigurationTileState extends State<ConfigurationTile> {
           color: _tileColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
-                FluentIcons.open_file,
-                size: 100,
+              SizedBox.fromSize(
+                size: MediaQuery.of(context).size.width > 1199.98
+                    ? Size.fromRadius(40)
+                    : Size.fromRadius(20),
+                child: FittedBox(
+                  child: Icon(
+                    FluentIcons.open_file,
+                  ),
+                ),
               ),
               SizedBox(height: 10),
               Text(

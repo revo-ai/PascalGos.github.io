@@ -12,6 +12,10 @@ class AddTarParamDialog extends StatefulWidget {
 }
 
 class _AddTarParamDialogState extends State<AddTarParamDialog> {
+  String errorParameterKey = "";
+  String errorComboBox = "";
+  String errorBounds = "";
+
   final values = [
     'min',
     'max',
@@ -59,6 +63,14 @@ class _AddTarParamDialogState extends State<AddTarParamDialog> {
           placeholder: '...',
           controller: parameterKeyController,
           maxLines: 1,
+        ),
+        Text(
+          errorParameterKey,
+          style: TextStyle(
+            color: Colors.errorPrimaryColor,
+            fontSize: FluentTheme.of(context).typography.caption!.fontSize,
+            fontWeight: FluentTheme.of(context).typography.caption!.fontWeight,
+          ),
         ),
         SizedBox(
           height: 10,
@@ -248,7 +260,6 @@ class _AddTarParamDialogState extends State<AddTarParamDialog> {
                         break;
                     }
 
-                    print(value);
                     if (value != null) setState(() => comboBoxValue = value);
                   },
                 ),
@@ -259,52 +270,73 @@ class _AddTarParamDialogState extends State<AddTarParamDialog> {
             ),
             swapWidget,
           ],
-        )
+        ),
+        Text(
+          errorComboBox + " " + errorBounds,
+          style: TextStyle(
+            color: Colors.errorPrimaryColor,
+            fontSize: FluentTheme.of(context).typography.caption!.fontSize,
+            fontWeight: FluentTheme.of(context).typography.caption!.fontWeight,
+          ),
+        ),
       ]),
       actions: [
         Button(
           child: Text('Add'),
           onPressed: () {
-            List bounds = [];
-            switch (comboBoxValue!) {
-              case 'min':
-                break;
-              case 'max':
-                break;
-              case 'equals':
-                bounds.add(double.parse(boundsStartController.text));
-                break;
-              case 'less than':
-                bounds.add(double.parse(boundsStartController.text));
-                break;
-              case 'less than or equal to':
-                bounds.add(double.parse(boundsStartController.text));
-                break;
-              case 'greater than':
-                bounds.add(double.parse(boundsStartController.text));
-                break;
-              case 'greater than or equal to':
-                bounds.add(double.parse(boundsStartController.text));
-                break;
-            }
-            Operation operation = Operation(key: "");
-
-            if (bounds.isEmpty) {
-              operation = Operation(key: comboBoxValue!);
-            } else {
-              operation = Operation(key: comboBoxValue!, bounds: bounds);
-            }
-
             setState(() {
-              TargetParameter tarParam = TargetParameter(
-                key: parameterKeyController.text,
-                operation: operation,
-              );
-              widget.callback(tarParam);
-              Navigator.pop(context, tarParam);
-              //TODO: Verify parameters maxlength
-              // if (parameters.length < 6) {
-              // }
+              errorComboBox = validateComboBoxValue(comboBoxValue);
+              errorParameterKey =
+                  validateParameterKey(parameterKeyController.text);
+              if (comboBoxValue != null &&
+                  comboBoxValue != 'max' &&
+                  comboBoxValue != 'min') {
+                errorBounds = validateBounds(boundsStartController.text);
+              }
+
+              if (validateForm(errorParameterKey, errorComboBox, errorBounds)) {
+                List bounds = [];
+                switch (comboBoxValue!) {
+                  case 'min':
+                    bounds.add(double.parse('0'));
+                    break;
+                  case 'max':
+                    bounds.add(double.parse('0'));
+                    break;
+                  case 'equals':
+                    bounds.add(double.parse(boundsStartController.text));
+                    break;
+                  case 'less than':
+                    bounds.add(double.parse(boundsStartController.text));
+                    break;
+                  case 'less than or equal to':
+                    bounds.add(double.parse(boundsStartController.text));
+                    break;
+                  case 'greater than':
+                    bounds.add(double.parse(boundsStartController.text));
+                    break;
+                  case 'greater than or equal to':
+                    bounds.add(double.parse(boundsStartController.text));
+                    break;
+                }
+                Operation operation = Operation(key: "");
+
+                if (bounds.isEmpty) {
+                  operation = Operation(key: comboBoxValue!);
+                } else {
+                  operation = Operation(key: comboBoxValue!, bounds: bounds);
+                }
+                TargetParameter tarParam = TargetParameter(
+                  key: parameterKeyController.text,
+                  operation: operation,
+                );
+                widget.callback(tarParam);
+                Navigator.pop(context);
+                //TODO: Verify parameters maxlength
+                // if (parameters.length < 6) {
+                // }
+
+              }
             });
           },
         ),
@@ -315,18 +347,39 @@ class _AddTarParamDialogState extends State<AddTarParamDialog> {
       ],
     );
   }
-}
 
-class OperationInput extends StatefulWidget {
-  const OperationInput({Key? key, required String value}) : super(key: key);
+  String validateParameterKey(String value) {
+    if (value == "") {
+      return "Please provide a parameter key";
+    } else
+      return "";
+  }
 
-  @override
-  _OperationInputState createState() => _OperationInputState();
-}
+  String validateComboBoxValue(String? value) {
+    if (value == "" || value == null) {
+      return "Please choose an operation";
+    } else
+      return "";
+  }
 
-class _OperationInputState extends State<OperationInput> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
+  String validateBounds(String value1) {
+    if ((value1 == "")) {
+      return "Please provide a value";
+    } else if (double.tryParse(value1) == null) {
+      return "Please use a numeric value";
+    } else
+      return "";
+  }
+
+  bool validateForm(
+    String value1,
+    String value2,
+    String value3,
+  ) {
+    if (value1 == "" && value2 == "" && value3 == "") {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
