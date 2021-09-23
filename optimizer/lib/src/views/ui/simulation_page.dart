@@ -2,15 +2,24 @@ import 'dart:async';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
+import 'package:optimizer/src/core/models/simulation_settings_model.dart';
+import 'package:optimizer/src/views/ui/result_page.dart';
+
+import 'simulation_settings/simulation_settings_page.dart';
 
 class SimulationPage extends StatefulWidget {
-  const SimulationPage({Key? key}) : super(key: key);
+  final SimulationSettings simulationSettings;
+  const SimulationPage({
+    Key? key,
+    required this.simulationSettings,
+  }) : super(key: key);
 
   @override
   _SimulationPageState createState() => _SimulationPageState();
 }
 
 class _SimulationPageState extends State<SimulationPage> {
+  late Timer timer;
   bool disabled = false;
 
   bool value = false;
@@ -34,14 +43,20 @@ class _SimulationPageState extends State<SimulationPage> {
 
   @override
   void initState() {
-    Timer timer;
     timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
       print("Percentage Update");
       setState(() {
         percent += 1;
         if (percent >= 100) {
           timer.cancel();
-          Navigator.pushNamed(context, 'results');
+          Navigator.pop(
+            context,
+            FluentPageRoute(builder: (context) {
+              return ResultPage(
+                simulationSettings: this.widget.simulationSettings,
+              );
+            }),
+          );
         }
       });
     });
@@ -124,7 +139,16 @@ class _SimulationPageState extends State<SimulationPage> {
                           icon: Icon(FluentIcons.cancel),
                           onPressed: () {
                             print("IconButton pressed");
-                            Navigator.pushNamed(context, 'preparation');
+                            timer.cancel();
+                            Navigator.pop(
+                              context,
+                              FluentPageRoute(builder: (context) {
+                                return SimulationsSettingsPage(
+                                  simulationSettings:
+                                      this.widget.simulationSettings,
+                                );
+                              }),
+                            );
                           })
                     ]),
               ),
