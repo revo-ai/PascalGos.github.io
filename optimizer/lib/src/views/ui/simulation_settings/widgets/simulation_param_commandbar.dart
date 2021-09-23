@@ -1,9 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
-typedef void SimulationParameterCallback(String value, bool isDuration);
+typedef void SimulationValueCallback(bool hasDuration, int value);
 
 class SimulationParamCommandBar extends StatefulWidget {
-  final SimulationParameterCallback callback;
+  final SimulationValueCallback callback;
   const SimulationParamCommandBar({Key? key, required this.callback})
       : super(key: key);
 
@@ -18,11 +18,18 @@ class _SimulationParamCommandBar extends State<SimulationParamCommandBar> {
   String errorSimulationParameters = "";
   TextEditingController durationController = TextEditingController();
   TextEditingController iterationController = TextEditingController();
+  int _iterations = 100;
+  int _duration = 3;
+
+  @override
+  void initState() {
+    iterationController.text = _iterations.toString();
+    durationController.text = _duration.toString();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    iterationController.text = '100';
-    durationController.text = '3';
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -66,7 +73,15 @@ class _SimulationParamCommandBar extends State<SimulationParamCommandBar> {
               keyboardType: TextInputType.number,
               controller: durationController,
               onChanged: (value) {
-                this.widget.callback(value, _hasDuration);
+                setState(() {
+                  try {
+                    _duration = int.parse(value);
+                  } catch (e) {
+                    print(" " + e.toString());
+                  }
+
+                  this.widget.callback(_hasDuration, _duration);
+                });
               },
             ),
           ),
@@ -107,7 +122,14 @@ class _SimulationParamCommandBar extends State<SimulationParamCommandBar> {
               keyboardType: TextInputType.number,
               controller: iterationController,
               onChanged: (value) {
-                this.widget.callback(value, _hasDuration);
+                setState(() {
+                  try {
+                    _iterations = int.parse(value);
+                  } catch (e) {
+                    print(" " + e.toString());
+                  }
+                  this.widget.callback(_hasDuration, _iterations);
+                });
               },
             ),
           ),
