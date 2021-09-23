@@ -1,6 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:optimizer/src/core/models/simulation_settings_model.dart';
+import 'package:optimizer/src/views/ui/configuration_Selection/configuration_selection_page.dart';
+import 'package:optimizer/src/views/ui/welcome_page.dart';
+
+import 'simulation_settings/simulation_settings_page.dart';
 
 class ResultPage extends StatefulWidget {
   final SimulationSettings simulationSettings;
@@ -160,7 +164,18 @@ class _ResultPageState extends State<ResultPage> {
                                 "Start over",
                                 style: FluentTheme.of(context).typography.body,
                               ),
-                              onPressed: () {}),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  FluentPageRoute(builder: (context) {
+                                    return SimulationsSettingsPage(
+                                      simulationSettings:
+                                          this.widget.simulationSettings,
+                                    );
+                                  }),
+                                );
+                              }),
                           SizedBox(
                             width: 10,
                           ),
@@ -171,7 +186,14 @@ class _ResultPageState extends State<ResultPage> {
                                     FluentTheme.of(context).typography.caption,
                               ),
                               onPressed: () {
-                                Navigator.pushNamed(context, 'preparation');
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  FluentPageRoute(builder: (context) {
+                                    return ConfigurationSelection();
+                                  }),
+                                );
                               }),
                         ],
                       ),
