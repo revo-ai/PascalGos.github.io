@@ -1,6 +1,13 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:optimizer/src/core/models/simulation_settings_model.dart';
 import 'package:optimizer/src/views/ui/configuration_Selection/configuration_selection_page.dart';
 import 'package:optimizer/src/views/ui/home_page.dart';
+
+import 'simulation_settings/simulation_settings_page.dart';
 
 typedef void IndexCallback(int index);
 
@@ -116,7 +123,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                       child: Row(
                                         children: [
                                           Icon(FluentIcons.edit_note),
-                                          Text('New Scenario'),
+                                          Text(' New Scenario'),
                                         ],
                                       ),
                                       onPressed: disabled
@@ -129,13 +136,64 @@ class _WelcomePageState extends State<WelcomePage> {
                                       child: Row(
                                         children: [
                                           Icon(FluentIcons.edit_note),
-                                          Text('Load Scenario Settings'),
+                                          Text(' Load Scenario Settings'),
                                         ],
                                       ),
-                                      onPressed: false
+                                      onPressed: disabled
                                           ? null
-                                          : () {
-                                              print('pressed text button');
+                                          : () async {
+                                              var picked = await FilePicker
+                                                  .platform
+                                                  .pickFiles();
+                                              showSnackbar(
+                                                  context,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: [
+                                                      Container(
+                                                        height:
+                                                            kOneLineTileHeight,
+                                                        child: InfoBar(
+                                                          title: Text("Error"),
+                                                          content: Text(
+                                                              "Unable to load JSON-File "),
+                                                          severity:
+                                                              InfoBarSeverity
+                                                                  .error,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 6),
+                                                  alignment:
+                                                      Alignment.bottomCenter);
+
+                                              if (picked != null) {
+                                                try {
+                                                  SimulationSettings simset =
+                                                      SimulationSettings
+                                                          .fromJson(jsonDecode(
+                                                              picked
+                                                                  .toString()));
+                                                  this.widget.indexCallback(1);
+                                                  Navigator.push(
+                                                    context,
+                                                    FluentPageRoute(
+                                                        builder: (context) {
+                                                      return SimulationsSettingsPage(
+                                                          simulationSettings:
+                                                              simset);
+                                                    }),
+                                                  );
+                                                } catch (e) {
+                                                  print(e.toString());
+                                                }
+                                              }
                                             },
                                     ),
                                   ],
@@ -229,10 +287,81 @@ class _WelcomePageState extends State<WelcomePage> {
                                           Text(' Load Scenario Settings'),
                                         ],
                                       ),
-                                      onPressed: false
+                                      onPressed: disabled
                                           ? null
-                                          : () {
-                                              print('pressed text button');
+                                          : () async {
+                                              //TODO: Get Simulation Settings from Json
+                                              FilePickerResult? picked =
+                                                  await FilePicker.platform
+                                                      .pickFiles(
+                                                          type: FileType.custom,
+                                                          allowedExtensions: [
+                                                    'json',
+                                                  ]).then((result) {
+                                                try {
+                                                  if (result != null &&
+                                                      result.isSinglePick) {
+                                                    Uint8List list = result
+                                                        .files
+                                                        .first
+                                                        .bytes as Uint8List;
+                                                    String jsonString =
+                                                        new String
+                                                                .fromCharCodes(
+                                                            List.from(list));
+                                                    print(jsonString);
+
+                                                    Map<String, dynamic>
+                                                        valueMap = json.decode(
+                                                            jsonString.trim());
+
+                                                    SimulationSettings simset =
+                                                        SimulationSettings
+                                                            .fromJson(valueMap);
+                                                    this
+                                                        .widget
+                                                        .indexCallback(1);
+                                                    Navigator.push(
+                                                      context,
+                                                      FluentPageRoute(
+                                                          builder: (context) {
+                                                        return SimulationsSettingsPage(
+                                                            simulationSettings:
+                                                                simset);
+                                                      }),
+                                                    );
+                                                  }
+                                                } catch (e) {
+                                                  print("🔥" + e.toString());
+                                                }
+                                              });
+                                              showSnackbar(
+                                                  context,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: [
+                                                      Container(
+                                                        height:
+                                                            kOneLineTileHeight,
+                                                        child: InfoBar(
+                                                          title: Text("Error"),
+                                                          content: Text(
+                                                              "Unable to load JSON-File "),
+                                                          severity:
+                                                              InfoBarSeverity
+                                                                  .error,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 6),
+                                                  alignment:
+                                                      Alignment.bottomCenter);
                                             },
                                     ),
                                   ],
