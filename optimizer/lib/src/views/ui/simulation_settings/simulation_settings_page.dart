@@ -10,14 +10,18 @@ import 'package:optimizer/src/views/ui/simulation_settings/widgets/start_configu
 import 'package:optimizer/src/views/ui/simulation_settings/widgets/target_param_table.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
+import '../simulation_page.dart';
+
 const Widget spacer = const SizedBox(height: 5.0);
 
 const double iconSize = 40;
 
 class SimulationsSettingsPage extends StatefulWidget {
-  final CMConfig cmConfig;
-  const SimulationsSettingsPage({Key? key, required this.cmConfig})
-      : super(key: key);
+  final SimulationSettings simulationSettings;
+  const SimulationsSettingsPage({
+    Key? key,
+    required this.simulationSettings,
+  }) : super(key: key);
 
   @override
   _SimulationsSettingsPageState createState() =>
@@ -25,14 +29,6 @@ class SimulationsSettingsPage extends StatefulWidget {
 }
 
 class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
-  List<InputParameter> _inputParameters = [];
-  List<TargetParameter> _targetParameters = [];
-
-  set inputParameters(List<InputParameter> value) =>
-      setState(() => _inputParameters = value);
-  set targetParameters(List<TargetParameter> value) =>
-      setState(() => _targetParameters = value);
-
   final FlyoutController flyoutController = FlyoutController();
   final ScrollController scrollController = ScrollController();
 
@@ -41,8 +37,8 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
   String errorTargetParameters = "";
 
   bool _isDuration = true;
-  String _time = '3';
-  String _iterations = '100';
+  int _time = 3;
+  int _iterations = 100;
 
   @override
   void dispose() {
@@ -53,7 +49,7 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    CMConfig _cmConfig = this.widget.cmConfig;
+    CMConfig _cmConfig = this.widget.simulationSettings.cmConfig;
 
     return ScaffoldPage(
       header: PageHeader(
@@ -86,10 +82,10 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
                   child: Text("Run"),
                   onPressed: () {
                     setState(() {
-                      errorInputParameters =
-                          validateInputParameter(_inputParameters);
-                      errorTargetParameters =
-                          validateTargetParameter(_targetParameters);
+                      errorInputParameters = validateInputParameter(
+                          this.widget.simulationSettings.inputParams);
+                      errorTargetParameters = validateTargetParameter(
+                          this.widget.simulationSettings.targetParams);
                     });
 
                     if (validateForm(
@@ -98,27 +94,22 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
                       errorTargetParameters,
                     )) {
                       if (_isDuration) {
-                        _iterations = '0';
+                        _iterations = 0;
                       } else {
-                        _time = '0';
+                        _time = 0;
                       }
-                      SimulationSettings sim = new SimulationSettings(
-                          cmConfig: this.widget.cmConfig,
-                          inputParams: _inputParameters,
-                          targetParams: _targetParameters,
-                          optConfig: OPTConfig(
-                              algos: Algos(
-                                boGpLibVersion: true,
-                                boRFLibVersion: false,
-                                cmaEs: false,
-                                customBo: false,
-                                deOptimizer: false,
-                                randomOPT: false,
-                              ),
-                              iterations: int.parse(_iterations),
-                              time: int.parse(_time)));
-                      print(sim.toJson().toString());
-                      Navigator.pushNamed(context, 'generation');
+                      this.widget.simulationSettings.optConfig.iterations =
+                          _iterations;
+                      this.widget.simulationSettings.optConfig.time = _time;
+                      print(this.widget.simulationSettings.toJson().toString());
+                      Navigator.push(
+                        context,
+                        FluentPageRoute(builder: (context) {
+                          return SimulationPage(
+                            simulationSettings: this.widget.simulationSettings,
+                          );
+                        }),
+                      );
                     }
                   },
                 ),
@@ -127,36 +118,24 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
                   onPressed: () {
                     setState(() {
                       // errorCMConfig = validateCMConfig(_cmConfigIsSelected);
-                      errorInputParameters =
-                          validateInputParameter(_inputParameters);
-                      errorTargetParameters =
-                          validateTargetParameter(_targetParameters);
+                      errorInputParameters = validateInputParameter(
+                          this.widget.simulationSettings.inputParams);
+                      errorTargetParameters = validateTargetParameter(
+                          this.widget.simulationSettings.targetParams);
                     });
 
                     if (validateForm(errorCMConfig, errorInputParameters,
                         errorTargetParameters)) {
                       if (_isDuration) {
-                        _iterations = '0';
+                        _iterations = 0;
                       } else {
-                        _time = '0';
+                        _time = 0;
                       }
-                      SimulationSettings sim = new SimulationSettings(
-                          cmConfig: this.widget.cmConfig,
-                          inputParams: _inputParameters,
-                          targetParams: _targetParameters,
-                          optConfig: OPTConfig(
-                              algos: Algos(
-                                boGpLibVersion: true,
-                                boRFLibVersion: false,
-                                cmaEs: false,
-                                customBo: false,
-                                deOptimizer: false,
-                                randomOPT: false,
-                              ),
-                              iterations: int.parse(_iterations),
-                              time: int.parse(_time)));
-
-                      DownloadService.saveStringAsJson(sim.toJson().toString());
+                      this.widget.simulationSettings.optConfig.iterations =
+                          _iterations;
+                      this.widget.simulationSettings.optConfig.time = _time;
+                      DownloadService.saveStringAsJson(
+                          this.widget.simulationSettings.toJson().toString());
                     }
                   },
                 ),
@@ -208,18 +187,24 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
                             maxWidth: MediaQuery.of(context).size.width * 0.6,
                           ),
                           child: InputParamTable(
-                              parameters: _inputParameters,
-                              callback: (val) =>
-                                  setState(() => _inputParameters = val)),
+                              parameters:
+                                  this.widget.simulationSettings.inputParams,
+                              callback: (val) => setState(() => this
+                                  .widget
+                                  .simulationSettings
+                                  .inputParams = val)),
                         )
                       : ConstrainedBox(
                           constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width * 0.35,
                           ),
                           child: InputParamTable(
-                              parameters: _inputParameters,
-                              callback: (val) =>
-                                  setState(() => _inputParameters = val)),
+                              parameters:
+                                  this.widget.simulationSettings.inputParams,
+                              callback: (val) => setState(() => this
+                                  .widget
+                                  .simulationSettings
+                                  .inputParams = val)),
                         ),
                   MediaQuery.of(context).size.width < 1350
                       ? ConstrainedBox(
@@ -227,18 +212,24 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
                             maxWidth: MediaQuery.of(context).size.width * 0.6,
                           ),
                           child: TargetParamTable(
-                              parameters: _targetParameters,
-                              callback: (val) =>
-                                  setState(() => _targetParameters = val)),
+                              parameters:
+                                  this.widget.simulationSettings.targetParams,
+                              callback: (val) => setState(() => this
+                                  .widget
+                                  .simulationSettings
+                                  .targetParams = val)),
                         )
                       : ConstrainedBox(
                           constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width * 0.35,
                           ),
                           child: TargetParamTable(
-                              parameters: _targetParameters,
-                              callback: (val) =>
-                                  setState(() => _targetParameters = val)),
+                              parameters:
+                                  this.widget.simulationSettings.targetParams,
+                              callback: (val) => setState(() => this
+                                  .widget
+                                  .simulationSettings
+                                  .targetParams = val)),
                         ),
                 ],
               ),
