@@ -365,8 +365,7 @@ class _TargetParamTableState extends State<TargetParamTable> {
                                       .contains(ButtonStates.hovering)) {
                                     return CircleBorder(
                                         side: BorderSide(
-                                            color: FluentTheme.of(context)
-                                                .inactiveColor,
+                                            color: Colors.transparent,
                                             width: 1));
                                   }
                                 }),
@@ -374,8 +373,7 @@ class _TargetParamTableState extends State<TargetParamTable> {
                                     ButtonState.resolveWith((states) {
                                   if (ButtonStates.values
                                       .contains(ButtonStates.hovering)) {
-                                    return FluentTheme.of(context)
-                                        .inactiveColor;
+                                    return Colors.transparent;
                                   }
                                   if (ButtonStates.values
                                       .contains(ButtonStates.none)) {
