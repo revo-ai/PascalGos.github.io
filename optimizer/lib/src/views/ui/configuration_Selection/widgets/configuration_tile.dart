@@ -1,6 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:hovering/hovering.dart';
-import 'package:optimizer/src/views/ui/configuration_Selection/widgets/add_config_dialog.dart';
 
 typedef void SelectedTileCallback(int selectedTileIndex);
 

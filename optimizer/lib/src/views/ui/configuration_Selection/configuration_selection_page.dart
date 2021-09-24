@@ -1,5 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:optimizer/src/core/models/simulation_settings_model.dart';
 import 'package:optimizer/src/views/ui/simulation_settings/simulation_settings_page.dart';
 import 'package:optimizer/src/views/ui/configuration_Selection/widgets/configuration_tile.dart';

@@ -28,8 +28,8 @@ class SimulationsSettingsPage extends StatefulWidget {
 }
 
 class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
-  final FlyoutController flyoutController = FlyoutController();
-  final ScrollController scrollController = ScrollController();
+  // final FlyoutController flyoutController = FlyoutController();
+  // final ScrollController scrollController = ScrollController();
 
   String errorCMConfig = "";
   String errorInputParameters = "";
@@ -204,7 +204,7 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
         ),
       ),
       content: Scrollbar(
-        controller: scrollController,
+        // controller: scrollController,
         child: ListView(
             padding: EdgeInsets.symmetric(
               horizontal: PageHeader.horizontalPadding(context),

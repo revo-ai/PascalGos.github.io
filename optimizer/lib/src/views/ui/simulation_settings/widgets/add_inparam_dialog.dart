@@ -36,7 +36,7 @@ class _AddInParamDialogState extends State<AddInParamDialog> {
               height: 10,
             ),
             TextBox(
-              header: 'Enter CM-File',
+              header: 'Enter CARLA-File',
               placeholder: 'Type here...',
               controller: cmFileTextController,
               maxLines: 1,
