@@ -10,11 +10,18 @@ import 'package:optimizer/src/views/ui/home_page.dart';
 import 'simulation_settings/simulation_settings_page.dart';
 
 typedef void IndexCallback(int index);
+typedef void SimulationSettingsCallback(
+    bool simSettingSet, SimulationSettings simulationSettings);
 
 class WelcomePage extends StatefulWidget {
   IndexCallback indexCallback;
+  SimulationSettingsCallback simSetCallback;
 
-  WelcomePage({Key? key, required this.indexCallback}) : super(key: key);
+  WelcomePage({
+    Key? key,
+    required this.indexCallback,
+    required this.simSetCallback,
+  }) : super(key: key);
 
   @override
   _WelcomePageState createState() => _WelcomePageState();
@@ -298,70 +305,61 @@ class _WelcomePageState extends State<WelcomePage> {
                                                           allowedExtensions: [
                                                     'json',
                                                   ]).then((result) {
-                                                try {
-                                                  if (result != null &&
-                                                      result.isSinglePick) {
-                                                    Uint8List list = result
-                                                        .files
-                                                        .first
-                                                        .bytes as Uint8List;
-                                                    String jsonString =
-                                                        new String
-                                                                .fromCharCodes(
-                                                            List.from(list));
-                                                    print(jsonString);
+                                                // try {
+                                                if (result != null &&
+                                                    result.isSinglePick) {
+                                                  Uint8List list = result.files
+                                                      .first.bytes as Uint8List;
 
-                                                    Map<String, dynamic>
-                                                        valueMap = json.decode(
-                                                            jsonString.trim());
+                                                  String jsonString =
+                                                      new String.fromCharCodes(
+                                                          list);
 
-                                                    SimulationSettings simset =
-                                                        SimulationSettings
-                                                            .fromJson(valueMap);
-                                                    this
-                                                        .widget
-                                                        .indexCallback(1);
-                                                    Navigator.push(
+                                                  var decoded =
+                                                      json.decode(jsonString);
+
+                                                  SimulationSettings simset =
+                                                      SimulationSettings
+                                                          .fromJson(decoded);
+                                                  Navigator.pop(context);
+                                                  this.widget.simSetCallback(
+                                                      true, simset);
+                                                } else {
+                                                  showSnackbar(
                                                       context,
-                                                      FluentPageRoute(
-                                                          builder: (context) {
-                                                        return SimulationsSettingsPage(
-                                                            simulationSettings:
-                                                                simset);
-                                                      }),
-                                                    );
-                                                  }
-                                                } catch (e) {
-                                                  print("🔥" + e.toString());
-                                                }
-                                              });
-                                              showSnackbar(
-                                                  context,
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      Container(
-                                                        height:
-                                                            kOneLineTileHeight,
-                                                        child: InfoBar(
-                                                          title: Text("Error"),
-                                                          content: Text(
-                                                              "Unable to load JSON-File "),
-                                                          severity:
-                                                              InfoBarSeverity
-                                                                  .error,
-                                                        ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        children: [
+                                                          Container(
+                                                            height:
+                                                                kOneLineTileHeight,
+                                                            child: InfoBar(
+                                                              title:
+                                                                  Text("Error"),
+                                                              content: Text(
+                                                                  "Unable to load JSON-File "),
+                                                              severity:
+                                                                  InfoBarSeverity
+                                                                      .error,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                  duration:
-                                                      Duration(seconds: 6),
-                                                  alignment:
-                                                      Alignment.bottomCenter);
+                                                      duration:
+                                                          Duration(seconds: 6),
+                                                      alignment: Alignment
+                                                          .bottomCenter);
+                                                }
+
+                                                // } catch (e) {
+                                                //   // print("🔥" + e.toString());
+                                                //   throw (e);
+                                                // }
+                                              });
                                             },
                                     ),
                                   ],

@@ -292,6 +292,9 @@ class _SimulationsSettingsPageState extends State<SimulationsSettingsPage> {
                         ),
                 ],
               ),
+              SizedBox(
+                height: 10,
+              ),
               Divider(),
             ]),
       ),

@@ -8,13 +8,13 @@ class InputParameter {
   });
 
   String key;
-  var bounds;
+  List<double> bounds;
   String cm_File;
 
   static InputParameter fromJson(Map<String, dynamic> json) => InputParameter(
-        key: json['"key"'],
-        bounds: json['"bounds"'],
-        cm_File: json['"CM_File"'],
+        key: json['key'],
+        bounds: json['bounds'].map<double>((bound) => bound as double).toList(),
+        cm_File: json['CM_File'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -34,8 +34,8 @@ class TargetParameter {
   Operation operation;
 
   static TargetParameter fromJson(Map<String, dynamic> json) => TargetParameter(
-        key: json['"key"'],
-        operation: json['"operation"'],
+        key: json['key'],
+        operation: Operation.fromJson(json['operation']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,15 +47,15 @@ class TargetParameter {
 class Operation {
   Operation({
     required this.key,
-    this.bounds,
+    this.bounds = const [0, 0],
   });
 
   String key;
-  var bounds;
+  List<double> bounds;
 
   static Operation fromJson(Map<String, dynamic> json) => Operation(
-        key: json['"key"'],
-        bounds: json['"bounds"'],
+        key: json['key'],
+        bounds: json['bounds'].map<double>((bound) => bound as double).toList(),
       );
 
   Map<String, dynamic> toJson() => {

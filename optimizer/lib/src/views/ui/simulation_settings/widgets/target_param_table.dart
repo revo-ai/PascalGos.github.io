@@ -29,6 +29,8 @@ class _TargetParamTableState extends State<TargetParamTable> {
 
   double parameterRowHeight = 30;
 
+  int maxParameterCount = 1;
+
   final values = [
     'min',
     'max',
@@ -44,6 +46,14 @@ class _TargetParamTableState extends State<TargetParamTable> {
   TextEditingController parameterKeyController = TextEditingController();
   TextEditingController boundsStartController = TextEditingController();
   TextEditingController boundsEndController = TextEditingController();
+
+  @override
+  void initState() {
+    if (this.widget.parameters.length == maxParameterCount) {
+      disabled = true;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +93,8 @@ class _TargetParamTableState extends State<TargetParamTable> {
                         callback: (val) => setState(() {
                               _tarparam = val;
                               this.widget.parameters.add(_tarparam);
-                              if (this.widget.parameters.length == 1) {
+                              if (this.widget.parameters.length ==
+                                  maxParameterCount) {
                                 disabled = true;
                               }
                               widget.callback(this.widget.parameters);
@@ -134,7 +145,7 @@ class _TargetParamTableState extends State<TargetParamTable> {
                   border: TableBorder(
                       bottom: BorderSide(
                           width: 1,
-                          color: Colors.grey,
+                          color: FluentTheme.of(context).inactiveColor,
                           style: BorderStyle.solid)),
                   defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   children: [
@@ -150,7 +161,8 @@ class _TargetParamTableState extends State<TargetParamTable> {
                                     setState(() {
                                       this.widget.parameters.remove(
                                           this.widget.parameters[index]);
-                                      if (this.widget.parameters.length < 1) {
+                                      if (this.widget.parameters.length <
+                                          maxParameterCount) {
                                         disabled = false;
                                       }
                                       widget.callback(this.widget.parameters);
@@ -324,7 +336,7 @@ class _TargetParamTableState extends State<TargetParamTable> {
                   border: TableBorder(
                       bottom: BorderSide(
                           width: 1,
-                          color: Colors.grey,
+                          color: FluentTheme.of(context).inactiveColor,
                           style: BorderStyle.solid)),
                   defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   children: [
@@ -339,7 +351,8 @@ class _TargetParamTableState extends State<TargetParamTable> {
                                       .widget
                                       .parameters
                                       .remove(this.widget.parameters[index]);
-                                  if (this.widget.parameters.length < 1) {
+                                  if (this.widget.parameters.length <
+                                      maxParameterCount) {
                                     disabled = false;
                                   }
                                   widget.callback(this.widget.parameters);
@@ -352,7 +365,8 @@ class _TargetParamTableState extends State<TargetParamTable> {
                                       .contains(ButtonStates.hovering)) {
                                     return CircleBorder(
                                         side: BorderSide(
-                                            color: Colors.transparent,
+                                            color: FluentTheme.of(context)
+                                                .inactiveColor,
                                             width: 1));
                                   }
                                 }),
@@ -360,7 +374,8 @@ class _TargetParamTableState extends State<TargetParamTable> {
                                     ButtonState.resolveWith((states) {
                                   if (ButtonStates.values
                                       .contains(ButtonStates.hovering)) {
-                                    return Colors.transparent;
+                                    return FluentTheme.of(context)
+                                        .inactiveColor;
                                   }
                                   if (ButtonStates.values
                                       .contains(ButtonStates.none)) {
@@ -368,7 +383,7 @@ class _TargetParamTableState extends State<TargetParamTable> {
                                   }
                                   if (ButtonStates.values
                                       .contains(ButtonStates.pressing)) {
-                                    return Colors.red;
+                                    return Colors.warningPrimaryColor;
                                   }
                                 }),
                                 backgroundColor:
@@ -496,10 +511,15 @@ class _TargetParamTableState extends State<TargetParamTable> {
                 ),
               );
             }),
+        Center(
+          child: Text(
+            this.widget.parameters.length.toString() +
+                ' of ' +
+                maxParameterCount.toString(),
+            style: FluentTheme.of(context).typography.caption,
+          ),
+        ),
       ]),
-      SizedBox(
-        height: 10,
-      ),
     ]);
   }
 }

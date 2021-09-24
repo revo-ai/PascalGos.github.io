@@ -23,10 +23,8 @@ import 'package:flutter/foundation.dart';
 const String appTitle = 'Revo.AI Flutter Showcase ';
 
 class HomePage extends StatefulWidget {
-  final int index;
   const HomePage({
     Key? key,
-    this.index = 0,
   }) : super(key: key);
 
   @override
@@ -34,9 +32,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool value = false;
-
   int index = 0;
+  bool simSettingsSet = false;
+
+  late SimulationSettings simulationSettings;
 
   final colorsController = ScrollController();
   final settingsController = ScrollController();
@@ -88,7 +87,6 @@ class _HomePageState extends State<HomePage> {
                       color: Color.fromARGB(255, 0, 0, 0),
                       height: 120,
                       width: 120,
-                      //colorBlendMode: BlendMode.srcOver,
                       fit: BoxFit.fitWidth,
                     )
                   : Image.asset(
@@ -154,23 +152,19 @@ class _HomePageState extends State<HomePage> {
           PaneItemHeader(
             header: Text(
               "Actions",
-              // style: TextStyle(color: Colors.white),
             ),
           ),
           PaneItem(
             icon: Icon(
               FluentIcons.home,
-              //color: Colors.white,
             ),
             title: Text(
               'Home',
-              //style: TextStyle(color: Colors.white),
             ),
           ),
           PaneItem(
             icon: Icon(
               FluentIcons.edit_note,
-              //color: Colors.white,
             ),
             title: Text(
               'New Scenario',
@@ -191,17 +185,54 @@ class _HomePageState extends State<HomePage> {
       content: NavigationBody(index: index, children: [
         Navigator(
           onGenerateRoute: (settings) {
-            Widget page = WelcomePage(indexCallback: (val) {
-              setState(() {
-                index = val;
-              });
-            });
+            Widget page = WelcomePage(
+              indexCallback: (val) {
+                setState(() {
+                  index = val;
+                });
+              },
+              simSetCallback: (hasSimSet, simSet) {
+                setState(() {
+                  simSettingsSet = hasSimSet;
+                  simulationSettings = simSet;
+                  index = 1;
+                });
+              },
+            );
+
+            // Widget page = SimulationsSettingsPage(
+            //   simulationSettings: SimulationSettings(
+            //     cmConfig: CMConfig(
+            //       cmPath: "Test",
+            //     ),
+            //     inputParams: [
+            //       InputParameter(
+            //           key: "Test", bounds: [0, 2], cm_File: "cm_File"),
+            //     ],
+            //     targetParams: [
+            //       TargetParameter(
+            //         key: "Test",
+            //         operation: Operation(
+            //           key: "max",
+            //           bounds: [0, 2],
+            //         ),
+            //       ),
+            //     ],
+            //     optConfig: OPTConfig(),
+            //   ),
+            // );
+
             return FluentPageRoute(builder: (_) => page);
           },
         ),
         Navigator(
           onGenerateRoute: (settings) {
             Widget page = ConfigurationSelection();
+            if (simSettingsSet) {
+              simSettingsSet = false;
+              page = SimulationsSettingsPage(
+                  simulationSettings: simulationSettings);
+            }
             return FluentPageRoute(builder: (_) => page);
           },
         ),

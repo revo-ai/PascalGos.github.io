@@ -1,7 +1,6 @@
 import 'package:optimizer/src/core/models/parameter_model.dart';
 import 'package:optimizer/src/core/utils/format_helper.dart';
 
-//TODO: Add "" to incoming String for JSON EXPORT
 class SimulationSettings {
   SimulationSettings({
     required this.cmConfig,
@@ -16,18 +15,22 @@ class SimulationSettings {
   OPTConfig optConfig;
 
   static SimulationSettings fromJson(Map<String, dynamic> json) {
-    var list_1 = json['"Input_params"'] as List;
-    var list_2 = json['"Target_params"'] as List;
+    for (var key in json.keys) {
+      print("key: " + key);
+      print(json[key]);
+    }
+    var list_1 = json['Input_params'] as List;
+    var list_2 = json['Target_params'] as List;
     List<InputParameter> inputParamList =
         list_1.map((i) => InputParameter.fromJson(i)).toList();
     List<TargetParameter> targetParamList =
         list_2.map((i) => TargetParameter.fromJson(i)).toList();
 
     return SimulationSettings(
-      cmConfig: json['"CM_config"'],
+      cmConfig: CMConfig.fromJson(json['CM_config']),
       inputParams: inputParamList,
       targetParams: targetParamList,
-      optConfig: json['"opt_config"'],
+      optConfig: OPTConfig.fromJson(json['opt_config']),
     );
   }
 
@@ -56,9 +59,9 @@ class CMConfig {
   });
 
   static CMConfig fromJson(Map<String, dynamic> json) => CMConfig(
-        cmPath: json['"CM_PATH"'],
-        cmProj: json['"CM_PROJ"'],
-        cmTestrun: json['"CM_TESTRUN"'],
+        cmPath: json['CM_PATH'],
+        cmProj: json['CM_PROJ'],
+        cmTestrun: json['CM_TESTRUN'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -80,9 +83,9 @@ class OPTConfig {
   });
 
   static OPTConfig fromJson(Map<String, dynamic> json) => OPTConfig(
-        algos: json['"algos"'],
-        iterations: json['"Iterations"'],
-        time: json['"Time"'],
+        algos: Algos.fromJson(json['algos']),
+        iterations: json['Iterations'],
+        time: json['Time'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -110,12 +113,12 @@ class Algos {
   });
 
   static Algos fromJson(Map<String, dynamic> json) => Algos(
-        deOptimizer: json['"DEOptimizer"'],
-        boRFLibVersion: json['"bo_rf_lib_version"'],
-        randomOPT: json['"random_opt"'],
-        boGpLibVersion: json['"bo_gp_lib_version"'],
-        customBo: json['"custom_bo"'],
-        cmaEs: json['"CMA-ES"'],
+        deOptimizer: json['DEOptimizer'],
+        boRFLibVersion: json['bo_rf_lib_version'],
+        randomOPT: json['random_opt'],
+        boGpLibVersion: json['bo_gp_lib_version'],
+        customBo: json['custom_bo'],
+        cmaEs: json['CMA-ES'],
       );
 
   Map<String, dynamic> toJson() => {

@@ -295,7 +295,7 @@ class _AddTarParamDialogState extends State<AddTarParamDialog> {
               }
 
               if (validateForm(errorParameterKey, errorComboBox, errorBounds)) {
-                List bounds = [];
+                List<double> bounds = [];
                 switch (comboBoxValue!) {
                   case 'min':
                     bounds.add(double.parse('0'));

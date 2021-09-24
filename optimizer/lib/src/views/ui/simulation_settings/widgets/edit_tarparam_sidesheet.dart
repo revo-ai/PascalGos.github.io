@@ -160,7 +160,7 @@ class _EditTargetParamSideSheetState extends State<EditTargetParamSideSheet> {
                       ],
                     ),
                     onPressed: () {
-                      List bounds = [];
+                      List<double> bounds = [];
                       switch (comboBoxValue!) {
                         case 'min':
                           break;

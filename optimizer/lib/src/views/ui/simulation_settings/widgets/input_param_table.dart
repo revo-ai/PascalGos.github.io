@@ -24,6 +24,8 @@ class _InputParamTableState extends State<InputParamTable> {
   set targetParameter(InputParameter value) =>
       setState(() => _inputParam = value);
 
+  int maxParameterCount = 6;
+
   bool disabled = false;
 
   double parameterRowHeight = 30;
@@ -32,6 +34,14 @@ class _InputParamTableState extends State<InputParamTable> {
   TextEditingController parameterKeyController = TextEditingController();
   TextEditingController boundsStartController = TextEditingController();
   TextEditingController boundsEndController = TextEditingController();
+
+  @override
+  void initState() {
+    if (this.widget.parameters.length == maxParameterCount) {
+      disabled = true;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +77,8 @@ class _InputParamTableState extends State<InputParamTable> {
                         callback: (val) => setState(() {
                               _inputParam = val;
                               this.widget.parameters.add(_inputParam);
-                              if (this.widget.parameters.length == 6) {
+                              if (this.widget.parameters.length ==
+                                  maxParameterCount) {
                                 disabled = true;
                               }
                               widget.callback(this.widget.parameters);
@@ -93,7 +104,10 @@ class _InputParamTableState extends State<InputParamTable> {
                 style: BorderStyle.solid)),
         children: [
           TableRow(children: [
-            TableCell(child: Container(child: Text(''))),
+            TableCell(
+                child: Container(
+              child: Text(''),
+            )),
             TableCell(child: Container(child: Text('Key'))),
             TableCell(child: Container(child: Text('CMFile'))),
             TableCell(child: Container(child: Text('Bounds'))),
@@ -135,7 +149,8 @@ class _InputParamTableState extends State<InputParamTable> {
                                         .widget
                                         .parameters
                                         .remove(this.widget.parameters[index]);
-                                    if (this.widget.parameters.length < 6) {
+                                    if (this.widget.parameters.length <
+                                        maxParameterCount) {
                                       disabled = false;
                                     }
 
@@ -297,7 +312,8 @@ class _InputParamTableState extends State<InputParamTable> {
                                     .widget
                                     .parameters
                                     .remove(this.widget.parameters[index]);
-                                if (this.widget.parameters.length < 6) {
+                                if (this.widget.parameters.length <
+                                    maxParameterCount) {
                                   disabled = false;
                                 }
                                 widget.callback(this.widget.parameters);
@@ -427,6 +443,14 @@ class _InputParamTableState extends State<InputParamTable> {
               ),
             );
           }),
+      Center(
+        child: Text(
+          this.widget.parameters.length.toString() +
+              ' of ' +
+              maxParameterCount.toString(),
+          style: FluentTheme.of(context).typography.caption,
+        ),
+      ),
     ]);
   }
 

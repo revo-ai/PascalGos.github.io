@@ -123,8 +123,8 @@ class _AddInParamDialogState extends State<AddInParamDialog> {
                 InputParameter _inputParam = InputParameter(
                   key: parameterKeyController.text,
                   bounds: [
-                    double.tryParse(boundsStartController.text),
-                    double.tryParse(boundsEndController.text)
+                    double.parse(boundsStartController.text),
+                    double.parse(boundsEndController.text)
                   ],
                   cm_File: cmFileTextController.text,
                 );
