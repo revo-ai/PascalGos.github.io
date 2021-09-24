@@ -33,11 +33,6 @@ class _InputParamTableState extends State<InputParamTable> {
   TextEditingController boundsStartController = TextEditingController();
   TextEditingController boundsEndController = TextEditingController();
 
-  String errorCMFile = "";
-  String errorParameterKey = "";
-  String errorBounds = "";
-  String errorInputParameters = "";
-
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -45,64 +40,41 @@ class _InputParamTableState extends State<InputParamTable> {
         'Variation Parameter',
         style: FluentTheme.of(context).typography.title,
       ),
-      Text(
-        errorInputParameters,
-        style: TextStyle(
-          color: Colors.errorPrimaryColor,
-          fontSize: FluentTheme.of(context).typography.caption!.fontSize,
-          fontWeight: FluentTheme.of(context).typography.caption!.fontWeight,
-        ),
-      ),
       SizedBox(height: 10),
-      Row(
-        children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 150,
-            ),
-            child: Expanded(
-              child: OutlinedButton(
-                style: ButtonStyle(
-                  shape: ButtonState.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4))),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      FluentIcons.add,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "Add parameter",
-                    ),
-                  ],
-                ),
-                onPressed: disabled
-                    ? null
-                    : () async {
-                        var result = await showDialog(
-                          context: context,
-                          useRootNavigator: false,
-                          builder: (_) => AddInParamDialog(
-                              callback: (val) => setState(() {
-                                    _inputParam = val;
-                                    this.widget.parameters.add(_inputParam);
-                                    if (this.widget.parameters.length == 6) {
-                                      disabled = true;
-                                    }
-                                    widget.callback(this.widget.parameters);
-                                  })),
-                        );
-                      },
+      Container(
+        width: 150,
+        child: OutlinedButton(
+          child: Row(
+            children: [
+              Icon(
+                FluentIcons.add,
               ),
-            ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                "Add parameter",
+              ),
+            ],
           ),
-          Spacer(
-            flex: 1,
-          ),
-        ],
+          onPressed: disabled
+              ? null
+              : () async {
+                  var result = await showDialog(
+                    context: context,
+                    useRootNavigator: false,
+                    builder: (_) => AddInParamDialog(
+                        callback: (val) => setState(() {
+                              _inputParam = val;
+                              this.widget.parameters.add(_inputParam);
+                              if (this.widget.parameters.length == 6) {
+                                disabled = true;
+                              }
+                              widget.callback(this.widget.parameters);
+                            })),
+                  );
+                },
+        ),
       ),
       SizedBox(
         height: 10,
@@ -128,210 +100,31 @@ class _InputParamTableState extends State<InputParamTable> {
           ]),
         ],
       ),
-      Container(
-        constraints: BoxConstraints(
-            minHeight: parameterRowHeight, maxHeight: parameterRowHeight * 8),
-        child: Column(children: [
-          EmptyParameterListReminder(
-              paramListIsEmpty: this.widget.parameters.isEmpty),
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: this.widget.parameters.length,
-              itemBuilder: (BuildContext ctxt, int index) {
-                return HoverWidget(
-                  hoverChild: Table(
-                    columnWidths: {
-                      0: FlexColumnWidth(2),
-                      1: FlexColumnWidth(6),
-                      2: FlexColumnWidth(3),
-                      3: FlexColumnWidth(3),
-                    },
-                    border: TableBorder(
-                        bottom: BorderSide(
-                            width: 1,
-                            color: FluentTheme.of(context).inactiveColor,
-                            style: BorderStyle.solid)),
-                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                    children: [
-                      TableRow(
-                          decoration: BoxDecoration(
-                              color: FluentTheme.of(context).accentColor),
-                          children: [
-                            TableCell(
-                              child: Center(
-                                child: Container(
-                                  child: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        this.widget.parameters.remove(
-                                            this.widget.parameters[index]);
-                                        if (this.widget.parameters.length < 6) {
-                                          disabled = false;
-                                        }
-
-                                        widget.callback(this.widget.parameters);
-                                      });
-                                    },
-                                    icon: Icon(FluentIcons.delete, size: 14.0),
-                                    style: ButtonStyle(
-                                      shape: ButtonState.resolveWith((states) {
-                                        if (ButtonStates.values
-                                            .contains(ButtonStates.hovering)) {
-                                          return CircleBorder(
-                                              side: BorderSide(
-                                                  color: FluentTheme.of(context)
-                                                      .inactiveColor,
-                                                  width: 1));
-                                        }
-                                      }),
-                                      foregroundColor:
-                                          ButtonState.resolveWith((states) {
-                                        if (ButtonStates.values
-                                            .contains(ButtonStates.hovering)) {
-                                          return FluentTheme.of(context)
-                                              .inactiveColor;
-                                        }
-                                        if (ButtonStates.values
-                                            .contains(ButtonStates.none)) {
-                                          return Colors.transparent;
-                                        }
-                                        if (ButtonStates.values
-                                            .contains(ButtonStates.pressing)) {
-                                          return Colors.warningPrimaryColor;
-                                        }
-                                      }),
-                                      backgroundColor:
-                                          ButtonState.resolveWith((states) {
-                                        if (ButtonStates.values
-                                            .contains(ButtonStates.hovering)) {
-                                          return Colors.transparent;
-                                        }
-                                      }),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onDoubleTap: () {
-                                SideSheet.right(
-                                    backgroundColor: FluentTheme.of(context)
-                                        .micaBackgroundColor,
-                                    body: EditInputParamSideSheet(
-                                      param: this.widget.parameters[index],
-                                      callback: (val) => setState(() {
-                                        _inputParam = val;
-                                        this.widget.parameters[index].cm_File =
-                                            _inputParam.cm_File;
-                                        this.widget.parameters[index].key =
-                                            _inputParam.key;
-                                        this
-                                            .widget
-                                            .parameters[index]
-                                            .bounds[0] = _inputParam.bounds[0];
-                                        this
-                                            .widget
-                                            .parameters[index]
-                                            .bounds[1] = _inputParam.bounds[1];
-                                      }),
-                                    ),
-                                    context: context);
-                              },
-                              child: TableCell(
-                                  child: Container(
-                                      alignment: Alignment.centerLeft,
-                                      height: parameterRowHeight,
-                                      child: Text(
-                                          this.widget.parameters[index].key))),
-                            ),
-                            GestureDetector(
-                              onDoubleTap: () {
-                                SideSheet.right(
-                                    backgroundColor: FluentTheme.of(context)
-                                        .micaBackgroundColor,
-                                    body: EditInputParamSideSheet(
-                                      param: this.widget.parameters[index],
-                                      callback: (val) => setState(() {
-                                        _inputParam = val;
-                                        this.widget.parameters[index].cm_File =
-                                            _inputParam.cm_File;
-                                        this.widget.parameters[index].key =
-                                            _inputParam.key;
-                                        this
-                                            .widget
-                                            .parameters[index]
-                                            .bounds[0] = _inputParam.bounds[0];
-                                        this
-                                            .widget
-                                            .parameters[index]
-                                            .bounds[1] = _inputParam.bounds[1];
-                                      }),
-                                    ),
-                                    context: context);
-                              },
-                              child: TableCell(
-                                  child: Container(
-                                      alignment: Alignment.centerLeft,
-                                      height: parameterRowHeight,
-                                      child: Text(this
-                                          .widget
-                                          .parameters[index]
-                                          .cm_File))),
-                            ),
-                            GestureDetector(
-                              onDoubleTap: () {
-                                SideSheet.right(
-                                    backgroundColor: FluentTheme.of(context)
-                                        .micaBackgroundColor,
-                                    body: EditInputParamSideSheet(
-                                      param: this.widget.parameters[index],
-                                      callback: (val) => setState(() {
-                                        _inputParam = val;
-                                        this.widget.parameters[index].cm_File =
-                                            _inputParam.cm_File;
-                                        this.widget.parameters[index].key =
-                                            _inputParam.key;
-                                        this
-                                            .widget
-                                            .parameters[index]
-                                            .bounds[0] = _inputParam.bounds[0];
-                                        this
-                                            .widget
-                                            .parameters[index]
-                                            .bounds[1] = _inputParam.bounds[1];
-                                      }),
-                                    ),
-                                    context: context);
-                              },
-                              child: TableCell(
-                                  child: Container(
-                                      alignment: Alignment.centerLeft,
-                                      height: parameterRowHeight,
-                                      child: Text(this
-                                          .widget
-                                          .parameters[index]
-                                          .bounds
-                                          .toString()))),
-                            ),
-                          ]),
-                    ],
-                  ),
-                  onHover: (event) {},
-                  child: Table(
-                    columnWidths: {
-                      0: FlexColumnWidth(2),
-                      1: FlexColumnWidth(6),
-                      2: FlexColumnWidth(3),
-                      3: FlexColumnWidth(3),
-                    },
-                    border: TableBorder(
-                        bottom: BorderSide(
-                            width: 1,
-                            color: FluentTheme.of(context).inactiveColor,
-                            style: BorderStyle.solid)),
-                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                    children: [
-                      TableRow(children: [
+      EmptyParameterListReminder(
+          paramListIsEmpty: this.widget.parameters.isEmpty),
+      ListView.builder(
+          shrinkWrap: true,
+          itemCount: this.widget.parameters.length,
+          itemBuilder: (BuildContext ctxt, int index) {
+            return HoverWidget(
+              hoverChild: Table(
+                columnWidths: {
+                  0: FlexColumnWidth(2),
+                  1: FlexColumnWidth(6),
+                  2: FlexColumnWidth(3),
+                  3: FlexColumnWidth(3),
+                },
+                border: TableBorder(
+                    bottom: BorderSide(
+                        width: 1,
+                        color: FluentTheme.of(context).inactiveColor,
+                        style: BorderStyle.solid)),
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: [
+                  TableRow(
+                      decoration: BoxDecoration(
+                          color: FluentTheme.of(context).accentColor),
+                      children: [
                         TableCell(
                           child: Center(
                             child: Container(
@@ -345,6 +138,7 @@ class _InputParamTableState extends State<InputParamTable> {
                                     if (this.widget.parameters.length < 6) {
                                       disabled = false;
                                     }
+
                                     widget.callback(this.widget.parameters);
                                   });
                                 },
@@ -355,7 +149,8 @@ class _InputParamTableState extends State<InputParamTable> {
                                         .contains(ButtonStates.hovering)) {
                                       return CircleBorder(
                                           side: BorderSide(
-                                              color: Colors.transparent,
+                                              color: FluentTheme.of(context)
+                                                  .inactiveColor,
                                               width: 1));
                                     }
                                   }),
@@ -363,7 +158,8 @@ class _InputParamTableState extends State<InputParamTable> {
                                       ButtonState.resolveWith((states) {
                                     if (ButtonStates.values
                                         .contains(ButtonStates.hovering)) {
-                                      return Colors.transparent;
+                                      return FluentTheme.of(context)
+                                          .inactiveColor;
                                     }
                                     if (ButtonStates.values
                                         .contains(ButtonStates.none)) {
@@ -386,7 +182,8 @@ class _InputParamTableState extends State<InputParamTable> {
                             ),
                           ),
                         ),
-                        GestureDetector(
+                        TableCell(
+                            child: GestureDetector(
                           onDoubleTap: () {
                             SideSheet.right(
                                 backgroundColor:
@@ -407,14 +204,13 @@ class _InputParamTableState extends State<InputParamTable> {
                                 ),
                                 context: context);
                           },
-                          child: TableCell(
-                              child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  height: parameterRowHeight,
-                                  child:
-                                      Text(this.widget.parameters[index].key))),
-                        ),
-                        GestureDetector(
+                          child: Container(
+                              alignment: Alignment.centerLeft,
+                              height: parameterRowHeight,
+                              child: Text(this.widget.parameters[index].key)),
+                        )),
+                        TableCell(
+                            child: GestureDetector(
                           onDoubleTap: () {
                             SideSheet.right(
                                 backgroundColor:
@@ -435,14 +231,14 @@ class _InputParamTableState extends State<InputParamTable> {
                                 ),
                                 context: context);
                           },
-                          child: TableCell(
-                              child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  height: parameterRowHeight,
-                                  child: Text(
-                                      this.widget.parameters[index].cm_File))),
-                        ),
-                        GestureDetector(
+                          child: Container(
+                              alignment: Alignment.centerLeft,
+                              height: parameterRowHeight,
+                              child:
+                                  Text(this.widget.parameters[index].cm_File)),
+                        )),
+                        TableCell(
+                            child: GestureDetector(
                           onDoubleTap: () {
                             SideSheet.right(
                                 backgroundColor:
@@ -463,23 +259,174 @@ class _InputParamTableState extends State<InputParamTable> {
                                 ),
                                 context: context);
                           },
-                          child: TableCell(
-                              child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  height: parameterRowHeight,
-                                  child: Text(this
-                                      .widget
-                                      .parameters[index]
-                                      .bounds
-                                      .toString()))),
-                        ),
+                          child: Container(
+                              alignment: Alignment.centerLeft,
+                              height: parameterRowHeight,
+                              child: Text(this
+                                  .widget
+                                  .parameters[index]
+                                  .bounds
+                                  .toString())),
+                        )),
                       ]),
-                    ],
-                  ),
-                );
-              }),
-        ]),
-      ),
+                ],
+              ),
+              onHover: (event) {},
+              child: Table(
+                columnWidths: {
+                  0: FlexColumnWidth(2),
+                  1: FlexColumnWidth(6),
+                  2: FlexColumnWidth(3),
+                  3: FlexColumnWidth(3),
+                },
+                border: TableBorder(
+                    bottom: BorderSide(
+                        width: 1,
+                        color: FluentTheme.of(context).inactiveColor,
+                        style: BorderStyle.solid)),
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: [
+                  TableRow(children: [
+                    TableCell(
+                      child: Center(
+                        child: Container(
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                this
+                                    .widget
+                                    .parameters
+                                    .remove(this.widget.parameters[index]);
+                                if (this.widget.parameters.length < 6) {
+                                  disabled = false;
+                                }
+                                widget.callback(this.widget.parameters);
+                              });
+                            },
+                            icon: Icon(FluentIcons.delete, size: 14.0),
+                            style: ButtonStyle(
+                              shape: ButtonState.resolveWith((states) {
+                                if (ButtonStates.values
+                                    .contains(ButtonStates.hovering)) {
+                                  return CircleBorder(
+                                      side: BorderSide(
+                                          color: Colors.transparent, width: 1));
+                                }
+                              }),
+                              foregroundColor:
+                                  ButtonState.resolveWith((states) {
+                                if (ButtonStates.values
+                                    .contains(ButtonStates.hovering)) {
+                                  return Colors.transparent;
+                                }
+                                if (ButtonStates.values
+                                    .contains(ButtonStates.none)) {
+                                  return Colors.transparent;
+                                }
+                                if (ButtonStates.values
+                                    .contains(ButtonStates.pressing)) {
+                                  return Colors.warningPrimaryColor;
+                                }
+                              }),
+                              backgroundColor:
+                                  ButtonState.resolveWith((states) {
+                                if (ButtonStates.values
+                                    .contains(ButtonStates.hovering)) {
+                                  return Colors.transparent;
+                                }
+                              }),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                        child: GestureDetector(
+                      onDoubleTap: () {
+                        SideSheet.right(
+                            backgroundColor:
+                                FluentTheme.of(context).micaBackgroundColor,
+                            body: EditInputParamSideSheet(
+                              param: this.widget.parameters[index],
+                              callback: (val) => setState(() {
+                                _inputParam = val;
+                                this.widget.parameters[index].cm_File =
+                                    _inputParam.cm_File;
+                                this.widget.parameters[index].key =
+                                    _inputParam.key;
+                                this.widget.parameters[index].bounds[0] =
+                                    _inputParam.bounds[0];
+                                this.widget.parameters[index].bounds[1] =
+                                    _inputParam.bounds[1];
+                              }),
+                            ),
+                            context: context);
+                      },
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: parameterRowHeight,
+                          child: Text(this.widget.parameters[index].key)),
+                    )),
+                    TableCell(
+                        child: GestureDetector(
+                      onDoubleTap: () {
+                        SideSheet.right(
+                            backgroundColor:
+                                FluentTheme.of(context).micaBackgroundColor,
+                            body: EditInputParamSideSheet(
+                              param: this.widget.parameters[index],
+                              callback: (val) => setState(() {
+                                _inputParam = val;
+                                this.widget.parameters[index].cm_File =
+                                    _inputParam.cm_File;
+                                this.widget.parameters[index].key =
+                                    _inputParam.key;
+                                this.widget.parameters[index].bounds[0] =
+                                    _inputParam.bounds[0];
+                                this.widget.parameters[index].bounds[1] =
+                                    _inputParam.bounds[1];
+                              }),
+                            ),
+                            context: context);
+                      },
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: parameterRowHeight,
+                          child: Text(this.widget.parameters[index].cm_File)),
+                    )),
+                    TableCell(
+                        child: GestureDetector(
+                      onDoubleTap: () {
+                        SideSheet.right(
+                            backgroundColor:
+                                FluentTheme.of(context).micaBackgroundColor,
+                            body: EditInputParamSideSheet(
+                              param: this.widget.parameters[index],
+                              callback: (val) => setState(() {
+                                _inputParam = val;
+                                this.widget.parameters[index].cm_File =
+                                    _inputParam.cm_File;
+                                this.widget.parameters[index].key =
+                                    _inputParam.key;
+                                this.widget.parameters[index].bounds[0] =
+                                    _inputParam.bounds[0];
+                                this.widget.parameters[index].bounds[1] =
+                                    _inputParam.bounds[1];
+                              }),
+                            ),
+                            context: context);
+                      },
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: parameterRowHeight,
+                          child: Text(
+                              this.widget.parameters[index].bounds.toString())),
+                    )),
+                  ]),
+                ],
+              ),
+            );
+          }),
     ]);
   }
 
@@ -518,9 +465,6 @@ class _InputParamTableState extends State<InputParamTable> {
       return false;
     }
   }
-
-  // build
-
 }
 
 class EmptyParameterListReminder extends StatefulWidget {
@@ -538,12 +482,10 @@ class EmptyParameterListReminderState
   @override
   Widget build(BuildContext context) {
     if (widget.paramListIsEmpty) {
-      return Expanded(
-        child: Center(
-            heightFactor: 6.0,
-            child: Text("- Your parameter list is empty - ",
-                style: FluentTheme.of(context).typography.subtitle)),
-      );
+      return Center(
+          heightFactor: 6.0,
+          child: Text("- Your parameter list is empty - ",
+              style: FluentTheme.of(context).typography.subtitle));
     } else
       return Container();
   }
